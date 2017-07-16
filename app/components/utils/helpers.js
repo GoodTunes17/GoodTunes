@@ -1,13 +1,14 @@
 // Include the axios package for performing HTTP requests (promise based alternative to request)
 var axios = require("axios");
 
-// NyTimes API
+// AN API KEY
 var apiKey = "9189e6ca2509411491bbcfd0a29c3ee9";
 
-// Helper functions for making API Calls
+// Helper functions 
 var helpers = {
 
-  // This function serves our purpose of running the query to geolocate.
+  // Query your APIS -- these include parameters and a link to the NY times api - replace this with NPR - 
+  
   runQuery: function (topic, beginYr, endYr) {
 
 
@@ -19,21 +20,14 @@ var helpers = {
 
   },
 
+
+  // this is getting the initial scrapes
+
   getArticle: function () {
     return axios.get("/api");
-  },
-  // This function posts saved articles to our database.
-  postArticle: function (a, b, c) {
-    // postArticle: function (result) {
-
-    return axios.post('/api/saved',
-      {
-        artist: a,
-        song: b,
-        album: c
-      })
-
   }
+
+
 
 }
 
