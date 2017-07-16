@@ -6,26 +6,37 @@ var mongoose = require("mongoose");
 var path = require("path");
 // Requiring our Note and Article models
 // var db = require("../models");
-var Note = require("../models/Notes.js");
-var Tracks = require("../models/Tracks.js");
+var Note = require("../models/Note.js");
+var Track = require("../models/Track.js");
 // Set mongoose to leverage built in JavaScript ES6 Promises
 mongoose.Promise = Promise;
-
+// Requiring passport for user authentication
+var passport = require("passport");
 
 module.exports = function(app) {
 
     app.get("/", function(req, res) {
-        Tracks.find(function(error, doc) {
+        Track.find(function(error, doc) {
             if (error) {
                 console.log(error);
-            } else {
+            } 
+            else {
                 console.log("here's the doc" + doc);
-                var hndlObject = doc;
-                res.render("../views/index.handlebars", { hndlObject });
+                res.sendFile(__dirname + '/public/index.html');
             }
         });
     });
 
+    // Temporarily redirecting to index
+    app.get('/user/signup', function(req, res, next) {
+        res.sendFile(__dirname + '/signup.html');
+    });
+
+    // Not in use yet - work in progress
+    app.post('/user/signup', passport.authenticate('local.signup', {
+        successRedirect: '/',
+        failureRedirect: '/signup',
+    }));
 
     app.get("/scrape", function(req, res) {
         // First, we grab the body of the html with request
@@ -40,118 +51,43 @@ module.exports = function(app) {
                 result.artist = $(element).children().text();
                 result.title = $(element).siblings().text(); 
                //use Tracks model to create new entries
-                entry.push(new Tracks(result));
+                entry.push(new Track(result));
                 console.log(result);
             });
-                for (var i = 0; i < entry.length; i++) {
-                    entry[i].save(function(err, data){
-                        if (err){
-                            console.log(err);
-                        }else{
-                            console.log(data);
-                        }
-                    });
-                }
+            for (var i = 0; i < entry.length; i++) {
+                entry[i].save(function(err, data){
+                    if (err) {
+                        console.log(err);
+                    }
+                    else {
+                        console.log(data);
+                    }
+                });
+            }
         });
         res.redirect("/");
     });
 
+    // so to save new tracks.... 
 
-
-// so to save new tracks.... 
-
-app.post("/saved/:id", function(req, res){
-    console.log(req.params.id);
-      Tracks.findOneAndUpdate({"_id": req.params.id }, {"saved": true })
-       .exec(function(err, doc) {
-                    // logs any errors
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        // or sends the document to the browser
-                        console.log(doc);
-                        res.send(doc);
-                    }
-                });
-});
-
-app.get("/saved/:id,", function(req, res){
-     Tracks.findOne({ "_id": req.params.id })
-      .exec(function(error, doc) {
+    app.post("/saved/:id", function(req, res){
+        console.log(req.params.id);
+        Track.findOneAndUpdate({"_id": req.params.id }, {"saved": true })
+        .exec(function(err, doc) {
             // logs any errors
-            if (error) {
-                console.log(error);
-            }
-            // sends doc to the browser as a json object
+            if (err) {
+                console.log(err);
+            } 
             else {
-                res.json(doc);
+                // or sends the document to the browser
+                console.log(doc);
+                res.send(doc);
             }
         });
-});
-
-app.get("/saved", function(req, res) {
-    Tracks.find({"saved": "true"}, function(error, doc) {
-        if (error) {
-            console.log(error);
-        } else {
-            console.log("here's the doc" + doc);
-            var hndlObject = doc;
-            res.render("../views/saved.handlebars", { hndlObject });
-        }
     });
-});
 
-//remove a track from saved page
-app.post("/remove/:id", function(req, res){
-    console.log(req.params.id);
-      Tracks.findOneAndUpdate({"_id": req.params.id }, {"saved": false })
-       .exec(function(err, doc) {
-                    // logs any errors
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        // or sends the document to the browser
-                        console.log(doc);
-                        res.send(doc);
-                    }
-                });
-});
-
-// creates a new note or replaces an existing note
-app.post("/scrape/:id", function(req, res) {
-    // creates a new note and passes the req.body to the entry
-    var newComment = new Note(req.body);
-    console.log(req.body);
-    // saves the new note the db
-    newComment.save(function(error, doc) {
-        // logs any errors
-        if (error) {
-            console.log(error);
-        } else {
-            // uses the article id to find and update it's note
-            Tracks.findOneAndUpdate({ "_id": req.params.id }, { "note": doc._id })
-                .populate("note")
-                // executes the above query
-                .exec(function(err, doc) {
-                    // logs any errors
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        // or sends the document to the browser
-                        console.log(doc);
-                        res.send(doc);
-                    }
-                });
-        }
-    });
-});
-
-app.get("/scrape/:id", function(req, res) {
-    // queries the db to find the matching one in our db...
-    Tracks.findOne({ "_id": req.params.id })
-        // populates all of the notes associated with it
-        .populate("note")
-        // executes the query
+    app.get("/saved/:id,", function(req, res){
+        Track.findOne({ "_id": req.params.id })
         .exec(function(error, doc) {
             // logs any errors
             if (error) {
@@ -162,31 +98,96 @@ app.get("/scrape/:id", function(req, res) {
                 res.json(doc);
             }
         });
-});
+    });
 
-//get route for deleting a comment
-app.get("/delete/:id", function (req, res) {
-    Note.remove({"_id": req.params.id})
-    .exec(function(error, doc){
-          if (error) {
+    app.get("/saved", function(req, res) {
+        Track.find({"saved": "true"}, function(error, doc) {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log("here's the doc" + doc);
+                var hndlObject = doc;
+                res.render("../views/saved.handlebars", { hndlObject });
+            }
+        });
+    });
+
+    //remove a track from saved page
+    app.post("/remove/:id", function(req, res){
+        console.log(req.params.id);
+          Track.findOneAndUpdate({"_id": req.params.id }, {"saved": false })
+           .exec(function(err, doc) {
+                        // logs any errors
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            // or sends the document to the browser
+                            console.log(doc);
+                            res.send(doc);
+                        }
+                    });
+    });
+
+    // creates a new note or replaces an existing note
+    app.post("/scrape/:id", function(req, res) {
+        // creates a new note and passes the req.body to the entry
+        var newComment = new Note(req.body);
+        console.log(req.body);
+        // saves the new note the db
+        newComment.save(function(error, doc) {
+            // logs any errors
+            if (error) {
+                console.log(error);
+            } else {
+                // uses the article id to find and update it's note
+                Track.findOneAndUpdate({ "_id": req.params.id }, { "note": doc._id })
+                    .populate("note")
+                    // executes the above query
+                    .exec(function(err, doc) {
+                        // logs any errors
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            // or sends the document to the browser
+                            console.log(doc);
+                            res.send(doc);
+                        }
+                    });
+            }
+        });
+    });
+
+    app.get("/scrape/:id", function(req, res) {
+        // queries the db to find the matching one in our db...
+        Track.findOne({ "_id": req.params.id })
+            // populates all of the notes associated with it
+            .populate("note")
+            // executes the query
+            .exec(function(error, doc) {
+                // logs any errors
+                if (error) {
+                    console.log(error);
+                }
+                // sends doc to the browser as a json object
+                else {
+                    res.json(doc);
+                }
+            });
+    });
+
+    //get route for deleting a comment
+    app.get("/delete/:id", function (req, res) {
+        Note.remove({"_id": req.params.id})
+        .exec(function(error, doc){
+            if (error) {
                 console.log(error);
             }
             // sends doc to the browser as a json object
             else {
                 res.json(doc);
             }
+        });
+
     });
-
-});
-
-
-
-
-
 //close the module.exports(app) function
 };
-
-
-
-
-
