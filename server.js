@@ -14,6 +14,9 @@ var Note = require("./models/Notes.js");
 var Tracks = require("./models/Tracks.js");
 // Set mongoose to leverage built in JavaScript ES6 Promises
 mongoose.Promise = Promise;
+// Requiring Passport configuration for sign-in
+var passport = require("passport");
+require ("./config/passport.js");
 
 var PORT = process.env.PORT || 3000;
 // ========SERVER AND DB SETUP============================
