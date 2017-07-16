@@ -8,8 +8,8 @@ var request = require("request");
 var cheerio = require("cheerio");
  
 // Requiring our Note and Article models
-var Note = require("./models/Notes.js");
-var Tracks = require("./models/Tracks.js");
+var Note = require("./models/Note.js");
+var Track = require("./models/Track.js");
 // Set mongoose to leverage built in JavaScript ES6 Promises
 mongoose.Promise = Promise;
 

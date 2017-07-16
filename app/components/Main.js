@@ -37,7 +37,7 @@ var Main = React.createClass({
     }.bind(this));
   },
 
-  savedArticles: function(result) {
+  savedArticles: function (result) {
     console.log("This will need to be saved: " + result.artist)
   },
 
@@ -93,7 +93,7 @@ var Main = React.createClass({
             </div>
             <div className="panel-body text-center">
 
-              <Scrape scrape={this.state.scrapedArticles} savedArticles={this.savedArticles}/>
+              <Scrape scrape={this.state.scrapedArticles} savedArticles={this.savedArticles} />
 
               {/* YOU CAN INSERT THE NEXT CHILD HERE, POPULATING WITH THE API CALLS? */}
 

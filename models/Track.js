@@ -4,7 +4,7 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 // Create article schema
-var TracksSchema = new Schema({
+var TrackSchema = new Schema({
 
   artist: {
     type: String,
@@ -36,7 +36,7 @@ var TracksSchema = new Schema({
 });
 
 // Create the Article model with the ArticleSchema
-var Tracks = mongoose.model("Tracks", TracksSchema);
+var Track = mongoose.model("Track", TrackSchema);
 
 // Export the model
-module.exports = Tracks;
+module.exports = Track;
