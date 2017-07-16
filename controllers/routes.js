@@ -6,8 +6,8 @@ var mongoose = require("mongoose");
 var path = require("path");
 // Requiring our Note and Article models
 // var db = require("../models");
-var Note = require("../models/Notes.js");
-var Tracks = require("../models/Tracks.js");
+var Note = require("../models/Note.js");
+var Track = require("../models/Track.js");
 // Set mongoose to leverage built in JavaScript ES6 Promises
 mongoose.Promise = Promise;
 // Requiring passport for user authentication
@@ -16,10 +16,11 @@ var passport = require("passport");
 module.exports = function(app) {
 
     app.get("/", function(req, res) {
-        Tracks.find(function(error, doc) {
+        Track.find(function(error, doc) {
             if (error) {
                 console.log(error);
-            } else {
+            } 
+            else {
                 console.log("here's the doc" + doc);
                 res.sendFile(__dirname + '/public/index.html');
             }
@@ -28,7 +29,7 @@ module.exports = function(app) {
 
     // Temporarily redirecting to index
     app.get('/user/signup', function(req, res, next) {
-        res.redirect('/');
+        res.sendFile(__dirname + '/signup.html');
     });
 
     // Not in use yet - work in progress
@@ -50,15 +51,15 @@ module.exports = function(app) {
                 result.artist = $(element).children().text();
                 result.title = $(element).siblings().text(); 
                //use Tracks model to create new entries
-                entry.push(new Tracks(result));
+                entry.push(new Track(result));
                 console.log(result);
             });
             for (var i = 0; i < entry.length; i++) {
                 entry[i].save(function(err, data){
-                    if (err){
+                    if (err) {
                         console.log(err);
                     }
-                    else{
+                    else {
                         console.log(data);
                     }
                 });
@@ -71,7 +72,7 @@ module.exports = function(app) {
 
     app.post("/saved/:id", function(req, res){
         console.log(req.params.id);
-        Tracks.findOneAndUpdate({"_id": req.params.id }, {"saved": true })
+        Track.findOneAndUpdate({"_id": req.params.id }, {"saved": true })
         .exec(function(err, doc) {
             // logs any errors
             if (err) {
@@ -86,7 +87,7 @@ module.exports = function(app) {
     });
 
     app.get("/saved/:id,", function(req, res){
-        Tracks.findOne({ "_id": req.params.id })
+        Track.findOne({ "_id": req.params.id })
         .exec(function(error, doc) {
             // logs any errors
             if (error) {
@@ -100,7 +101,7 @@ module.exports = function(app) {
     });
 
     app.get("/saved", function(req, res) {
-        Tracks.find({"saved": "true"}, function(error, doc) {
+        Track.find({"saved": "true"}, function(error, doc) {
             if (error) {
                 console.log(error);
             } else {
@@ -114,7 +115,7 @@ module.exports = function(app) {
     //remove a track from saved page
     app.post("/remove/:id", function(req, res){
         console.log(req.params.id);
-          Tracks.findOneAndUpdate({"_id": req.params.id }, {"saved": false })
+          Track.findOneAndUpdate({"_id": req.params.id }, {"saved": false })
            .exec(function(err, doc) {
                         // logs any errors
                         if (err) {
@@ -139,7 +140,7 @@ module.exports = function(app) {
                 console.log(error);
             } else {
                 // uses the article id to find and update it's note
-                Tracks.findOneAndUpdate({ "_id": req.params.id }, { "note": doc._id })
+                Track.findOneAndUpdate({ "_id": req.params.id }, { "note": doc._id })
                     .populate("note")
                     // executes the above query
                     .exec(function(err, doc) {
@@ -158,7 +159,7 @@ module.exports = function(app) {
 
     app.get("/scrape/:id", function(req, res) {
         // queries the db to find the matching one in our db...
-        Tracks.findOne({ "_id": req.params.id })
+        Track.findOne({ "_id": req.params.id })
             // populates all of the notes associated with it
             .populate("note")
             // executes the query
