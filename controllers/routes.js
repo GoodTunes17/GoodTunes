@@ -10,13 +10,15 @@ var Note = require("../models/Note.js");
 var Track = require("../models/Track.js");
 // Set mongoose to leverage built in JavaScript ES6 Promises
 mongoose.Promise = Promise;
+// Requiring passport for user authentication
+var passport = require("passport");
 
 
 module.exports = function (app) {
 
     // Main "/" Route. This will redirect the user to our rendered React application
     app.get("/", function (req, res) {
-        if (errror) {
+        if (error) {
             console.log(error);
         }
         else {
@@ -24,6 +26,16 @@ module.exports = function (app) {
         }
     });
 
+    // Temporarily redirecting to index
+    app.get('/user/signup', function(req, res, next) {
+        res.sendFile(__dirname + '/signup.html');
+    });
+
+    // Not in use yet - work in progress
+    app.post('/user/signup', passport.authenticate('local.signup', {
+        successRedirect: '/',
+        failureRedirect: '/signup',
+    }));
 
     // this grabs the scrapes AND saves them to the database
 
@@ -65,23 +77,12 @@ module.exports = function (app) {
             // Throw any errors to the console
             if (error) {
                 console.log(error);
-            }
-            // If there are no errors, send the data to the browser as a json
-            else {
-                res.json(found);
-            }
-        });
-    });
-
-
-
-
-
+            } else {
+                res.json(found); 
+                        }
+                    });
+            })
+      
 
     //close the module.exports(app) function
 };
-
-
-
-
-

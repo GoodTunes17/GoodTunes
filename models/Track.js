@@ -5,25 +5,19 @@ var Schema = mongoose.Schema;
 
 // Create article schema
 var TrackSchema = new Schema({
-
   artist: {
     type: String,
     required: true,
-
   },
  //title is required to be unique so we don't get the same tracks everytime we scrape
   title: {
     type: String,
     required: true,
     unique: true
-  
   },
-
   image: {
     type: String,
-   
   },
-
   saved:{
     type: Boolean,
     default: false,

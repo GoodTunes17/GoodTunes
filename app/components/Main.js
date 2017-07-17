@@ -65,6 +65,7 @@ var Main = React.createClass({
     return (
 
       <div>
+        <h1>Good Tunes</h1>
 
         {/* NAV BAR */}
 

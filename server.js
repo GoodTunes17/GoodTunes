@@ -6,12 +6,14 @@ var mongoose = require("mongoose");
 // Our scraping tools
 var request = require("request");
 var cheerio = require("cheerio");
- 
 // Requiring our Note and Article models
 var Note = require("./models/Note.js");
 var Track = require("./models/Track.js");
 // Set mongoose to leverage built in JavaScript ES6 Promises
 mongoose.Promise = Promise;
+// Requiring Passport configuration for sign-in
+var passport = require("passport");
+require ("./config/passport.js");
 
 var PORT = process.env.PORT || 3000;
 // ========SERVER AND DB SETUP============================
@@ -42,8 +44,6 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once("open", function() {
     console.log("Mongoose connection successful.");
 });
-
- 
 
 // ============ROUTES===============================================
 
