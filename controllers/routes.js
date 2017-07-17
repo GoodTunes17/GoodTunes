@@ -13,22 +13,12 @@ mongoose.Promise = Promise;
 // Requiring passport for user authentication
 var passport = require("passport");
 
-module.exports = function (app) {
 
-    app.get("/", function(req, res) {
-        Track.find(function(error, doc) {
-            if (error) {
-                console.log(error);
-            } 
-            else {
-                console.log("here's the doc" + doc);
-                res.sendFile(__dirname + '/public/index.html');
-            }
-        });
+module.exports = function (app) {
 
     // Main "/" Route. This will redirect the user to our rendered React application
     app.get("/", function (req, res) {
-        if (errror) {
+        if (error) {
             console.log(error);
         }
         else {
@@ -60,18 +50,12 @@ module.exports = function (app) {
             var entry = [];
             $('ul.artist-list').each(function (i, element) {
                 result.artist = $(element).children().text();
-                result.title = $(element).siblings().text(); 
-               //use Tracks model to create new entries
                 result.title = $(element).siblings().text();
                 //use Tracks model to create new entries
                 entry.push(new Track(result));
                 console.log(result);
             });
             for (var i = 0; i < entry.length; i++) {
-                entry[i].save(function(err, data){
-                    if (err) {
-                        console.log(err);
-                    }
                 entry[i].save(function (err, data) {
                     if (err) {
                         console.log(err);
@@ -85,96 +69,6 @@ module.exports = function (app) {
         res.redirect("/");
     });
 
-    // so to save new tracks.... 
-
-    app.post("/saved/:id", function(req, res){
-        console.log(req.params.id);
-        Track.findOneAndUpdate({"_id": req.params.id }, {"saved": true })
-        .exec(function(err, doc) {
-            // logs any errors
-            if (err) {
-                console.log(err);
-            } 
-            else {
-                // or sends the document to the browser
-                console.log(doc);
-                res.send(doc);
-            }
-        });
-    });
-
-    app.get("/saved/:id,", function(req, res){
-        Track.findOne({ "_id": req.params.id })
-        .exec(function(error, doc) {
-            // logs any errors
-            if (error) {
-                console.log(error);
-            }
-            // sends doc to the browser as a json object
-            else {
-                res.json(doc);
-            }
-        });
-    });
-
-    app.get("/saved", function(req, res) {
-        Track.find({"saved": "true"}, function(error, doc) {
-            if (error) {
-                console.log(error);
-            } else {
-                console.log("here's the doc" + doc);
-                var hndlObject = doc;
-                res.render("../views/saved.handlebars", { hndlObject });
-            }
-        });
-    });
-
-    //remove a track from saved page
-    app.post("/remove/:id", function(req, res){
-        console.log(req.params.id);
-          Track.findOneAndUpdate({"_id": req.params.id }, {"saved": false })
-           .exec(function(err, doc) {
-                        // logs any errors
-                        if (err) {
-                            console.log(err);
-                        } else {
-                            // or sends the document to the browser
-                            console.log(doc);
-                            res.send(doc);
-                        }
-                    });
-    });
-
-    // creates a new note or replaces an existing note
-    app.post("/scrape/:id", function(req, res) {
-        // creates a new note and passes the req.body to the entry
-        var newComment = new Note(req.body);
-        console.log(req.body);
-        // saves the new note the db
-        newComment.save(function(error, doc) {
-            // logs any errors
-            if (error) {
-                console.log(error);
-            } else {
-                // uses the article id to find and update it's note
-                Track.findOneAndUpdate({ "_id": req.params.id }, { "note": doc._id })
-                    .populate("note")
-                    // executes the above query
-                    .exec(function(err, doc) {
-                        // logs any errors
-                        if (err) {
-                            console.log(err);
-                        } else {
-                            // or sends the document to the browser
-                            console.log(doc);
-                            res.send(doc);
-                        }
-                    });
-            }
-        });
-        res.redirect("/");
-    });
-
     // this grabs all the scrapes from the database --- 
 
     app.get("/api", function (req, res) {
@@ -183,45 +77,12 @@ module.exports = function (app) {
             // Throw any errors to the console
             if (error) {
                 console.log(error);
-            }
-            // If there are no errors, send the data to the browser as a json
-            else {
-                res.json(found);
-            }
-        });
-    });
+            } else {
+                res.json(found); 
+                        }
+                    });
+            })
+      
 
-    app.get("/scrape/:id", function(req, res) {
-        // queries the db to find the matching one in our db...
-        Track.findOne({ "_id": req.params.id })
-            // populates all of the notes associated with it
-            .populate("note")
-            // executes the query
-            .exec(function(error, doc) {
-                // logs any errors
-                if (error) {
-                    console.log(error);
-                }
-                // sends doc to the browser as a json object
-                else {
-                    res.json(doc);
-                }
-            });
-    });
-
-    //get route for deleting a comment
-    app.get("/delete/:id", function (req, res) {
-        Note.remove({"_id": req.params.id})
-        .exec(function(error, doc){
-            if (error) {
-                console.log(error);
-            }
-            // sends doc to the browser as a json object
-            else {
-                res.json(doc);
-            }
-        });
-
-    });
-//close the module.exports(app) function
+    //close the module.exports(app) function
 };
