@@ -12,6 +12,8 @@ var Track = require("../models/Track.js");
 mongoose.Promise = Promise;
 // Requiring passport for user authentication
 var passport = require("passport");
+var csrf = require("csurf");
+var csrfProtection = csrf();
 
 
 module.exports = function (app) {
@@ -22,20 +24,36 @@ module.exports = function (app) {
             console.log(error);
         }
         else {
-        res.sendFile(__dirname + "/public/index.html");
+            res.sendFile(__dirname + "/public/index.html");
         }
     });
 
     // Temporarily redirecting to index
     app.get('/user/signup', function(req, res, next) {
+        var messages = req.flash('error');
         res.sendFile(__dirname + '/signup.html');
+        //, {csrfToken: req.csrfToken(), messages: messages, hasErrors: messages.length > 0}
     });
 
     // Not in use yet - work in progress
     app.post('/user/signup', passport.authenticate('local.signup', {
         successRedirect: '/',
-        failureRedirect: '/signup',
+        failureRedirect: 'user/signup',
+        failureFlash: true
     }));
+
+    app.get('/user/login', function(req, res) {
+        var messages = req.flash('error');
+        res.sendFile(__dirname + '/signup.html');
+        //, {csrfToken: req.csrfToken(), messages: messages, hasErrors: messages.length > 0}
+    });
+
+    app.post('/user/login', passport.authenticate('local.login', {
+        successRedirect: '/',
+        failureRedirect: '/login',
+        failureFlash: true
+    }));
+
 
     // this grabs the scrapes AND saves them to the database
 
