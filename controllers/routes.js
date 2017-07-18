@@ -72,6 +72,7 @@ module.exports = function (app) {
     // this grabs all the scrapes from the database --- 
 
     app.get("/api", function (req, res) {
+
         // Find all results from the scrapedData collection in the db
         Track.find({}, function (error, found) {
             // Throw any errors to the console
