@@ -1,8 +1,17 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcrypt-nodejs');
 
 var UserSchema = new Schema({
+  // name: {
+  //   type: String,
+  //   required: true
+  // },
+  // username: {
+  //   type: String,
+  //   required: true,
+  //   unique: true
+  // },
   email: {
   	type: String,
   	required: true,
@@ -15,6 +24,7 @@ var UserSchema = new Schema({
 });
 
 UserSchema.methods.encryptPassword = function(password) {
+  console.log(password);
   return bcrypt.hashSync(password, bcrypt.genSaltSync(5), null);
 };
 
