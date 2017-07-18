@@ -21,26 +21,29 @@ var Scrape = React.createClass({
 
   },
 
-    handleClick1: function (result, e) {
+  handleClick1: function (result, e) {
     console.log("Clicked! " +
       result._id + "  " +
       result.title
     );
     this.props.savedArticles(result);
   },
-  
+
   // HERE we render the scraped info -  then send it to main.js
-  
+
   render: function () {
     return (
 
       <div>
         {this.props.scrape.map(function (search, i) {
- var boundClick1 = this.handleClick1.bind(this, search);
+          var boundClick1 = this.handleClick1.bind(this, search);
           return (
             <div>
               <p> ARTIST: {search.artist} - SONG: {search.title}</p>
- <button key={i} onClick={boundClick1}> save </button>
+              <button key={i} onClick={boundClick1}> save </button>
+              <div class="rating"> Rate: 
+                <span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
+              </div>
               <p> _________________________________</p>
             </div>
 

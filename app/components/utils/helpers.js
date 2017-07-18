@@ -20,17 +20,28 @@ var helpers = {
 
   },
 
+  //this actualy scrapes - 
 
-  // this is getting the initial scrapes
+  scrape: function() {
+    return axios.get("/scrape")
+  },
+
+
+  // this is getting the initial scrapes from the database
 
   getArticle: function () {
     return axios.get("/api");
-  }
+  },
 
-
+  postArticle: function (result) {
+    // postArticle: function (result) {
+    console.log("id is: " + result) 
+    return axios.post('/api/saved')
+    // return axios.post('/api/saved/' +result)
+    // {saved: true} )
 
 }
-
+}
 
 // We export the API helper
 module.exports = helpers;
