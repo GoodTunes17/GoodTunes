@@ -28,17 +28,31 @@ var Main = React.createClass({
 
   componentDidMount: function () {
 
+
+    // this gets the scrapes from the database
+
     helpers.getArticle().then(function (response) {
 
       console.log("The scrapes: ", response.data);
 
-      this.setState({ scrapedArticles: response.data });
+      //if nothing is in teh database, then scrape -- 
 
+      if ((response.data).length < 1) {
+        helpers.scrape().then(function (response) {
+          console.log("the scrapes: ", response.data);
+          this.setState({ scrapedArticles: response.data }.bind(this));
+        }.bind(this));
+      }
+      // "scrapedArticles" is a variable that holds all the scrapes
+      this.setState({ scrapedArticles: response.data });
     }.bind(this));
   },
 
+  // this will save a track to the playlist: 
+
   savedArticles: function (result) {
-    console.log("This will need to be saved: " + result.artist)
+    console.log("This will need to be saved: " + result.artist + "whose id is: " + result._id)
+    helpers.postArticle(result._id);
   },
 
 
