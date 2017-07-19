@@ -29,7 +29,7 @@ module.exports = function (app) {
     });
 
     // Temporarily redirecting to index
-    app.get('/user/signup', function(req, res, next) {
+    app.get('/user/signup', function (req, res, next) {
         var messages = req.flash('error');
         res.sendFile(__dirname + '/signup.html');
         //, {csrfToken: req.csrfToken(), messages: messages, hasErrors: messages.length > 0}
@@ -42,7 +42,7 @@ module.exports = function (app) {
         failureFlash: true
     }));
 
-    app.get('/user/login', function(req, res) {
+    app.get('/user/login', function (req, res) {
         var messages = req.flash('error');
         res.sendFile(__dirname + '/signup.html');
         //, {csrfToken: req.csrfToken(), messages: messages, hasErrors: messages.length > 0}
@@ -55,8 +55,6 @@ module.exports = function (app) {
     }));
 
 
-    // this grabs the scrapes AND saves them to the database
-
     app.get("/scrape", function (req, res) {
         // First, we grab the body of the html with request
         request("http://www.pitchfork.com/reviews/best/tracks/", function (error, response, html) {
@@ -67,40 +65,85 @@ module.exports = function (app) {
             //entry is an array of result objects? 
             var entry = [];
             $('ul.artist-list').each(function (i, element) {
+                console.log("scraping")
                 result.artist = $(element).children().text();
                 result.title = $(element).siblings().text();
                 //use Tracks model to create new entries
                 entry.push(new Track(result));
                 console.log(result);
             });
+            // this saves the array of pushed objects from website
             for (var i = 0; i < entry.length; i++) {
                 entry[i].save(function (err, data) {
                     if (err) {
                         console.log(err);
-                    } 
+                    }
                     else {
                         console.log(data);
                     }
                 });
             }
         });
-        res.redirect("/");
+        // res.redirect("/");
+        res.json(data);
     });
+
+
 
     // this grabs all the scrapes from the database --- 
 
     app.get("/api", function (req, res) {
+        console.log("hello")
         // Find all results from the scrapedData collection in the db
         Track.find({}, function (error, found) {
             // Throw any errors to the console
             if (error) {
                 console.log(error);
             } else {
-                res.json(found); 
-                        }
-                    });
-            })
-      
+                res.json(found);
+            }
+        });
+    });
 
+    // this will change the "saved" database property to true
+
+    app.post("/saved", function (req, res) {
+        console.log("this is the id to save: " + req.body.id);
+        Track.findOneAndUpdate(
+            { "_id": req.body.id },
+            { "saved": true }
+        )
+            .exec(function (err, doc) {
+                // logs any errors
+                if (err) {
+                    console.log(err);
+                } else {
+                    // or sends the document to the browser
+                    console.log(doc);
+                    res.send(doc);
+                }
+            });
+    });
+
+    // this will change the "saved" database property to false
+
+    app.post("/delete", function (req, res) {
+        Track.findOneAndUpdate(
+            { "_id": req.body.id },
+            { "saved": false }
+        )
+            .exec(function (err, doc) {
+                // logs any errors
+                if (err) {
+                    console.log(err);
+                } else {
+                    // or sends the document to the browser
+                    console.log(doc);
+                    res.send(doc);
+                }
+            });
+
+
+    })
     //close the module.exports(app) function
 };

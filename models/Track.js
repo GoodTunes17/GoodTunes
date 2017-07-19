@@ -11,16 +11,38 @@ var TrackSchema = new Schema({
   },
  //title is required to be unique so we don't get the same tracks everytime we scrape
   title: {
-    type: String,
-    required: true,
-    unique: true
+    type: String
+ 
+  },
+ album: {
+    type: String
+ 
+  },
+  id: {
+    type: String
+  },
+  genre: {
+    type: String
+  
+  },
+  critic: {
+    type: String
+  
+  },
+  reviewLink: {
+    type: String
+ 
   },
   image: {
     type: String,
   },
-  saved:{
+  source: {
+    type: String
+    
+  },
+  saved: {
     type: Boolean,
-    default: false,
+    default: false
   },
   //This only saves one note's ObjectId, ref refers to the Note model
   note: {
