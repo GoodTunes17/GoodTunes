@@ -93,7 +93,7 @@ module.exports = function (app) {
     // this grabs all the scrapes from the database --- 
 
     app.get("/api", function (req, res) {
-
+        console.log("hello")
         // Find all results from the scrapedData collection in the db
         Track.find({}, function (error, found) {
             // Throw any errors to the console
@@ -104,25 +104,46 @@ module.exports = function (app) {
             }
         });
     });
-// app.post("/saved/:id"), function(req, res) {
+
+    // this will change the "saved" database property to true
+
     app.post("/saved", function (req, res) {
-        console.log("this is the id to save: " + req.body);
-        // Tracks.findOneAndUpdate(
-        //     { "_id": req.params.id },
-        //     { "saved": true }
-        // )
-        //     .exec(function (err, doc) {
-        //         // logs any errors
-        //         if (err) {
-        //             console.log(err);
-        //         } else {
-        //             // or sends the document to the browser
-        //             console.log(doc);
-        //             res.send(doc);
-        //         }
-        //     });
+        console.log("this is the id to save: " + req.body.id);
+        Track.findOneAndUpdate(
+            { "_id": req.body.id },
+            { "saved": true }
+        )
+            .exec(function (err, doc) {
+                // logs any errors
+                if (err) {
+                    console.log(err);
+                } else {
+                    // or sends the document to the browser
+                    console.log(doc);
+                    res.send(doc);
+                }
+            });
     });
 
+    // this will change the "saved" database property to false
 
+    app.post("/delete", function (req, res) {
+        Track.findOneAndUpdate(
+            { "_id": req.body.id },
+            { "saved": false }
+        )
+            .exec(function (err, doc) {
+                // logs any errors
+                if (err) {
+                    console.log(err);
+                } else {
+                    // or sends the document to the browser
+                    console.log(doc);
+                    res.send(doc);
+                }
+            });
+
+
+    })
     //close the module.exports(app) function
 };
