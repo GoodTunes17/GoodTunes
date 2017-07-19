@@ -5,7 +5,7 @@ var axios = require('axios');
 
 // Here we include all of the sub-components
 var Scrape = require("./children/Scrape");
-// var Results = require("./children/Playlist");
+var Playlist = require("./children/Playlist");
 // var History = require("./children/Extra");
 
 // Helper for making AJAX requests to our API
@@ -18,7 +18,7 @@ var Main = React.createClass({
 
   getInitialState: function () {
     return {
-      scrapedArticles: [], savedArticles: []
+      scrapedArticles: [], playlist: []
     };
   },
 
@@ -35,7 +35,7 @@ var Main = React.createClass({
 
       console.log("The scrapes: ", response.data);
 
-      //if nothing is in teh database, then scrape -- 
+      //if nothing is in the database, then scrape -- 
 
       if ((response.data).length < 1) {
         helpers.scrape().then(function (response) {
@@ -43,18 +43,47 @@ var Main = React.createClass({
           this.setState({ scrapedArticles: response.data }.bind(this));
         }.bind(this));
       }
-      // "scrapedArticles" is a variable that holds all the scrapes
+
+      // update "scrapedArticles" variable with scrape data
       this.setState({ scrapedArticles: response.data });
+      //
+      this.getSavedArticles();
     }.bind(this));
   },
 
-  // this will save a track to the playlist: 
+  // this will run through the scrapedArticles, 
+  // find those that are "saved" and put them in the 
+  // "playlist" variable.. 
+
+  getSavedArticles: function () {
+    var prePlaylist = [];
+    for (var i = 0; i < this.state.scrapedArticles.length; i++) {
+      if (this.state.scrapedArticles[i].saved) {
+        console.log(this.state.scrapedArticles[i].saved)
+
+        prePlaylist.push(this.state.scrapedArticles[i])
+        this.setState({ playlist: prePlaylist })
+      }
+    }
+    console.log(this.state.playlist);
+  },
+
+  // this will change the "saved" database property to true
 
   savedArticles: function (result) {
     console.log("This will need to be saved: " + result.artist + "whose id is: " + result._id)
     helpers.postArticle(result._id);
   },
 
+  // this will change the "saved" database property to false
+
+  deletedArticle: function (result) {
+    console.log("delete!");
+    console.log("This will need to be un-saved: " + result.artist + "whose id is: " + result._id)
+    helpers.deleteArticle(result._id);
+    // shouldn't this refresh the saved articles? 
+
+  },
 
   componentDidUpdate: function () {
 
@@ -79,13 +108,13 @@ var Main = React.createClass({
     return (
 
       <div>
-        <h1>Good Tunes</h1>
+
 
         {/* NAV BAR */}
 
         <nav>
           <div>
-            <a href="#" class="brand-logo"><h2>Pitchfork Scraper</h2></a>
+            <a href="#" class="brand-logo"><h2>Good Tunes</h2></a>
             <ul className="nav nav-tabs" >
               <li className="active"> <a href="#">Home</a></li>
               <li><a href="#">By Genre</a></li>
@@ -104,14 +133,22 @@ var Main = React.createClass({
 
           <div className="panel panel-default">
             <div className="panel-heading">
-              <h3 className="panel-title text-center">Scrapes</h3>
+              <h3 className="panel-title text-center">Scraped Playlist</h3>
             </div>
             <div className="panel-body text-center">
 
               <Scrape scrape={this.state.scrapedArticles} savedArticles={this.savedArticles} />
 
               {/* YOU CAN INSERT THE NEXT CHILD HERE, POPULATING WITH THE API CALLS? */}
+              <div className="panel panel-default">
+                <div className="panel-heading">
+                  <h3 className="panel-title text-center">Saved Playlist</h3>
+                </div>
+                <div className="panel-body text-center">
 
+                  <Playlist playlist={this.state.playlist} deletedArticle={this.deletedArticle} />
+                </div>
+              </div>
 
             </div>
           </div>
