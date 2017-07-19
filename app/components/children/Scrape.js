@@ -21,6 +21,8 @@ var Scrape = React.createClass({
 
   },
 
+  //this places song in "saved" playlist
+
   handleClick1: function (result, e) {
     console.log("Clicked! " +
       result._id + "  " +
@@ -29,6 +31,13 @@ var Scrape = React.createClass({
     this.props.savedArticles(result);
   },
 
+  //this plays the song
+
+  handleClick2: function (result, e) {
+    console.log("play clicked for: " + result.title)
+
+
+  },
   // HERE we render the scraped info -  then send it to main.js
 
   render: function () {
@@ -37,11 +46,13 @@ var Scrape = React.createClass({
       <div>
         {this.props.scrape.map(function (search, i) {
           var boundClick1 = this.handleClick1.bind(this, search);
+          var boundClick2 = this.handleClick2.bind(this, search);
           return (
             <div>
               <p> ARTIST: {search.artist} - SONG: {search.title}</p>
               <button key={i} onClick={boundClick1}> save </button>
-              <div class="rating"> Rate: 
+              <button key={"a" + i} onClick={boundClick2}> play </button>
+              <div class="rating"> Rate:
                 <span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
               </div>
               <p> _________________________________</p>

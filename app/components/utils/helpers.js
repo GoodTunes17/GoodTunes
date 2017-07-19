@@ -8,7 +8,7 @@ var apiKey = "9189e6ca2509411491bbcfd0a29c3ee9";
 var helpers = {
 
   // Query your APIS -- these include parameters and a link to the NY times api - replace this with NPR - 
-  
+
   runQuery: function (topic, beginYr, endYr) {
 
 
@@ -22,7 +22,7 @@ var helpers = {
 
   //this actualy scrapes - 
 
-  scrape: function() {
+  scrape: function () {
     return axios.get("/scrape")
   },
 
@@ -33,15 +33,21 @@ var helpers = {
     return axios.get("/api");
   },
 
+  // this will change the "saved" database property to true
+
   postArticle: function (result) {
-    // postArticle: function (result) {
-    console.log("id is: " + result) 
-    return axios.post('/api/saved')
-    // return axios.post('/api/saved/' +result)
-    // {saved: true} )
+    console.log("id is: " + result)
+    return axios.post('/saved',
+      { id: result });
+  },
 
-}
-}
+  // this will change the "saved" database property to false
 
+  deleteArticle: function (result) {
+    console.log("helper reached with " + result)
+    return axios.post('/delete',
+      { id: result });
+  }
+}
 // We export the API helper
 module.exports = helpers;
