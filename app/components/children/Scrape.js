@@ -1,5 +1,6 @@
 // Include React
 var React = require("react");
+var helpers = require ("../utils/helpers");
 
 // Creating the Form component
 var Scrape = React.createClass({
@@ -34,8 +35,9 @@ var Scrape = React.createClass({
   //this plays the song
 
   handleClick2: function (result, e) {
+    helpers.runQuery();
     console.log("play clicked for: " + result.title)
-
+ 
 
   },
   // HERE we render the scraped info -  then send it to main.js
