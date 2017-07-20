@@ -14,10 +14,7 @@ mongoose.Promise = Promise;
 // Requiring Passport configuration for sign-in
 var passport = require("passport");
 var session = require("express-session");
-var csrf = require("csurf");
-var csrfProtection = csrf();
 var flash = require("connect-flash");
-var validator = require("express-validator");
 
 var PORT = process.env.PORT || 3000;
 // ========SERVER AND DB SETUP============================
@@ -31,12 +28,18 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.text());
 app.use(bodyParser.json({ type: "application/vnd.api+json" }));
-app.use(validator());
-app.use(session({secret: "secrettunes", resave: false, saveUninitialized: false}));
+app.use(session({secret: "secrettunes", resave: true, saveUninitialized: true}));
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
-//app.use(csrfProtection);
+
+
+app.use(function(req, res, next) {
+  res.locals.success_msg = req.flash('success_msg');
+  res.locals.error_msg = req.flash('error_msg');
+  res.locals.error = req.flash('error');
+  next();
+});
 
 // Make public a static directory
 app.use(express.static("public"));
