@@ -40,7 +40,7 @@ module.exports = function (app) {
     // User logging in
     app.post('/user/login', passport.authenticate('local-login', {
         successRedirect: '/',
-        failureRedirect: 'user/login',
+        failureRedirect: '/user/login',
         failureFlash: true
     }));
 

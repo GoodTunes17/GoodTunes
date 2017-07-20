@@ -12,6 +12,7 @@ passport.deserializeUser(function(id, done) {
   });
 });
 
+// Passport strategy allowing a new user to sign up
 passport.use('local-signup', new LocalStrategy(
   {
     usernameField: 'email',
@@ -43,6 +44,7 @@ passport.use('local-signup', new LocalStrategy(
   }
 ));
 
+// Passport local strategy for an existing user to log in
 passport.use('local-login', new LocalStrategy(
   {
     usernameField: 'email',
@@ -55,9 +57,11 @@ passport.use('local-login', new LocalStrategy(
         return done(err);
       }
       if (!user) {
+        console.log("No user found.");
         return done(null, false, req.flash('loginMessage', 'No user found.'));
       }
       if (!user.validPassword(password)) {
+        console.log("Incorrect password.");
         return done(null, false, req.flash('loginMessage', 'Incorrect password.'));
       }
       return done(null, user);
