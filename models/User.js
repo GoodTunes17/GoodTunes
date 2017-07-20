@@ -3,15 +3,6 @@ var Schema = mongoose.Schema;
 var bcrypt = require('bcrypt-nodejs');
 
 var UserSchema = new Schema({
-  // name: {
-  //   type: String,
-  //   required: true
-  // },
-  // username: {
-  //   type: String,
-  //   required: true,
-  //   unique: true
-  // },
   email: {
   	type: String,
   	required: true,
@@ -23,11 +14,12 @@ var UserSchema = new Schema({
   },
 });
 
+// Encrypting a user's password for storage in the database
 UserSchema.methods.encryptPassword = function(password) {
-  console.log(password);
   return bcrypt.hashSync(password, bcrypt.genSaltSync(5), null);
 };
 
+// Making sure the password is valid before creating the new user
 UserSchema.methods.validPassword = function(password) {
   return bcrypt.compareSync(password, this.password);
 }

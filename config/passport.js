@@ -12,73 +12,53 @@ passport.deserializeUser(function(id, done) {
   });
 });
 
-passport.use('local.signup', new LocalStrategy(
+passport.use('local-signup', new LocalStrategy(
   {
-    // nameField: 'name',
-    // emailField: 'email',
     usernameField: 'email',
     passwordField: 'password',
     passReqToCallback: true
   }, 
-  function(req, name, email, username, password, res) {
-    req.checkBody('email', 'Invalid email').notEmpty().isEmail();
-    req.checkBody('password', 'Invalid password').notEmpty().isLength({min: 6});
-    var errors = req.validationErrors();
-    if (errors) {
-      var messages = [];
-      errors.forEach(function(error, res) {
-        messages.push(error.msg);
-      });
-      res.send(req.flash('error', messages));
-    }
-    User.findOne({'email': email }, function(req, err, user, res) {
-      if (err) {
-        return (err);
-      }
-      else if (user) {
-        return ({message: 'Email is already in use.'});
-      }
-      var newUser = new User();
-      // newUser.name = name;
-      // newUser.username = username;
-      newUser.email = email;
-      newUser.password = newUser.encryptPassword(password);
-      newUser.save(function(err, res) {
+  function(req, email, password, done) {
+    process.nextTick(function() {
+      User.findOne({'email': email}, function(err, user) {
         if (err) {
-          res.send(err);
+          return done(err);
         }
-        res.send(newUser);
+        if (user) {
+          return done(null, false, req.flash({'signupMessage': 'Email is already in use.'}));
+        }
+        else {
+          var newUser = new User();
+          newUser.email = email;
+          newUser.password = newUser.encryptPassword(password);
+          newUser.save(function(err) {
+            if (err) {
+              throw err;
+            }
+            return done(null, newUser);
+          });
+        }
       });
     });
   }
 ));
 
-passport.use('local.signin', new LocalStrategy(
+passport.use('local-login', new LocalStrategy(
   {
-    usernameField: 'username',
+    usernameField: 'email',
     passwordField: 'password',
     passReqToCallback: true
   },
   function(req, email, password, done) {
-    req.checkBody('email', 'Invalid email').notEmpty();
-    req.checkBody('password', 'Invalid password').notEmpty();
-    var errors = req.validateErrors();
-    if (errors) {
-      var messages = [];
-      error.forEach(function(error) {
-        messages.push(error.msg);
-      });
-      return done(null, false, req.flash('error', messages));
-    }
     User.findOne({'email': email}, function(err, user) {
       if (err) {
         return done(err);
       }
       if (!user) {
-        return done(null, false, {message: 'User not found.'});
+        return done(null, false, req.flash('loginMessage', 'No user found.'));
       }
       if (!user.validPassword(password)) {
-        return done(null, false, {message: 'Incorrect password.'});
+        return done(null, false, req.flash('loginMessage', 'Incorrect password.'));
       }
       return done(null, user);
     });

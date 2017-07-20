@@ -12,48 +12,57 @@ var Track = require("../models/Track.js");
 mongoose.Promise = Promise;
 // Requiring passport for user authentication
 var passport = require("passport");
-var csrf = require("csurf");
-var csrfProtection = csrf();
 
 
 module.exports = function (app) {
 
     // Main "/" Route. This will redirect the user to our rendered React application
     app.get("/", function (req, res) {
-        if (error) {
-            console.log(error);
-        }
-        else {
-            res.sendFile(__dirname + "/public/index.html");
-        }
-    });
-
-    // Temporarily redirecting to index
+        res.sendFile(path.join(__dirname, "../public/", "index.html"));
+    })
     app.get('/user/signup', function (req, res, next) {
         var messages = req.flash('error');
-        res.sendFile(__dirname + '/signup.html');
-        //, {csrfToken: req.csrfToken(), messages: messages, hasErrors: messages.length > 0}
+        res.sendFile(path.join(__dirname, '../public/', 'signup.html'));
     });
 
-    // Not in use yet - work in progress
-    app.post('/user/signup', passport.authenticate('local.signup', {
+    // Creating a new user
+    app.post('/user/signup', passport.authenticate('local-signup', {
         successRedirect: '/',
-        failureRedirect: 'user/signup',
+        failureRedirect: '/user/signup',
         failureFlash: true
     }));
 
     app.get('/user/login', function (req, res) {
         var messages = req.flash('error');
-        res.sendFile(__dirname + '/signup.html');
-        //, {csrfToken: req.csrfToken(), messages: messages, hasErrors: messages.length > 0}
+        res.sendFile(path.join(__dirname, '../public/', '/login.html'));
     });
 
-    app.post('/user/login', passport.authenticate('local.login', {
+    // User logging in
+    app.post('/user/login', passport.authenticate('local-login', {
         successRedirect: '/',
-        failureRedirect: '/login',
+        failureRedirect: 'user/login',
         failureFlash: true
     }));
 
+    // Route to be used for viewing a specific user's homepage after logging in
+    app.get('/profile', isLoggedIn, function(req, res) {
+        res.sendFile(path.join(__dirname, "../public/", "index.html"), {
+            user: req.user
+        });
+    });
+
+    // User logout
+    app.get('/logout', function(req, res) {
+        req.logout();
+        res.redirect('/');
+    });
+
+    function isLoggedIn(req, res, next) {
+        if (req.isAuthenticated()) {
+            return next();
+        }
+        res.redirect('/');
+    }
 
     app.get("/scrape", function (req, res) {
         // First, we grab the body of the html with request
@@ -93,7 +102,7 @@ module.exports = function (app) {
     // this grabs all the scrapes from the database --- 
 
     app.get("/api", function (req, res) {
-        console.log("hello")
+        console.log("hello");
         // Find all results from the scrapedData collection in the db
         Track.find({}, function (error, found) {
             // Throw any errors to the console
@@ -122,7 +131,7 @@ module.exports = function (app) {
         //             res.send(doc);
         //         }
         //     });
-
+    });
     // this will change the "saved" database property to true
 
     app.post("/saved", function (req, res) {
@@ -131,16 +140,16 @@ module.exports = function (app) {
             { "_id": req.body.id },
             { "saved": true }
         )
-            .exec(function (err, doc) {
-                // logs any errors
-                if (err) {
-                    console.log(err);
-                } else {
-                    // or sends the document to the browser
-                    console.log(doc);
-                    res.send(doc);
-                }
-            });
+        .exec(function (err, doc) {
+            // logs any errors
+            if (err) {
+                console.log(err);
+            } else {
+                // or sends the document to the browser
+                console.log(doc);
+                res.send(doc);
+            }
+        });
     });
 
     // this will change the "saved" database property to false
@@ -150,18 +159,16 @@ module.exports = function (app) {
             { "_id": req.body.id },
             { "saved": false }
         )
-            .exec(function (err, doc) {
-                // logs any errors
-                if (err) {
-                    console.log(err);
-                } else {
-                    // or sends the document to the browser
-                    console.log(doc);
-                    res.send(doc);
-                }
-            });
-
-
-    })
+        .exec(function (err, doc) {
+            // logs any errors
+            if (err) {
+                console.log(err);
+            } else {
+                // or sends the document to the browser
+                console.log(doc);
+                res.send(doc);
+            }
+        });
+    });
     //close the module.exports(app) function
 };
