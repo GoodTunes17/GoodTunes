@@ -2,7 +2,7 @@
 
 //var request = require("request");
 var axios = require("axios");
-  var SpotifyWebApi = require('spotify-web-api-node');
+  // var SpotifyWebApi = require('spotify-web-api-node');
 // Helper functions 
 var helpers = {
 
