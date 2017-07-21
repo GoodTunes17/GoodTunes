@@ -133,9 +133,9 @@ var Main = React.createClass({
           {/* scrapedArticles contain scraped articles / savedArticles contain articles that the user wants saved for his playlist */}
 
           <div className="panel panel-default">
-            <div className="panel-heading">
-              <h3 className="panel-title text-center">Scraped Playlist</h3>
-            </div>
+             <div className="panel-heading">
+               <h3 className="panel-title text-center">Scraped Playlist</h3>
+             </div>
             <div className="panel-body text-center">
 
               {/* <Scrape scrape={this.state.scrapedArticles} savedArticles={this.savedArticles} />*/}

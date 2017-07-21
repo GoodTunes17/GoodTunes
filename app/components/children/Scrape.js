@@ -1,5 +1,6 @@
 // Include React
 var React = require("react");
+var helpers = require ("../utils/helpers");
 
 // Creating the Form component
 var Scrape = React.createClass({
@@ -36,19 +37,19 @@ var Scrape = React.createClass({
   handleClick2: function (result, e) {
     console.log("play clicked for: " + result.title)
 
-
   },
   // HERE we render the scraped info -  then send it to main.js
 
   render: function () {
     return (
 
-      <div>
+      <div className = "container">
         {this.props.scrape.map(function (search, i) {
           var boundClick1 = this.handleClick1.bind(this, search);
           var boundClick2 = this.handleClick2.bind(this, search);
           return (
             <div>
+
               <p> ARTIST: {search.artist} - SONG: {search.title}</p>
               <button key={i} onClick={boundClick1}> save </button>
               <button key={"a" + i} onClick={boundClick2}> play </button>
@@ -56,6 +57,7 @@ var Scrape = React.createClass({
                 <span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
               </div>
               <p> _________________________________</p>
+
             </div>
 
           );

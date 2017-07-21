@@ -28,7 +28,9 @@
     "react": "^0.14.3",
     "react-dom": "^0.14.3",
     "react-router": "^2.4.1",
-    "request": "^2.81.0"
+    "request": "^2.81.0",
+ 
+    "spotify-web-api-node": "^2.4.0"
   },
   "devDependencies": {
     "babel-core": "^6.3.13",
