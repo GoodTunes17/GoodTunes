@@ -12,6 +12,7 @@ var Track = require("../models/Track.js");
 mongoose.Promise = Promise;
 // Requiring passport for user authentication
 var passport = require("passport");
+var keys = require("../keys");
 
 
 module.exports = function (app) {
@@ -99,7 +100,46 @@ module.exports = function (app) {
     });
 
 
+//get for the spotify API, need to connect to front end - grab song title from the button click in scrape.js
+// ajax it back to /spotify, use it in the url query as req.body
+app.get("/spotify", function (req, res){
 
+        function runQuery () {
+          console.log("in runQuery");
+
+            // your application requests authorization
+            var authOptions = {
+                url: 'https://accounts.spotify.com/api/token',
+                headers: {
+                    'Authorization': 'Basic ' + (Buffer.from(keys.client_id + ':' + keys.client_secret).toString('base64'))
+                },
+                form: {
+                    grant_type: 'client_credentials'
+                },
+                json: true
+            };
+
+            request.post(authOptions, function(error, response, body) {
+                if (!error && response.statusCode === 200) {
+
+                    // use the access token to access the Spotify Web API
+                    var token = body.access_token;
+                    var options = {
+                        url: 'https://api.spotify.com/v1/search?q=new%20york&type=track&year=2017&limit=1',
+                        headers: {
+                            'Authorization': 'Bearer ' + token
+                        },
+                        json: true
+                    };
+                    request.get(options, function(error, response, body) {
+                       res.send(body);
+                    });
+                }
+            });
+
+        }
+        runQuery();
+});
     // this grabs all the scrapes from the database --- 
 
     app.get("/api", function (req, res) {
