@@ -1,12 +1,14 @@
 // Include React
 var React = require("react");
 var axios = require('axios');
+// Including the Link component from React Router to navigate within our application without full page reloads
+var Link = require("react-router").Link;
 
 
 // Here we include all of the sub-components
-var Scrape = require("./children/Scrape");
-var Playlist = require("./children/Playlist");
-// var History = require("./children/Extra");
+// var Scrape = require("./children/Scrape");
+// var Playlist = require("./children/Playlist");
+
 
 // Helper for making AJAX requests to our API
 var helpers = require("./utils/helpers");
@@ -18,7 +20,7 @@ var Main = React.createClass({
 
   getInitialState: function () {
     return {
-      scrapedArticles: [], playlist: []
+      scrapedArticles: [], playlist: [],  
     };
   },
 
@@ -28,7 +30,6 @@ var Main = React.createClass({
 
   componentDidMount: function () {
 
-
     // this gets the scrapes from the database
 
     helpers.getArticle().then(function (response) {
@@ -37,19 +38,17 @@ var Main = React.createClass({
 
       //if nothing is in the database, then scrape -- 
 
-      if ((response.data).length < 1) {
-        helpers.scrape().then(function (response) {
-          console.log("the scrapes: ", response.data);
-          this.setState({ scrapedArticles: response.data }.bind(this));
-        }.bind(this));
+      if (response.data !== this.state.scrapedArticles) {
+        this.setState({ scrapedArticles: response.data });
+
       }
 
-      // update "scrapedArticles" variable with scrape data
-      this.setState({ scrapedArticles: response.data });
-      //
-      this.getSavedArticles();
-    }.bind(this));
+      this.getSavedArticles()
+
+    }.bind(this))
+
   },
+
 
   // this will run through the scrapedArticles, 
   // find those that are "saved" and put them in the 
@@ -62,9 +61,10 @@ var Main = React.createClass({
         console.log(this.state.scrapedArticles[i].saved)
 
         prePlaylist.push(this.state.scrapedArticles[i])
-        this.setState({ playlist: prePlaylist })
+
       }
     }
+    this.setState({ playlist: prePlaylist })
     console.log(this.state.playlist);
   },
 
@@ -72,7 +72,9 @@ var Main = React.createClass({
 
   savedArticles: function (result) {
     console.log("This will need to be saved: " + result.artist + "whose id is: " + result._id)
-    helpers.postArticle(result._id);
+    helpers.postArticle(result._id).then(() => {
+      this.getSavedArticles()
+    })
   },
 
   // this will change the "saved" database property to false
@@ -81,8 +83,16 @@ var Main = React.createClass({
     console.log("delete!");
     console.log("This will need to be un-saved: " + result.artist + "whose id is: " + result._id)
     helpers.deleteArticle(result._id);
+    this.getSavedArticles();
+
     // shouldn't this refresh the saved articles? 
 
+  },
+
+  playSong: function (result) {
+ //helpers.playSong(result); // send this to spotify api... 
+ console.log (result.title + "in main");
+ helpers.playSong(result);
   },
 
   componentDidUpdate: function () {
@@ -101,10 +111,8 @@ var Main = React.createClass({
 
   render: function () {
 
-    const style = { width: '70%' };
-    const width = { width: '15%' };
-    const body = { 'background-color': 'yellow', border: '1px solid black', float: 'right' }
 
+    var children = React.Children.map(this.props.children, function (child) { return React.cloneElement(child, { scrapedArticles: this.state.scrapedArticles, savedArticles: this.savedArticles, playSong: this.playSong, deletedArticle: this.deletedArticle, playlist: this.state.playlist }) }.bind(this))
     return (
 
       <div>
@@ -113,16 +121,11 @@ var Main = React.createClass({
         {/* NAV BAR */}
 
         <nav>
-             <div className="nav-wrapper">
-             <a href="#" class="brand-logo"><h2>Good Tunes</h2></a>
-              <ul className="left" >
-              <li className="active"> <a href="#">Home</a></li>
-              <li><a href="#">By Genre</a></li>
-              <li><a href="#">By Critic</a></li>
-              <li><a href="#">By Rating</a></li>
-              <li><a href="#">Saved Tracks</a></li>
-              <li><a href="#">Logout</a></li>
-            </ul>
+          <div>
+            <h2>Good Tunes</h2>
+            <Link to="/Scrape"><button className="btn btn-primary btn-lg">Show Scrape</button></Link>
+            <Link to="/Playlist"><button className="btn btn-danger btn-lg">Show Playlist</button></Link>
+
           </div>
         </nav>
         <div>
@@ -132,24 +135,19 @@ var Main = React.createClass({
           {/* scrapedArticles contain scraped articles / savedArticles contain articles that the user wants saved for his playlist */}
 
           <div className="panel panel-default">
-             <div className="panel-heading">
-               <h3 className="panel-title text-center">Scraped Playlist</h3>
-             </div>
+            <div className="panel-heading">
+              <h3 className="panel-title text-center">Scraped Playlist</h3>
+            </div>
             <div className="panel-body text-center">
 
-              <Scrape scrape={this.state.scrapedArticles} savedArticles={this.savedArticles} />
+              {/* <Scrape scrape={this.state.scrapedArticles} savedArticles={this.savedArticles} />*/}
 
               {/* YOU CAN INSERT THE NEXT CHILD HERE, POPULATING WITH THE API CALLS? */}
-              <div className="panel panel-default">
-                <div className="panel-heading">
-                  <h3 className="panel-title text-center">Saved Playlist</h3>
-                </div>
-                <div className="panel-body text-center">
-
-                  <Playlist playlist={this.state.playlist} deletedArticle={this.deletedArticle} />
-                </div>
-              </div>
-
+              {children}
+              {/*{React.cloneElement(this.props.children, {scrape: this.state.scrape})}*/}
+              {/*
+   
+  */}
             </div>
           </div>
         </div>

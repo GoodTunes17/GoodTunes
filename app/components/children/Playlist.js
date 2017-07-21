@@ -18,7 +18,7 @@ var Playlist = React.createClass({
 
   handleClick2: function (result, e) {
     console.log("play clicked for: " + result.title)
-
+this.props.playSong(result);
   },
 
   // this will delete song from saved playlist

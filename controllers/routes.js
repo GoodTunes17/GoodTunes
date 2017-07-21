@@ -12,7 +12,7 @@ var Track = require("../models/Track.js");
 mongoose.Promise = Promise;
 // Requiring passport for user authentication
 var passport = require("passport");
-// var keys = require("../keys");
+var keys = require("../keys");
 
 
 module.exports = function (app) {
@@ -96,7 +96,9 @@ module.exports = function (app) {
         // res.redirect("/");
         res.json(data);
     });
-
+app.get("/spotify2/:id", function(req, res) {
+    console.log("name of song in routes: " + req.params.id)
+});
 
 //get for the spotify API, need to connect to front end - grab song title from the button click in scrape.js
 // ajax it back to /spotify, use it in the url query as req.body

@@ -2,7 +2,11 @@
 
 //var request = require("request");
 var axios = require("axios");
+
   // var SpotifyWebApi = require('spotify-web-api-node');
+
+//   var SpotifyWebApi = require('spotify-web-api-node');
+
 // Helper functions 
 var helpers = {
 
@@ -12,7 +16,10 @@ var helpers = {
         return axios.get("/scrape");
     },
 
-
+    playSong: function(result) {
+        console.log("helpers " + result.title)
+        return axios.get("/spotify2/"+result.title)
+    },
     // this is getting the initial scrapes from the database
 
     getArticle: function() {
