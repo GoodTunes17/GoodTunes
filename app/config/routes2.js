@@ -32,8 +32,8 @@ module.exports = (
     <Route path="/" component={Main}>
 
       {/* If user selects Info or Chat show the appropriate component */}
-      <Route path="scrape" component={Scrape} />
-      <Route path="playlist" component={Playlist} />
+      <Route path="Scrape" component={Scrape} />
+      <Route path="Playlist" component={Playlist} />
 
       {/* If user selects any other path... we get the Info Route */}
       <IndexRoute component={Scrape} />

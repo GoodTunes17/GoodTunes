@@ -48,7 +48,7 @@ app.use(express.static("public"));
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/tunes");
 
 var db = mongoose.connection;
-require ("./config/passport.js");
+require ("./controllers/config/passport.js");
 
 // Show any mongoose errors
 db.on('error', console.error.bind(console, 'connection error:'));
