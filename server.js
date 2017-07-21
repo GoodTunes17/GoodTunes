@@ -15,6 +15,7 @@ mongoose.Promise = Promise;
 var passport = require("passport");
 var session = require("express-session");
 var flash = require("connect-flash");
+var morgan = require("morgan");
 
 var PORT = process.env.PORT || 3000;
 // ========SERVER AND DB SETUP============================
