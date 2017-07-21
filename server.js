@@ -45,7 +45,7 @@ app.use(function(req, res, next) {
 app.use(express.static("public"));
 
 // Database configuration for heroku deploy or local
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/pitchfork");
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/tunes");
 
 var db = mongoose.connection;
 require ("./config/passport.js");

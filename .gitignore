@@ -1,2 +1,4 @@
 node_modules
-bundle.js
+public/bundle.js
+keys.js
+.ds_store
