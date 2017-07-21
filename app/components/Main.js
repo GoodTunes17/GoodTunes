@@ -1,7 +1,8 @@
 // Include React
 var React = require("react");
 var axios = require('axios');
-
+// Including the Link component from React Router to navigate within our application without full page reloads
+var Link = require("react-router").Link;
 
 // Here we include all of the sub-components
 var Scrape = require("./children/Scrape");
@@ -116,11 +117,11 @@ var Main = React.createClass({
           <div>
             <a href="#" class="brand-logo"><h2>Good Tunes</h2></a>
             <ul className="nav nav-tabs" >
-              <li className="active"> <a href="#">Home</a></li>
+              <Link to="/scrape"><li className="active"> <a href="#">Home</a></li></Link>
               <li><a href="#">By Genre</a></li>
               <li><a href="#">By Critic</a></li>
               <li><a href="#">By Rating</a></li>
-              <li><a href="#">Saved Tracks</a></li>
+              <Link to="/playlist"><li><a href="#">Saved Tracks</a></li></Link>
               <li><a href="#">Logout</a></li>
             </ul>
           </div>
@@ -137,10 +138,12 @@ var Main = React.createClass({
             </div>
             <div className="panel-body text-center">
 
-              <Scrape scrape={this.state.scrapedArticles} savedArticles={this.savedArticles} />
+              {/* <Scrape scrape={this.state.scrapedArticles} savedArticles={this.savedArticles} />*/}
 
               {/* YOU CAN INSERT THE NEXT CHILD HERE, POPULATING WITH THE API CALLS? */}
-              <div className="panel panel-default">
+              {this.props.children}
+              {/*
+     <div className="panel panel-default">
                 <div className="panel-heading">
                   <h3 className="panel-title text-center">Saved Playlist</h3>
                 </div>
@@ -149,7 +152,7 @@ var Main = React.createClass({
                   <Playlist playlist={this.state.playlist} deletedArticle={this.deletedArticle} />
                 </div>
               </div>
-
+  */}
             </div>
           </div>
         </div>

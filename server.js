@@ -61,6 +61,7 @@ db.once("open", function() {
 // ============ROUTES===============================================
 
 require("./controllers/routes.js")(app);
+// require("./app/config/routes2.js")(app);
 
 // ============= Listen on PORT===========================
 app.listen(PORT, function() {
