@@ -113,9 +113,9 @@ var Main = React.createClass({
         {/* NAV BAR */}
 
         <nav>
-          <div>
-            <a href="#" class="brand-logo"><h2>Good Tunes</h2></a>
-            <ul className="nav nav-tabs" >
+             <div className="nav-wrapper">
+             <a href="#" class="brand-logo"><h2>Good Tunes</h2></a>
+              <ul className="left" >
               <li className="active"> <a href="#">Home</a></li>
               <li><a href="#">By Genre</a></li>
               <li><a href="#">By Critic</a></li>
@@ -132,9 +132,9 @@ var Main = React.createClass({
           {/* scrapedArticles contain scraped articles / savedArticles contain articles that the user wants saved for his playlist */}
 
           <div className="panel panel-default">
-            <div className="panel-heading">
-              <h3 className="panel-title text-center">Scraped Playlist</h3>
-            </div>
+             <div className="panel-heading">
+               <h3 className="panel-title text-center">Scraped Playlist</h3>
+             </div>
             <div className="panel-body text-center">
 
               <Scrape scrape={this.state.scrapedArticles} savedArticles={this.savedArticles} />

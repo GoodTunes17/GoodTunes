@@ -99,7 +99,8 @@ module.exports = function (app) {
     });
 
 
-//get for the spotify API, need to connect to front end!
+//get for the spotify API, need to connect to front end - grab song title from the button click in scrape.js
+// ajax it back to /spotify, use it in the url query as req.body
 app.get("/spotify", function (req, res){
 
         function runQuery () {
