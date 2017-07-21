@@ -1,4 +1,3 @@
 node_modules
 public/bundle.js
-keys.js
-.ds_store
+.DS_Store
