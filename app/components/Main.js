@@ -20,7 +20,7 @@ var Main = React.createClass({
 
   getInitialState: function () {
     return {
-      scrapedArticles: [], playlist: []
+      scrapedArticles: [], playlist: [],  
     };
   },
 
@@ -89,6 +89,12 @@ var Main = React.createClass({
 
   },
 
+  playSong: function (result) {
+ //helpers.playSong(result); // send this to spotify api... 
+ console.log (result.title + "in main");
+ helpers.playSong(result);
+  },
+
   componentDidUpdate: function () {
 
     // What happens if something updates? 
@@ -106,7 +112,7 @@ var Main = React.createClass({
   render: function () {
 
 
-    var children = React.Children.map(this.props.children, function (child) { return React.cloneElement(child, { scrapedArticles: this.state.scrapedArticles, savedArticles: this.savedArticles, deletedArticle: this.deletedArticle, playlist: this.state.playlist }) }.bind(this))
+    var children = React.Children.map(this.props.children, function (child) { return React.cloneElement(child, { scrapedArticles: this.state.scrapedArticles, savedArticles: this.savedArticles, playSong: this.playSong, deletedArticle: this.deletedArticle, playlist: this.state.playlist }) }.bind(this))
     return (
 
       <div>
@@ -140,15 +146,7 @@ var Main = React.createClass({
               {children}
               {/*{React.cloneElement(this.props.children, {scrape: this.state.scrape})}*/}
               {/*
-     <div className="panel panel-default">
-                <div className="panel-heading">
-                  <h3 className="panel-title text-center">Saved Playlist</h3>
-                </div>
-                <div className="panel-body text-center">
-
-                  <Playlist playlist={this.state.playlist} deletedArticle={this.deletedArticle} />
-                </div>
-              </div>
+   
   */}
             </div>
           </div>
