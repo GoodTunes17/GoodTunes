@@ -33,7 +33,7 @@ this.props.playSong(result);
   //  var articles = this.props.results.map(function (article, index) {
 
   render: function () {
-
+const body={"background-color": "#B1D2D2"}
     return (
 
       <div>
@@ -43,7 +43,7 @@ this.props.playSong(result);
           var boundClick3 = this.handleClick3.bind(this, search);
           var boundClick2 = this.handleClick2.bind(this, search);
           return (
-            <div>
+            <div style={body}>
               <p> ARTIST: {search.artist} - SONG: {search.title}</p>
               <button key={"b" + i} onClick={boundClick3}> delete </button>
               <button key={"a" + i} onClick={boundClick2}> play </button>
