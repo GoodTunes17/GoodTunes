@@ -26,7 +26,7 @@ passport.use('local-signup', new LocalStrategy(
           return done(err);
         }
         else if (user) {
-          return done(null, false, req.flash('signupMessage', 'Email is already in use.'));
+          return done(null, false, req.flash('signupMessage', 'Email address is already in use.'));
         }
         else {
           var newUser = new User();
@@ -57,7 +57,7 @@ passport.use('local-login', new LocalStrategy(
         return done(err);
       }
       else if (!user) {
-        return done(null, false, req.flash('loginMessage', 'No user found.'));
+        return done(null, false, req.flash('loginMessage', 'User not found.'));
       }
       else if (!user.validPassword(password)) {
         return done(null, false, req.flash('loginMessage', 'Incorrect password.'));
