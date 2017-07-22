@@ -55,6 +55,8 @@ var Scrape = React.createClass({
               <div class="rating"> Rate:
                 <span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
               </div>
+              <iframe src="https://open.spotify.com/embed?uri=spotify:track:71T6ks7uNqlkSAHM2CDWnj"
+                 frameborder="0" allowtransparency="true"></iframe>
               <p> _________________________________</p>
             </div>
 
