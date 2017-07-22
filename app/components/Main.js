@@ -111,20 +111,23 @@ var Main = React.createClass({
 
   render: function () {
 
-
+const nav= {"text-align": "center"};
+const body={"background-color": "#669999"};
+ 
+ 
     var children = React.Children.map(this.props.children, function (child) { return React.cloneElement(child, { scrapedArticles: this.state.scrapedArticles, savedArticles: this.savedArticles, playSong: this.playSong, deletedArticle: this.deletedArticle, playlist: this.state.playlist }) }.bind(this))
     return (
 
-      <div>
+      <div style={body}>
 
 
         {/* NAV BAR */}
 
         <nav>
-          <div>
+          <div style={nav}>
             <h2>Good Tunes</h2>
-            <Link to="/Scrape"><button className="btn btn-primary btn-lg">Show Scrape</button></Link>
-            <Link to="/Playlist"><button className="btn btn-danger btn-lg">Show Playlist</button></Link>
+            <Link to="/Scrape"><button className="btn btn-elegant">Show Scrape</button></Link>
+            <Link to="/Playlist"><button className="btn btn-elegant">Show Playlist</button></Link>
 
           </div>
         </nav>
