@@ -74,9 +74,10 @@ module.exports = function(app) {
             //entry is an array of result objects? 
             var entry = [];
             $('ul.artist-list').each(function(i, element) {
-                console.log("scraping")
+                console.log("scraping");
                 result.artist = $(element).children().text();
                 result.title = $(element).siblings().text();
+                result.critic = "Pitchfork";
                 //use Tracks model to create new entries
                 entry.push(new Track(result));
                 console.log(result);
@@ -103,6 +104,7 @@ module.exports = function(app) {
                 console.log("scraping");
                 result.artist = $(this).children(".artist").text();
                 result.title = $(this).find(".base-title").text();
+                result.critic = "Hype Machine";
                 //use Tracks model to create new entries
                 entry.push(new Track(result));
                 console.log(result);
@@ -121,14 +123,17 @@ module.exports = function(app) {
 
     });
 
-    app.get("/spotify2/:id", function(req, res) {
-        console.log("name of song in routes: " + req.params.id);
+    app.get("/spotify2/:title", function(req, res) {
+        console.log("name of song in routes: " + req.params.title);
     });
 
     //get for the spotify API, need to connect to front end - grab song title from the button click in scrape.js
     // ajax it back to /spotify, use it in the url query as req.body
-    app.get("/spotify", function(req, res) {
-
+    app.get("/spotify2/:title", function(req, res) {
+        var songName = req.params.title;
+   
+        var newSongName =  str.replace(/ /i, "%20");
+        console.log("name of song in routes: " + newSongName);
         function runQuery() {
             console.log("in runQuery");
 

@@ -52,7 +52,9 @@ const body={"background-color": "#B1D2D2"}
           return (
             <div className = "col-md-6"style={body}>
               <p> <strong> {search.artist}</strong></p>
-              <p>  {search.title}</p>
+              <p>  {search.title}
+               <small> from: {search.critic} </small>
+               </p>
               <button key={i} onClick={boundClick1}> save </button>
               <button key={"a" + i} onClick={boundClick2}> play </button>
               <div class="rating"> Rate:
