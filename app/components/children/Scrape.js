@@ -40,15 +40,17 @@ var Scrape = React.createClass({
   // HERE we render the scraped info -  then send it to main.js
 
   render: function () {
-    console.log("here")
+const body={"background-color": "#B1D2D2"}
+
+ 
       return (
 
-      <div>
+      <div style={body}>
         {this.props.scrapedArticles.map(function (search, i) {
           var boundClick1 = this.handleClick1.bind(this, search);
           var boundClick2 = this.handleClick2.bind(this, search);
           return (
-            <div className = "col-md-6">
+            <div className = "col-md-6"style={body}>
               <p> <strong> {search.artist}</strong></p>
               <p>  {search.title}</p>
               <button key={i} onClick={boundClick1}> save </button>

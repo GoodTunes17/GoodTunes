@@ -12,7 +12,7 @@ var Track = require("../models/Track.js");
 mongoose.Promise = Promise;
 // Requiring passport for user authentication
 var passport = require("passport");
-// var keys = require("../keys");
+var keys = require("../keys");
 
 
 module.exports = function(app) {
