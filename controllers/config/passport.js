@@ -26,7 +26,7 @@ passport.use('local-signup', new LocalStrategy(
           return done(err);
         }
         else if (user) {
-          return done(null, false, req.flash('signupMessage', 'Email address is already in use.'));
+          return done(null, false, req.flash('signupMessage', 'The email address is already in use.'));
         }
         else {
           var newUser = new User();
@@ -36,7 +36,7 @@ passport.use('local-signup', new LocalStrategy(
             if (err) {
               throw err;
             }
-            return done(null, newUser);
+            return done(null, newUser, req.flash('loginMessage', 'You have successfully signed up! Please enter your information again in order to log in.'));
           });
         }
       });
@@ -57,12 +57,12 @@ passport.use('local-login', new LocalStrategy(
         return done(err);
       }
       else if (!user) {
-        return done(null, false, req.flash('loginMessage', 'User not found.'));
+        return done(null, false, req.flash('loginMessage', 'User not found. Please enter a valid email address.'));
       }
       else if (!user.validPassword(password)) {
-        return done(null, false, req.flash('loginMessage', 'Incorrect password.'));
+        return done(null, false, req.flash('loginMessage', 'Incorrect password. Please try again.'));
       }
-      return done(null, user);
+      return done(null, user, req.flash('userMessage', 'Welcome, ' + user.email + "!"));
     });
   }
 ));

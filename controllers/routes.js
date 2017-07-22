@@ -17,52 +17,57 @@ var keys = require("../keys");
 
 module.exports = function(app) {
 
-    // // Main "/" Route. This will redirect the user to our rendered React application
-    // app.get("/", function (req, res) {
+    // Main "/" Route. This will redirect the user to our rendered React application
+    // app.get("/", function(req, res) {
     //     res.sendFile(path.join(__dirname, "../public/", "index.html"));
     // });
 
     // Route to be used for viewing a specific user's homepage after logging in
     app.get('/', isLoggedIn, function(req, res) {
-        res.sendFile(path.join(__dirname, "../public/", "index.html"), {
+        res.render('index.ejs', {
+            message: req.flash('userMessage'),
             user: req.user
         });
+        console.log(user);
     });
 
-    // Checks to see if a user is logged in 
     function isLoggedIn(req, res, next) {
         if (req.isAuthenticated()) {
             return next();
         }
-        res.redirect('/login');
+        else {
+            res.redirect('/login');
+        }
     }
 
     app.get('/signup', function(req, res, next) {
-        res.render('signup.ejs', { message: req.flash('signupMessage') });
+        res.render('signup.ejs', {message: req.flash('signupMessage')});
     });
 
     // Creating a new user
     app.post('/signup', passport.authenticate('local-signup', {
-        successRedirect: '/',
+        successRedirect: '/login',
         failureRedirect: '/signup',
-        failureFlash: true
+        failureFlash: true,
+        successFlash: true
     }));
 
     app.get('/login', function(req, res) {
-        res.render('login.ejs', { message: req.flash('loginMessage') });
+        res.render('login.ejs', {message: req.flash('loginMessage')});
     });
 
     // User logging in
     app.post('/login', passport.authenticate('local-login', {
         successRedirect: '/',
         failureRedirect: '/login',
-        failureFlash: true
+        failureFlash: true,
+        successFlash: true
     }));
 
     // User logout
     app.get('/logout', function(req, res) {
         req.logout();
-        res.redirect('/');
+        res.redirect('/login');
     });
 
     app.get("/scrape", function(req, res) {
@@ -124,10 +129,6 @@ module.exports = function(app) {
 
     });
 
-    // app.get("/spotify2/:title", function(req, res) {
-    //     console.log("name of song in routes: " + req.params.title);
-    // });
-
     //get for the spotify API, need to connect to front end - grab song title from the button click in scrape.js
     // ajax it back to /spotify, use it in the url query as req.body
     app.get("/spotify2/:title", function(req, res) {
@@ -158,7 +159,8 @@ module.exports = function(app) {
             request.post(authOptions, function(error, response, body) {
                 if (!error && response.statusCode === 200) {
 
-                    console.log(requestUrl);
+                    console.log("url --" +  requestUrl)
+
                     // use the access token to access the Spotify Web API
                     var token = body.access_token;
                     var options = {
@@ -173,6 +175,7 @@ module.exports = function(app) {
                         var id = body.tracks.items[0].id;
                         console.log(id); 
                          res.send(id);
+
                     });
                 }
             });

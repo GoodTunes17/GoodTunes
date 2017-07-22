@@ -17,6 +17,7 @@ var helpers = {
     },
 
     playSong: function(result) {
+
         console.log("helpers " + result.title);
         return axios.get("/spotify2/" + result.title)
            .then(function(response) {
