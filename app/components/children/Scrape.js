@@ -41,8 +41,8 @@ var Scrape = React.createClass({
 
   render: function () {
 const body={"background-color": "#B1D2D2"}
-
- 
+var url ="https://open.spotify.com/embed?uri=spotify:track:"+this.props.id;
+console.log(this.props.id)
       return (
 
       <div style={body}>
@@ -58,7 +58,7 @@ const body={"background-color": "#B1D2D2"}
               <div class="rating"> Rate:
                 <span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
               </div>
-              <iframe src="https://open.spotify.com/embed?uri=spotify:track:71T6ks7uNqlkSAHM2CDWnj"
+              <iframe src={url}
                 width="300" height="80" frameborder="0" allowtransparency="true"></iframe>
               <hr />
             </div>
