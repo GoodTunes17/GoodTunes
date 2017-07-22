@@ -48,18 +48,18 @@ var Scrape = React.createClass({
           var boundClick1 = this.handleClick1.bind(this, search);
           var boundClick2 = this.handleClick2.bind(this, search);
           return (
-            <div>
-              <p> ARTIST: {search.artist} - SONG: {search.title}</p>
+            <div className = "col-md-6">
+              <p> <strong> {search.artist}</strong></p>
+              <p>  {search.title}</p>
               <button key={i} onClick={boundClick1}> save </button>
               <button key={"a" + i} onClick={boundClick2}> play </button>
               <div class="rating"> Rate:
                 <span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
               </div>
               <iframe src="https://open.spotify.com/embed?uri=spotify:track:71T6ks7uNqlkSAHM2CDWnj"
-                 frameborder="0" allowtransparency="true"></iframe>
-              <p> _________________________________</p>
+                width="300" height="80" frameborder="0" allowtransparency="true"></iframe>
+              <hr />
             </div>
-
           );
         }.bind(this)
         )
