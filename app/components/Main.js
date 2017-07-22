@@ -20,7 +20,7 @@ var Main = React.createClass({
 
   getInitialState: function () {
     return {
-      scrapedArticles: [], playlist: [],  
+      scrapedArticles: [], playlist: [], id: ""
     };
   },
 
@@ -83,17 +83,22 @@ var Main = React.createClass({
     console.log("delete!");
     console.log("This will need to be un-saved: " + result.artist + "whose id is: " + result._id)
     helpers.deleteArticle(result._id);
-    this.getSavedArticles();
-
+    this.getSavedArticles();                
     // shouldn't this refresh the saved articles? 
-
   },
 
-  playSong: function (result) {
- //helpers.playSong(result); // send this to spotify api... 
- console.log (result.title + "in main");
- helpers.playSong(result);
-  },
+    playSong: function(result) {
+        console.log("helpers " + result.title)
+        // var self = this;
+        return axios.get("/spotify2/"+result.title)
+        .then(function(response){
+            var id=response.data;
+    console.log("here - ",id); // ex.: { user: 'Your User'}
+    this.setState({ id: id }) 
+ 
+  }.bind(this)) 
+     console.log("idhere", this.state.id)
+    },
 
   componentDidUpdate: function () {
 
@@ -111,11 +116,11 @@ var Main = React.createClass({
 
   render: function () {
 
-const nav= {"text-align": "center"};
-const body={"background-color": "#669999"};
- 
- 
-    var children = React.Children.map(this.props.children, function (child) { return React.cloneElement(child, { scrapedArticles: this.state.scrapedArticles, savedArticles: this.savedArticles, playSong: this.playSong, deletedArticle: this.deletedArticle, playlist: this.state.playlist }) }.bind(this))
+    const nav = { "text-align": "center" };
+    const body = { "background-color": "#669999" };
+
+
+    var children = React.Children.map(this.props.children, function (child) { return React.cloneElement(child, { scrapedArticles: this.state.scrapedArticles, savedArticles: this.savedArticles, playSong: this.playSong, deletedArticle: this.deletedArticle, id: this.state.id, playlist: this.state.playlist }) }.bind(this))
     return (
 
       <div style={body}>
@@ -147,6 +152,7 @@ const body={"background-color": "#669999"};
 
               {/* YOU CAN INSERT THE NEXT CHILD HERE, POPULATING WITH THE API CALLS? */}
               {children}
+           
               {/*{React.cloneElement(this.props.children, {scrape: this.state.scrape})}*/}
               {/*
    
