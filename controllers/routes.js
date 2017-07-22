@@ -18,52 +18,57 @@ var keys = require("../keys");
 module.exports = function(app) {
 
     // Main "/" Route. This will redirect the user to our rendered React application
-    app.get("/", function (req, res) {
-        res.sendFile(path.join(__dirname, "../public/", "index.html"));
-    });
-
-    // Route to be used for viewing a specific user's homepage after logging in
-    // app.get('/', isLoggedIn, function(req, res) {
-    //     res.sendFile(path.join(__dirname, "../public/", "index.html"), {
-    //         user: req.user
-    //     });
+    // app.get("/", function(req, res) {
+    //     res.sendFile(path.join(__dirname, "../public/", "index.html"));
     // });
 
-    // Checks to see if a user is logged in 
-    // function isLoggedIn(req, res, next) {
-    //     if (req.isAuthenticated()) {
-    //         return next();
-    //     }
-    //     res.redirect('/login');
-    // }
+    // Route to be used for viewing a specific user's homepage after logging in
+    app.get('/', isLoggedIn, function(req, res) {
+        res.render('index.ejs', {
+            message: req.flash('userMessage'),
+            user: req.user
+        });
+        console.log(user);
+    });
+
+    function isLoggedIn(req, res, next) {
+        if (req.isAuthenticated()) {
+            return next();
+        }
+        else {
+            res.redirect('/login');
+        }
+    }
 
     app.get('/signup', function(req, res, next) {
-        res.render('signup.ejs', { message: req.flash('signupMessage') });
+        res.render('signup.ejs', {message: req.flash('signupMessage')});
     });
 
     // Creating a new user
     app.post('/signup', passport.authenticate('local-signup', {
-        successRedirect: '/',
+        successRedirect: '/login',
         failureRedirect: '/signup',
-        failureFlash: true
+        failureFlash: true,
+        successFlash: true
     }));
 
     app.get('/login', function(req, res) {
-        res.render('login.ejs', { message: req.flash('loginMessage') });
+        res.render('login.ejs', {message: req.flash('loginMessage')});
     });
 
     // User logging in
     app.post('/login', passport.authenticate('local-login', {
         successRedirect: '/',
         failureRedirect: '/login',
-        failureFlash: true
+        failureFlash: true,
+        successFlash: true
     }));
 
-    // // User logout
-    // app.get('/logout', function(req, res) {
-    //     req.logout();
-    //     res.redirect('/login');
-    // });
+    // User logout
+    app.get('/logout', function(req, res) {
+        req.logout();
+        res.redirect('/login');
+    });
 
     app.get("/scrape", function(req, res) {
         // First, we grab the body of the html with request
