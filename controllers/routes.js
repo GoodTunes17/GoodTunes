@@ -121,13 +121,14 @@ module.exports = function(app) {
 
     });
 
-    app.get("/spotify2/:id", function(req, res) {
-        console.log("name of song in routes: " + req.params.id);
-    });
+ 
 
     //get for the spotify API, need to connect to front end - grab song title from the button click in scrape.js
     // ajax it back to /spotify, use it in the url query as req.body
-    app.get("/spotify", function(req, res) {
+    app.get("/spotify2/:title", function(req, res) {
+        var songName=req.params.title;
+        var newSongName =  songName.replace(/ /i, "%20");
+        console.log("name of song" + newSongName)
 
         function runQuery() {
             console.log("in runQuery");
@@ -146,11 +147,12 @@ module.exports = function(app) {
 
             request.post(authOptions, function(error, response, body) {
                 if (!error && response.statusCode === 200) {
-
+                    var requestUrl="https://api.spotify.com/v1/search?q="+newSongName+"&type=track&year=2017&limit=1"
+                    console.log("url --" +  requestUrl)
                     // use the access token to access the Spotify Web API
                     var token = body.access_token;
                     var options = {
-                        url: 'https://api.spotify.com/v1/search?q=new%20york&type=track&year=2017&limit=1',
+                        url: requestUrl,
                         headers: {
                             'Authorization': 'Bearer ' + token
                         },
