@@ -15,15 +15,15 @@ var passport = require("passport");
 var keys = require("../keys");
 
 
-module.exports = function (app) {
+module.exports = function(app) {
 
     // Main "/" Route. This will redirect the user to our rendered React application
-    app.get("/", function (req, res) {
+    app.get("/", function(req, res) {
         res.sendFile(path.join(__dirname, "../public/", "index.html"));
     });
-    
-    app.get('/signup', function (req, res, next) {
-        res.render('signup.ejs', {message: req.flash('signupMessage')});
+
+    app.get('/signup', function(req, res, next) {
+        res.render('signup.ejs', { message: req.flash('signupMessage') });
     });
 
     // Creating a new user
@@ -33,8 +33,8 @@ module.exports = function (app) {
         failureFlash: true
     }));
 
-    app.get('/login', function (req, res) {
-        res.render('login.ejs', {message: req.flash('loginMessage')});
+    app.get('/login', function(req, res) {
+        res.render('login.ejs', { message: req.flash('loginMessage') });
     });
 
     // User logging in
@@ -64,16 +64,16 @@ module.exports = function (app) {
     //     res.redirect('/');
     // }
 
-    app.get("/scrape", function (req, res) {
+    app.get("/scrape", function(req, res) {
         // First, we grab the body of the html with request
-        request("http://www.pitchfork.com/reviews/best/tracks/", function (error, response, html) {
+        request("http://www.pitchfork.com/reviews/best/tracks/", function(error, response, html) {
             // Then, we load that into cheerio and save it to $ for a shorthand selector
             var $ = cheerio.load(html);
             // Save an empty result object
             var result = {};
             //entry is an array of result objects? 
             var entry = [];
-            $('ul.artist-list').each(function (i, element) {
+            $('ul.artist-list').each(function(i, element) {
                 console.log("scraping")
                 result.artist = $(element).children().text();
                 result.title = $(element).siblings().text();
@@ -83,29 +83,54 @@ module.exports = function (app) {
             });
             // this saves the array of pushed objects from website
             for (var i = 0; i < entry.length; i++) {
-                entry[i].save(function (err, data) {
+                entry[i].save(function(err, data) {
                     if (err) {
                         console.log(err);
-                    }
-                    else {
+                    } else {
                         console.log(data);
                     }
                 });
             }
         });
-        // res.redirect("/");
-        res.json(data);
+        request("http://www.hypem.com/stack/", function(error, response, html) {
+            // Then, we load that into cheerio and save it to $ for a shorthand selector
+            var $ = cheerio.load(html);
+            // Save an empty result object
+            var result = {};
+            //entry is an array of result objects? 
+            var entry = [];
+            $(".section-player h3").each(function(i, element) {
+                console.log("scraping");
+                result.artist = $(this).children(".artist").text();
+                result.title = $(this).find(".base-title").text();
+                //use Tracks model to create new entries
+                entry.push(new Track(result));
+                console.log(result);
+            });
+            // this saves the array of pushed objects from website
+            for (var i = 0; i < entry.length; i++) {
+                entry[i].save(function(err, data) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        console.log(data);
+                    }
+                });
+            }
+        });
+
     });
-app.get("/spotify2/:id", function(req, res) {
-    console.log("name of song in routes: " + req.params.id)
-});
 
-//get for the spotify API, need to connect to front end - grab song title from the button click in scrape.js
-// ajax it back to /spotify, use it in the url query as req.body
-app.get("/spotify", function (req, res){
+    app.get("/spotify2/:id", function(req, res) {
+        console.log("name of song in routes: " + req.params.id);
+    });
 
-        function runQuery () {
-          console.log("in runQuery");
+    //get for the spotify API, need to connect to front end - grab song title from the button click in scrape.js
+    // ajax it back to /spotify, use it in the url query as req.body
+    app.get("/spotify", function(req, res) {
+
+        function runQuery() {
+            console.log("in runQuery");
 
             // your application requests authorization
             var authOptions = {
@@ -132,20 +157,20 @@ app.get("/spotify", function (req, res){
                         json: true
                     };
                     request.get(options, function(error, response, body) {
-                       res.send(body);
+                        res.send(body);
                     });
                 }
             });
 
         }
         runQuery();
-});
+    });
     // this grabs all the scrapes from the database --- 
 
-    app.get("/api", function (req, res) {
+    app.get("/api", function(req, res) {
         console.log("hello");
         // Find all results from the scrapedData collection in the db
-        Track.find({}, function (error, found) {
+        Track.find({}, function(error, found) {
             // Throw any errors to the console
             if (error) {
                 console.log(error);
@@ -155,8 +180,8 @@ app.get("/spotify", function (req, res){
         });
     });
 
-// app.post("/saved/:id"), function(req, res) {
-    app.post("/api/saved", function (req, res) {
+    // app.post("/saved/:id"), function(req, res) {
+    app.post("/api/saved", function(req, res) {
         console.log("this is the id to save: " + req.body);
         // Tracks.findOneAndUpdate(
         //     { "_id": req.params.id },
@@ -175,41 +200,35 @@ app.get("/spotify", function (req, res){
     });
     // this will change the "saved" database property to true
 
-    app.post("/saved", function (req, res) {
+    app.post("/saved", function(req, res) {
         console.log("this is the id to save: " + req.body.id);
-        Track.findOneAndUpdate(
-            { "_id": req.body.id },
-            { "saved": true }
-        )
-        .exec(function (err, doc) {
-            // logs any errors
-            if (err) {
-                console.log(err);
-            } else {
-                // or sends the document to the browser
-                console.log(doc);
-                res.send(doc);
-            }
-        });
+        Track.findOneAndUpdate({ "_id": req.body.id }, { "saved": true })
+            .exec(function(err, doc) {
+                // logs any errors
+                if (err) {
+                    console.log(err);
+                } else {
+                    // or sends the document to the browser
+                    console.log(doc);
+                    res.send(doc);
+                }
+            });
     });
 
     // this will change the "saved" database property to false
 
-    app.post("/delete", function (req, res) {
-        Track.findOneAndUpdate(
-            { "_id": req.body.id },
-            { "saved": false }
-        )
-        .exec(function (err, doc) {
-            // logs any errors
-            if (err) {
-                console.log(err);
-            } else {
-                // or sends the document to the browser
-                console.log(doc);
-                res.send(doc);
-            }
-        });
+    app.post("/delete", function(req, res) {
+        Track.findOneAndUpdate({ "_id": req.body.id }, { "saved": false })
+            .exec(function(err, doc) {
+                // logs any errors
+                if (err) {
+                    console.log(err);
+                } else {
+                    // or sends the document to the browser
+                    console.log(doc);
+                    res.send(doc);
+                }
+            });
     });
     //close the module.exports(app) function
 };
