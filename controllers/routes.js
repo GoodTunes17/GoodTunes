@@ -12,30 +12,30 @@ var Track = require("../models/Track.js");
 mongoose.Promise = Promise;
 // Requiring passport for user authentication
 var passport = require("passport");
-// var keys = require("../keys");
+var keys = require("../keys");
 
 
 module.exports = function(app) {
 
-    // // Main "/" Route. This will redirect the user to our rendered React application
-    // app.get("/", function (req, res) {
-    //     res.sendFile(path.join(__dirname, "../public/", "index.html"));
-    // });
-
-    // Route to be used for viewing a specific user's homepage after logging in
-    app.get('/', isLoggedIn, function(req, res) {
-        res.sendFile(path.join(__dirname, "../public/", "index.html"), {
-            user: req.user
-        });
+    // Main "/" Route. This will redirect the user to our rendered React application
+    app.get("/", function (req, res) {
+        res.sendFile(path.join(__dirname, "../public/", "index.html"));
     });
 
+    // Route to be used for viewing a specific user's homepage after logging in
+    // app.get('/', isLoggedIn, function(req, res) {
+    //     res.sendFile(path.join(__dirname, "../public/", "index.html"), {
+    //         user: req.user
+    //     });
+    // });
+
     // Checks to see if a user is logged in 
-    function isLoggedIn(req, res, next) {
-        if (req.isAuthenticated()) {
-            return next();
-        }
-        res.redirect('/login');
-    }
+    // function isLoggedIn(req, res, next) {
+    //     if (req.isAuthenticated()) {
+    //         return next();
+    //     }
+    //     res.redirect('/login');
+    // }
 
     app.get('/signup', function(req, res, next) {
         res.render('signup.ejs', { message: req.flash('signupMessage') });
@@ -59,11 +59,11 @@ module.exports = function(app) {
         failureFlash: true
     }));
 
-    // User logout
-    app.get('/logout', function(req, res) {
-        req.logout();
-        res.redirect('/');
-    });
+    // // User logout
+    // app.get('/logout', function(req, res) {
+    //     req.logout();
+    //     res.redirect('/login');
+    // });
 
     app.get("/scrape", function(req, res) {
         // First, we grab the body of the html with request
