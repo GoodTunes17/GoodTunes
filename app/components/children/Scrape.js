@@ -46,6 +46,8 @@ const body={"background-color": "#B1D2D2"}
       return (
 
       <div style={body}>
+      <iframe src="https://open.spotify.com/embed?uri=spotify:track:71T6ks7uNqlkSAHM2CDWnj"
+                width="300" height="80" frameborder="0" allowtransparency="true"></iframe>
         {this.props.scrapedArticles.map(function (search, i) {
           var boundClick1 = this.handleClick1.bind(this, search);
           var boundClick2 = this.handleClick2.bind(this, search);
@@ -60,8 +62,7 @@ const body={"background-color": "#B1D2D2"}
               <div class="rating"> Rate:
                 <span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
               </div>
-              <iframe src="https://open.spotify.com/embed?uri=spotify:track:71T6ks7uNqlkSAHM2CDWnj"
-                width="300" height="80" frameborder="0" allowtransparency="true"></iframe>
+              
               <hr />
             </div>
           );
