@@ -123,17 +123,22 @@ module.exports = function(app) {
 
     });
 
-    app.get("/spotify2/:title", function(req, res) {
-        console.log("name of song in routes: " + req.params.title);
-    });
+    // app.get("/spotify2/:title", function(req, res) {
+    //     console.log("name of song in routes: " + req.params.title);
+    // });
 
     //get for the spotify API, need to connect to front end - grab song title from the button click in scrape.js
     // ajax it back to /spotify, use it in the url query as req.body
     app.get("/spotify2/:title", function(req, res) {
         var songName = req.params.title;
-   
-        var newSongName =  str.replace(/ /i, "%20");
+        var space = / /gi;
+        var newSongName =  songName.replace(space, "%20");
+        newSongName = newSongName.substring(1, newSongName.length-1);
+
         console.log("name of song in routes: " + newSongName);
+
+        var requestUrl="https://api.spotify.com/v1/search?q="+newSongName+"&type=track&year=2017&limit=1";
+
         function runQuery() {
             console.log("in runQuery");
 
@@ -152,17 +157,21 @@ module.exports = function(app) {
             request.post(authOptions, function(error, response, body) {
                 if (!error && response.statusCode === 200) {
 
+                    console.log(requestUrl);
                     // use the access token to access the Spotify Web API
                     var token = body.access_token;
                     var options = {
-                        url: 'https://api.spotify.com/v1/search?q=new%20york&type=track&year=2017&limit=1',
+                        url: requestUrl,
                         headers: {
                             'Authorization': 'Bearer ' + token
                         },
                         json: true
                     };
                     request.get(options, function(error, response, body) {
-                        res.send(body);
+                      
+                        var id = body.tracks.items[0].id;
+                        console.log(id); 
+                         res.send(id);
                     });
                 }
             });
