@@ -35,7 +35,7 @@ var Scrape = React.createClass({
 
   handleClick2: function (result, e) {
     console.log("play clicked for: " + result.title)
-
+  this.props.playSong(result);
   },
   // HERE we render the scraped info -  then send it to main.js
 
