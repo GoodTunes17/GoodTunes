@@ -20,7 +20,9 @@ var Main = React.createClass({
 
   getInitialState: function () {
     return {
-      scrapedArticles: [], playlist: [], id: ""
+      scrapedArticles: [], 
+      playlist: [], 
+      id: ""
     };
   },
 
@@ -118,7 +120,6 @@ var Main = React.createClass({
 
     const nav = { "text-align": "center" };
     const body = { "background-color": "#669999" };
-
 
     var children = React.Children.map(this.props.children, function (child) { return React.cloneElement(child, { scrapedArticles: this.state.scrapedArticles, savedArticles: this.savedArticles, playSong: this.playSong, deletedArticle: this.deletedArticle, id: this.state.id, playlist: this.state.playlist }) }.bind(this))
     return (

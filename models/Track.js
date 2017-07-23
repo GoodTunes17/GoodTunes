@@ -3,7 +3,7 @@ var mongoose = require("mongoose");
 // Create Schema class
 var Schema = mongoose.Schema;
 
-// Create article schema
+// Create Track schema
 var TrackSchema = new Schema({
   artist: {
     type: String,
@@ -11,34 +11,29 @@ var TrackSchema = new Schema({
   },
  //title is required to be unique so we don't get the same tracks everytime we scrape
   title: {
-    type: String
- 
+    type: String,
+    unique: true
   },
- album: {
+  album: {
     type: String
- 
   },
   id: {
     type: String
   },
   genre: {
-    type: String
-  
+    type: String 
   },
   critic: {
-    type: String
-  
+    type: String  
   },
   reviewLink: {
     type: String
- 
   },
   image: {
     type: String,
   },
   source: {
-    type: String
-    
+    type: String   
   },
   saved: {
     type: Boolean,
@@ -51,7 +46,7 @@ var TrackSchema = new Schema({
   }
 });
 
-// Create the Article model with the ArticleSchema
+// Create the Track model with the TrackSchema
 var Track = mongoose.model("Track", TrackSchema);
 
 // Export the model

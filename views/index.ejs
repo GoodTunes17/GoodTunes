@@ -12,19 +12,19 @@
 
 <body>
 
-	<div class="container">
+  <div class="container">
 
-	  	<% if (message.length > 0) { %>
-	        <div class="alert alert-success"><%= message %></div>
-	    <% } %>
+    <% if (message.length > 0) { %>
+	  <div class="alert alert-success"><%= message %></div>
+	<% } %>
 	
-		<!-- This is where React will deploy the contents it generates -->
-		<div id="app"></div>
+    <!-- This is where React will deploy the contents it generates -->
+	<div id="app"></div>
 
-	</div>
+  </div>
 
-	<!-- All of our JS code will be transpiled into this bundle.js file -->
-	<script src="bundle.js"></script>
+  <!-- All of our JS code will be transpiled into this bundle.js file -->
+  <script src="bundle.js"></script>
 	
 </body>
 </html>
