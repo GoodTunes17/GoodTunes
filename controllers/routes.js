@@ -22,15 +22,24 @@ module.exports = function(app) {
     //     res.sendFile(path.join(__dirname, "../public/", "index.html"));
     // });
 
-    // Route to be used for viewing a specific user's homepage after logging in
+    // Route to be used for viewing the main page after logging in - currently goes to the 
+    // index page even if a user isn't logged in due to React Router rendering
     app.get('/', isLoggedIn, function(req, res) {
         res.render('index.ejs', {
             message: req.flash('userMessage'),
             user: req.user
         });
-        console.log(user);
     });
 
+    // Route to be used for viewing a specific user's homepage after logging in
+    app.get('/profile', isLoggedIn, function(req, res) {
+        res.render('profile.ejs', {
+            message: req.flash('userMessage'),
+            user: req.user
+        });
+    });
+
+    // Function for determining if user is logged in, gets passed into the route above
     function isLoggedIn(req, res, next) {
         if (req.isAuthenticated()) {
             return next();
@@ -58,7 +67,7 @@ module.exports = function(app) {
 
     // User logging in
     app.post('/login', passport.authenticate('local-login', {
-        successRedirect: '/',
+        successRedirect: '/profile',
         failureRedirect: '/login',
         failureFlash: true,
         successFlash: true
