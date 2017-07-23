@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>Good Tunes</title>
+  <meta charset="UTF-8">
+  <title>Good Tunes</title>
  
-	<!-- Here we include bootstrap. This will be made available to all of the generated HTML/JS that React generates-->
+  <!-- Here we include bootstrap. This will be made available to all of the generated HTML/JS that React generates-->
   <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.0/css/materialize.min.css">   -->
-<!-- Latest compiled and minified CSS -->
+  <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">  
 </head>
 
@@ -14,11 +14,13 @@
 
   <div class="container">
 
-    <% if (message.length > 0) { %>
-	  <div class="alert alert-success"><%= message %></div>
+	<% if (message.length > 0) { %>
+      <div class="alert alert-success"><%= message %></div>
 	<% } %>
-	
-    <!-- This is where React will deploy the contents it generates -->
+
+	<div id="user-display"><%= user.email %></div>
+
+	<!-- This is where React will deploy the contents it generates -->
 	<div id="app"></div>
 
   </div>
