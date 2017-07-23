@@ -125,6 +125,11 @@ var Main = React.createClass({
 
       <div style={body}>
 
+        {/* Display user message
+        <div className="alert alert-success">
+          {this.data.messages.map((message, index) => <Flash key={index} message={message} />)}
+        </div>
+         */}
 
         {/* NAV BAR */}
 
