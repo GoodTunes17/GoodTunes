@@ -1,0 +1,16 @@
+ 
+    
+body {
+    background-color: turquoise
+}
+
+#left-frame {
+    width: 25%;
+ 
+    float: left;
+}
+
+#right-frame {
+    float: right;
+    width: 72%;
+}
