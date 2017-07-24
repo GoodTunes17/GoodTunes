@@ -4,6 +4,7 @@ var axios = require('axios');
 // Including the Link component from React Router to navigate within our application without full page reloads
 var Link = require("react-router").Link;
 
+import styles from "./styles.css";
 
 // Here we include all of the sub-components
 // var Scrape = require("./children/Scrape");
@@ -20,8 +21,8 @@ var Main = React.createClass({
 
   getInitialState: function () {
     return {
-      scrapedArticles: [], 
-      playlist: [], 
+      scrapedArticles: [],
+      playlist: [],
       id: ""
     };
   },
@@ -31,9 +32,11 @@ var Main = React.createClass({
   // since savedArticles is a "state" variable, it will render in the first child, called "Scrape"
 
   componentDidMount: function () {
-
+    this.getAllArticles();
     // this gets the scrapes from the database
 
+  },
+  getAllArticles: function () {
     helpers.getArticle().then(function (response) {
 
       console.log("The scrapes: ", response.data);
@@ -45,7 +48,7 @@ var Main = React.createClass({
 
       }
 
-      this.getSavedArticles()
+      this.getPlaylist()
 
     }.bind(this))
 
@@ -56,7 +59,7 @@ var Main = React.createClass({
   // find those that are "saved" and put them in the 
   // "playlist" variable.. 
 
-  getSavedArticles: function () {
+  getPlaylist: function () {
     var prePlaylist = [];
     for (var i = 0; i < this.state.scrapedArticles.length; i++) {
       if (this.state.scrapedArticles[i].saved) {
@@ -75,7 +78,7 @@ var Main = React.createClass({
   savedArticles: function (result) {
     console.log("This will need to be saved: " + result.artist + "whose id is: " + result._id)
     helpers.postArticle(result._id).then(() => {
-      this.getSavedArticles()
+      this.getAllArticles()
     })
   },
 
@@ -85,22 +88,22 @@ var Main = React.createClass({
     console.log("delete!");
     console.log("This will need to be un-saved: " + result.artist + "whose id is: " + result._id)
     helpers.deleteArticle(result._id);
-    this.getSavedArticles();                
+    this.getAllArticles();
     // shouldn't this refresh the saved articles? 
   },
 
-    playSong: function(result) {
-        console.log("helpers " + result.title)
-        // var self = this;
-        return axios.get("/spotify2/"+result.title)
-        .then(function(response){
-            var id=response.data;
-    console.log("here - ",id); // ex.: { user: 'Your User'}
-    this.setState({ id: id }) 
- 
-  }.bind(this)) 
-     console.log("idhere", this.state.id)
-    },
+  playSong: function (result) {
+    console.log("helpers " + result.title)
+    // var self = this;
+    return axios.get("/spotify2/" + result.title)
+      .then(function (response) {
+        var id = response.data;
+        console.log("here - ", id); // ex.: { user: 'Your User'}
+        this.setState({ id: id })
+
+      }.bind(this))
+    console.log("idhere", this.state.id)
+  },
 
   componentDidUpdate: function () {
 
@@ -117,6 +120,8 @@ var Main = React.createClass({
   // Here we render the function
 
   render: function () {
+    var url = "https://open.spotify.com/embed?uri=spotify:track:" + this.state.id;
+
 
     const nav = { "text-align": "center" };
     const body = { "background-color": "#669999" };
@@ -143,30 +148,39 @@ var Main = React.createClass({
 
           </div>
         </nav>
-        <div>
+        <body>
+          <hr></hr>
+
+          <div id="left-frame">
+            <iframe src={url}
+              width="300" height="80" frameborder="0" allowtransparency="true"></iframe>
+
+          </div>
+          <div id="right-frame">
 
 
-          {/* SCRAPED SONGS -  */}
-          {/* scrapedArticles contain scraped articles / savedArticles contain articles that the user wants saved for his playlist */}
+            {/* SCRAPED SONGS -  */}
+            {/* scrapedArticles contain scraped articles / savedArticles contain articles that the user wants saved for his playlist */}
 
-          <div className="panel panel-default">
-            <div className="panel-heading">
-              <h3 className="panel-title text-center">Scraped Playlist</h3>
-            </div>
-            <div className="panel-body text-center">
+            <div className="panel panel-default">
+              <div className="panel-heading">
+                <h3 className="panel-title text-center"> </h3>
+              </div>
+              <div className="panel-body text-center">
 
-              {/* <Scrape scrape={this.state.scrapedArticles} savedArticles={this.savedArticles} />*/}
+                {/* <Scrape scrape={this.state.scrapedArticles} savedArticles={this.savedArticles} />*/}
 
-              {/* YOU CAN INSERT THE NEXT CHILD HERE, POPULATING WITH THE API CALLS? */}
-              {children}
-           
-              {/*{React.cloneElement(this.props.children, {scrape: this.state.scrape})}*/}
-              {/*
+                {/* YOU CAN INSERT THE NEXT CHILD HERE, POPULATING WITH THE API CALLS? */}
+                {children}
+
+                {/*{React.cloneElement(this.props.children, {scrape: this.state.scrape})}*/}
+                {/*
    
   */}
+              </div>
             </div>
           </div>
-        </div>
+        </body>
 
         <footer>
 
