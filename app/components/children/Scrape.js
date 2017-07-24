@@ -3,14 +3,15 @@ var React = require("react");
 // Including the Link component from React Router to navigate within our application without full page reloads
 var Link = require("react-router").Link;
 
-var helpers = require ("../utils/helpers");
+var helpers = require("../utils/helpers");
 
 // Creating the Form component
 var Scrape = React.createClass({
 
   // Here we set a generic state associated with the text being searched for
   getInitialState: function () {
-    return { result:[]
+    return {
+      result: []
 
     };
   },
@@ -35,22 +36,23 @@ var Scrape = React.createClass({
 
   handleClick2: function (result, e) {
     console.log("play clicked for: " + result.title)
-  this.props.playSong(result);
+    this.props.playSong(result);
   },
   // HERE we render the scraped info -  then send it to main.js
 
   render: function () {
-const body={"background-color": "#B1D2D2"}
-var url ="https://open.spotify.com/embed?uri=spotify:track:"+this.props.id;
-console.log(this.props.id)
-      return (
+    const body = { "background-color": "#B1D2D2" }
+    var url = "https://open.spotify.com/embed?uri=spotify:track:" + this.props.id;
+    console.log(this.props.id)
+    return (
 
       <div style={body}>
+        <h2>   Scraped Playlist </h2>
         {this.props.scrapedArticles.map(function (search, i) {
           var boundClick1 = this.handleClick1.bind(this, search);
           var boundClick2 = this.handleClick2.bind(this, search);
           return (
-            <div className = "col-md-6"style={body}>
+            <div className="col-md-6" style={body}>
               <p> <strong> {search.artist}</strong></p>
               <p>  {search.title}</p>
               <button key={i} onClick={boundClick1}> save </button>
@@ -58,15 +60,14 @@ console.log(this.props.id)
               <div class="rating"> Rate:
                 <span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
               </div>
-              <iframe src={url}
-                width="300" height="80" frameborder="0" allowtransparency="true"></iframe>
+
               <hr />
             </div>
           );
         }.bind(this)
         )
         }
-     
+
       </div>
     )
   }
