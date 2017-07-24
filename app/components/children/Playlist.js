@@ -18,7 +18,7 @@ var Playlist = React.createClass({
 
   handleClick2: function (result, e) {
     console.log("play clicked for: " + result.title)
-this.props.playSong(result);
+    this.props.playSong(result);
   },
 
   // this will delete song from saved playlist
@@ -33,11 +33,11 @@ this.props.playSong(result);
   //  var articles = this.props.results.map(function (article, index) {
 
   render: function () {
-const body={"background-color": "#B1D2D2"}
+    const body = { "background-color": "#B1D2D2" }
     return (
 
       <div>
-      
+        <h2>   Saved Playlist </h2>
 
         {this.props.playlist.map(function (search, i) {
           var boundClick3 = this.handleClick3.bind(this, search);
