@@ -136,6 +136,7 @@ var Main = React.createClass({
 
         <nav>
           <div style={nav}>
+            <h2>{this.props.user}</h2>
             <h2>Good Tunes</h2>
             <Link to="/Scrape"><button className="btn btn-elegant">Show Scrape</button></Link>
             <Link to="/Playlist"><button className="btn btn-elegant">Show Playlist</button></Link>

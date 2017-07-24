@@ -62,7 +62,10 @@ module.exports = function(app) {
     }));
 
     app.get('/login', function(req, res) {
-        res.render('login.ejs', {message: req.flash('loginMessage')});
+        res.render('login.ejs', {
+            message: req.flash('loginMessage'),
+            successMessage: req.flash('successMessage')
+        });
     });
 
     // User logging in

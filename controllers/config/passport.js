@@ -36,7 +36,7 @@ passport.use('local-signup', new LocalStrategy(
             if (err) {
               throw err;
             }
-            return done(null, newUser, req.flash('loginMessage', 'You have successfully signed up! Please enter your information again in order to log in.'));
+            return done(null, newUser, req.flash('successMessage', 'You have successfully signed up! Please enter your information again in order to log in.'));
           });
         }
       });
