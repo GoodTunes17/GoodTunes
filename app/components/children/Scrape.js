@@ -53,11 +53,11 @@ var Scrape = React.createClass({
           return (
 
             <div className="well">
-              <p className ="critic"> <small> Source: <br /> {search.critic} </small> </p>
+              <p className ="critic"> <small> Source: <br /> {search.source} </small> </p>
               <h4 className = "artist"> <strong> {search.artist}</strong></h4>           
               <p className="title">  {search.title} </p>
-              <button className="btn" id="save" key={i} onClick={boundClick1}> save </button>
-              <button className="btn"  id="play" key={"a" + i} onClick={boundClick2}> play </button>
+              <button className="btn save" key={i} onClick={boundClick1}> save </button>
+              <button className="btn play"  key={"a" + i} onClick={boundClick2}> play </button>
               <div className="rating"> Rate:
                 <span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
               </div>

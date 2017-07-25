@@ -1,11 +1,6 @@
 // Include the axios package for performing HTTP requests (promise based alternative to request)
 
-//var request = require("request");
 var axios = require("axios");
-
-// var SpotifyWebApi = require('spotify-web-api-node');
-
-//   var SpotifyWebApi = require('spotify-web-api-node');
 
 // Helper functions 
 var helpers = {
@@ -17,11 +12,12 @@ var helpers = {
     },
 
     playSong: function(result) {
-
         console.log("helpers " + result.title);
         return axios.get("/spotify2/" + result.title)
            .then(function(response) {
                var id = response.data;
+               var artist = response.artist;
+               console.log("in helpers" + artist);
                console.log("this is in helpers" + id);
            });
 
