@@ -95,6 +95,7 @@ module.exports = function(app) {
                 console.log("scraping")
                 result.artist = $(element).children().text();
                 result.title = $(element).siblings().text();
+                result.source = "Pitchfork";
                 //use Tracks model to create new entries
                 entry.push(new Track(result));
                 console.log(result);
@@ -121,6 +122,7 @@ module.exports = function(app) {
                 console.log("scraping");
                 result.artist = $(this).children(".artist").text();
                 result.title = $(this).find(".base-title").text();
+                result.source = "Hype Machine";
                 //use Tracks model to create new entries
                 entry.push(new Track(result));
                 console.log(result);
@@ -135,6 +137,67 @@ module.exports = function(app) {
                     }
                 });
             }
+        });
+        request("http://www.npr.org/series/122356178/songs-we-love/", function(error, response, html) {
+            var $ = cheerio.load(html);
+            var result = {};
+
+            $("h2.audio-module-title").each(function(i, element) {
+                var song = $(this).text().split(",")
+                result.artist = song[0];
+                result.title = song[1];
+                result.source = "NPR";
+                var entry = new Track(result);
+                entry.save(function(err, doc) {
+                  if (err) {
+                      console.log(err);
+                  }
+                    else {
+                      console.log(doc);
+                    }
+                });
+            });
+        });
+        request("http://www.spin.com/2016/08/favorite-songs-of-the-week-joyce-manor-isaiah-rashad/", function(error, response, html) {
+            var $ = cheerio.load(html);
+            var result = {};
+
+            $("strong").each(function(i, element) {
+                var song = $(this).text().split(",");
+                result.artist = song[0];
+                result.title = song[1];
+                result.source = "SPIN";
+                var entry = new Track(result);
+                entry.save(function(err, doc) {
+                  if (err) {
+                      console.log(err);
+                  }
+                    else {
+                      console.log(doc);
+                    }
+                });
+            });
+        });
+        request("https://www.indieshuffle.com/new-songs", function(error, response, html) {
+            var $ = cheerio.load(html);
+            var result = {};
+            
+            $("span.title-dash").each(function(i, element) {
+                var song = $(this).parent("h5").text();
+                song = song.split(" - ");
+                result.artist = song[0];
+                result.title = song[1];
+                result.source = "Indie Shuffle";
+                var entry = new Track(result);
+                entry.save(function(err, doc) {
+                  if (err) {
+                      console.log(err);
+                  }
+                    else {
+                      console.log(doc);
+                    }
+                });
+            });
         });
 
     });
