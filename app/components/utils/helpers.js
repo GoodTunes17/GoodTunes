@@ -25,6 +25,25 @@ var helpers = {
   
   });  
     },
+// the old rating system - 
+//    rating: function (result) {
+//     console.log("id - " + result[0])
+//       console.log("rating -- " +result[1])
+//     return axios.post("/rating/"+result[0], {
+//         name: result[1]
+//     })
+          
+//   },
+
+    rating: function (result) {
+    console.log("id - " + result[0])
+      console.log("rating -- " +result[1])
+    return axios.post("/rating/", {
+        id: result[0],
+        rating: result[1]
+    })
+          
+  },
     // this is getting the initial scrapes from the database
 
     getArticle: function() {
@@ -44,6 +63,8 @@ var helpers = {
         console.log("helper reached with " + result);
         return axios.post('/delete', { id: result });
     }
+
+
 };
 // We export the API helper
 module.exports = helpers;

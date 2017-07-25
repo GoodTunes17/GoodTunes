@@ -31,7 +31,11 @@ var Main = React.createClass({
   // this function populates the scrapedArticles variable with the scrapes in the database
   // since savedArticles is a "state" variable, it will render in the first child, called "Scrape"
 
+
   componentDidMount: function () {
+    helpers.scrape().then(function(response){
+      this.setState({ scrapedArticles: response.data })
+    })
     this.getAllArticles();
     // this gets the scrapes from the database
 
@@ -53,6 +57,7 @@ var Main = React.createClass({
     }.bind(this))
 
   },
+
 
 
   // this will run through the scrapedArticles, 
@@ -91,7 +96,10 @@ var Main = React.createClass({
     this.getAllArticles();
     // shouldn't this refresh the saved articles? 
   },
-
+  rating: function (result) {
+    console.log("ratings - " + result)
+    helpers.rating(result); 
+  },
   playSong: function (result) {
     console.log("helpers " + result.title)
     // var self = this;
@@ -104,6 +112,8 @@ var Main = React.createClass({
       }.bind(this))
     console.log("idhere", this.state.id)
   },
+
+
 
   componentDidUpdate: function () {
 
@@ -126,7 +136,7 @@ var Main = React.createClass({
     const nav = { "text-align": "center" };
     const body = { "background-color": "#669999" };
 
-    var children = React.Children.map(this.props.children, function (child) { return React.cloneElement(child, { scrapedArticles: this.state.scrapedArticles, savedArticles: this.savedArticles, playSong: this.playSong, deletedArticle: this.deletedArticle, id: this.state.id, playlist: this.state.playlist }) }.bind(this))
+    var children = React.Children.map(this.props.children, function (child) { return React.cloneElement(child, { scrapedArticles: this.state.scrapedArticles, savedArticles: this.savedArticles, playSong: this.playSong, deletedArticle: this.deletedArticle, id: this.state.id, playlist: this.state.playlist, rating: this.rating}) }.bind(this))
     return (
 
       <div style={body}>
@@ -144,7 +154,8 @@ var Main = React.createClass({
             <h2>Good Tunes</h2>
             <Link to="/Scrape"><button className="btn btn-elegant">Show Scrape</button></Link>
             <Link to="/Playlist"><button className="btn btn-elegant">Show Playlist</button></Link>
-
+    
+            <Link to="/Rating"><button className="btn btn-elegant">By Rating</button></Link>
           </div>
         </nav>
         <body>

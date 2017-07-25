@@ -253,5 +253,76 @@ module.exports = function(app) {
                 }
             });
     });
+
+    app.post("/rating", function(req, res) {
+                    console.log("route - " + req.body.id)
+                    console.log(" name - " + req.body.rating)
+        Track.findOneAndUpdate(
+            { "_id": req.body.id }, 
+            { "rating": req.body.rating })
+            .exec(function(err, doc) {
+                // logs any errors
+                if (err) {
+                    console.log(err);
+                } else {
+                    // or sends the document to the browser
+                    console.log(doc);
+                    res.send(doc);
+                }
+            });
+    });
+
+    // creates a new note or replaces an existing note
+app.post("/rating/:id", function(req, res) {
+    // creates a new note and passes the req.body to the entry
+    var newComment = new Note(req.body);
+    console.log("in routes - " +req.body.name);
+    // saves the new note the db
+    newComment.save(function(error, doc) {
+        console.log("doc.id -- " + doc.name )
+        // logs any errors
+        if (error) {
+            console.log(error);
+        } else {
+            // uses the article id to find and update it's note
+            Track.findOneAndUpdate({ "_id": req.params.id }, { "note": doc._id })
+                .populate("name")
+                // executes the above query
+                .exec(function(err, doc) {
+                    // logs any errors
+                    if (err) {
+                        console.log(err);
+                    } else {
+
+                        // or sends the document to the browser
+                        console.log("here -- " +doc);
+                        res.send(doc);
+                    }
+                });
+        }
+    });
+});
+
+
+// 3. get a rating if in the note model 
+
+app.get("/articles/:id", function (req, res) {
+  // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
+  Article.findOne({ "_id": req.params.id })
+    // ..and populate all of the notes associated with it
+    .populate("name")
+    // now, execute our query
+    .exec(function (error, doc) {
+      // Log any errors
+      if (error) {
+        console.log(error);
+      }
+      // Otherwise, send the doc to the browser as a json object
+      else {
+        res.json(doc);
+      }
+    });
+});
+
     //close the module.exports(app) function
 };

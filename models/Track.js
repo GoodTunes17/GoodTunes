@@ -39,6 +39,9 @@ var TrackSchema = new Schema({
     type: Boolean,
     default: false
   },
+  rating: {
+    type: Number
+  },
   //This only saves one note's ObjectId, ref refers to the Note model
   note: {
     type: Schema.Types.ObjectId,
