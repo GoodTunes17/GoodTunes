@@ -62,7 +62,10 @@ module.exports = function(app) {
     }));
 
     app.get('/login', function(req, res) {
-        res.render('login.ejs', {message: req.flash('loginMessage')});
+        res.render('login.ejs', {
+            message: req.flash('loginMessage'),
+            successMessage: req.flash('successMessage')
+        });
     });
 
     // User logging in
@@ -94,7 +97,9 @@ module.exports = function(app) {
                 var pTitle = $(element).siblings().text();
                 //removing the "" around the title, messes up when the tile has a "title" [ft Beyonce] format
                 result.title = pTitle.substring(1, pTitle.length-1);
-                result.critic = "Pitchfork";
+                result.title = $(element).siblings().text();
+                result.source = "Pitchfork";
+
                 //use Tracks model to create new entries
                 entry.push(new Track(result));
                 console.log(result);
@@ -121,7 +126,7 @@ module.exports = function(app) {
                 console.log("scraping");
                 result.artist = $(this).children(".artist").text();
                 result.title = $(this).find(".base-title").text();
-                result.critic = "Hype Machine";
+                result.source = "Hype Machine";
                 //use Tracks model to create new entries
                 entry.push(new Track(result));
                 console.log(result);
@@ -136,6 +141,67 @@ module.exports = function(app) {
                     }
                 });
             }
+        });
+        request("http://www.npr.org/series/122356178/songs-we-love/", function(error, response, html) {
+            var $ = cheerio.load(html);
+            var result = {};
+
+            $("h2.audio-module-title").each(function(i, element) {
+                var song = $(this).text().split(",")
+                result.artist = song[0];
+                result.title = song[1];
+                result.source = "NPR";
+                var entry = new Track(result);
+                entry.save(function(err, doc) {
+                  if (err) {
+                      console.log(err);
+                  }
+                    else {
+                      console.log(doc);
+                    }
+                });
+            });
+        });
+        request("http://www.spin.com/2016/08/favorite-songs-of-the-week-joyce-manor-isaiah-rashad/", function(error, response, html) {
+            var $ = cheerio.load(html);
+            var result = {};
+
+            $("strong").each(function(i, element) {
+                var song = $(this).text().split(",");
+                result.artist = song[0];
+                result.title = song[1];
+                result.source = "SPIN";
+                var entry = new Track(result);
+                entry.save(function(err, doc) {
+                  if (err) {
+                      console.log(err);
+                  }
+                    else {
+                      console.log(doc);
+                    }
+                });
+            });
+        });
+        request("https://www.indieshuffle.com/new-songs", function(error, response, html) {
+            var $ = cheerio.load(html);
+            var result = {};
+            
+            $("span.title-dash").each(function(i, element) {
+                var song = $(this).parent("h5").text();
+                song = song.split(" - ");
+                result.artist = song[0];
+                result.title = song[1];
+                result.source = "Indie Shuffle";
+                var entry = new Track(result);
+                entry.save(function(err, doc) {
+                  if (err) {
+                      console.log(err);
+                  }
+                    else {
+                      console.log(doc);
+                    }
+                });
+            });
         });
 
     });

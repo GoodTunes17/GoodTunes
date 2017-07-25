@@ -136,17 +136,16 @@ var Main = React.createClass({
 
         {/* NAV BAR */}
 
+
         <nav className="navbar navbar-default">
               <div className="navbar-header col-md-9">
                 <h1>Good Tunes</h1>
+                 <h2>{this.props.user}</h2>
               </div>
             <Link to="/Scrape"><button className="btn btn-nav"> Show Scrape</button></Link>
             <Link to="/Playlist"><button className="btn btn-nav"> Show Playlist</button></Link>
         </nav>
    
-       
-         
-
           <div className="col-md-4">
             <iframe src={url}
              width="300" height="380" frameborder="0" allowtransparency="true"></iframe>
