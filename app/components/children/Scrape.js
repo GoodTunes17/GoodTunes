@@ -41,33 +41,26 @@ var Scrape = React.createClass({
   // HERE we render the scraped info -  then send it to main.js
 
   render: function () {
-    const body = { "background-color": "#B1D2D2" }
     var url = "https://open.spotify.com/embed?uri=spotify:track:" + this.props.id;
     console.log(this.props.id)
     return (
 
-      <div style={body}>
-        <h2>   Scraped Playlist </h2>
+      <div className="col-md-11" >
+        
         {this.props.scrapedArticles.map(function (search, i) {
           var boundClick1 = this.handleClick1.bind(this, search);
           var boundClick2 = this.handleClick2.bind(this, search);
           return (
-            <div className="col-md-6" style={body}>
-              <p> <strong> {search.artist}</strong></p>
-              <p>  {search.title}
-               <small> from: {search.critic} </small>
-               </p>
-              <button key={i} onClick={boundClick1}> save </button>
-              <button key={"a" + i} onClick={boundClick2}> play </button>
-              <div class="rating"> Rate:
+
+            <div className="well">
+              <p className ="critic"> <small> Source: <br /> {search.critic} </small> </p>
+              <h4 className = "artist"> <strong> {search.artist}</strong></h4>           
+              <p className="title">  {search.title} </p>
+              <button className="btn" id="save" key={i} onClick={boundClick1}> save </button>
+              <button className="btn"  id="play" key={"a" + i} onClick={boundClick2}> play </button>
+              <div className="rating"> Rate:
                 <span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
               </div>
-
-              <iframe src={url}
-                width="300" height="80" frameborder="0" allowtransparency="true"></iframe>
-
-
-              <hr />
             </div>
           );
         }.bind(this)

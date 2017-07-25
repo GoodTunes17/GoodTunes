@@ -121,15 +121,12 @@ var Main = React.createClass({
 
   render: function () {
     var url = "https://open.spotify.com/embed?uri=spotify:track:" + this.state.id;
-
-
-    const nav = { "text-align": "center" };
-    const body = { "background-color": "#669999" };
+ 
 
     var children = React.Children.map(this.props.children, function (child) { return React.cloneElement(child, { scrapedArticles: this.state.scrapedArticles, savedArticles: this.savedArticles, playSong: this.playSong, deletedArticle: this.deletedArticle, id: this.state.id, playlist: this.state.playlist }) }.bind(this))
     return (
 
-      <div style={body}>
+      <div className="container">
 
         {/* Display user message
         <div className="alert alert-success">
@@ -139,53 +136,39 @@ var Main = React.createClass({
 
         {/* NAV BAR */}
 
-        <nav>
-          <div style={nav}>
-            <h2>Good Tunes</h2>
-            <Link to="/Scrape"><button className="btn btn-elegant">Show Scrape</button></Link>
-            <Link to="/Playlist"><button className="btn btn-elegant">Show Playlist</button></Link>
-
-          </div>
+        <nav className="navbar navbar-default">
+              <div className="navbar-header col-md-9">
+                <h1>Good Tunes</h1>
+              </div>
+            <Link to="/Scrape"><button className="btn btn-nav"> Show Scrape</button></Link>
+            <Link to="/Playlist"><button className="btn btn-nav"> Show Playlist</button></Link>
         </nav>
-        <body>
-          <hr></hr>
+   
+       
+         
 
-          <div id="left-frame">
+          <div className="col-md-4">
             <iframe src={url}
-              width="300" height="80" frameborder="0" allowtransparency="true"></iframe>
-
+             width="300" height="380" frameborder="0" allowtransparency="true"></iframe>
           </div>
-          <div id="right-frame">
-
 
             {/* SCRAPED SONGS -  */}
             {/* scrapedArticles contain scraped articles / savedArticles contain articles that the user wants saved for his playlist */}
 
-            <div className="panel panel-default">
-              <div className="panel-heading">
-                <h3 className="panel-title text-center"> </h3>
-              </div>
-              <div className="panel-body text-center">
-
+            <div className="panel panel-default col-md-8">
+              <div className="panel-body">
                 {/* <Scrape scrape={this.state.scrapedArticles} savedArticles={this.savedArticles} />*/}
-
                 {/* YOU CAN INSERT THE NEXT CHILD HERE, POPULATING WITH THE API CALLS? */}
                 {children}
-
                 {/*{React.cloneElement(this.props.children, {scrape: this.state.scrape})}*/}
                 {/*
    
-  */}
+                */}
               </div>
             </div>
-          </div>
-        </body>
-
-        <footer>
-
+           <footer>
         </footer>
-
-      </div>
+     </div>
 
     )
   }

@@ -1,16 +1,89 @@
  
-    
-body {
-    background-color: turquoise
+ body{
+ 	background-color: #464866;
+ }
+
+ h1{
+ 	font-size: 50px;
+ 	font-weight: bold;
+ 	color: white;
+ }
+.btn-nav{
+	margin-top: 20px;
+	margin-right: 15px;
+	padding: 15px;
+	background-color: #2E9CCA;
+	color: #D9D9D9;
+	font-weight: bold;
+
+}
+.container{
+	background-color: #464866;
+	margin-top:30px;
+	border-radius: 2.5%;
 }
 
-#left-frame {
-    width: 25%;
- 
-    float: left;
+.panel{
+	margin-top:20px;
+	background-color: #29648A;
+	border-radius: 2.5%;
+	height: 500px;
+	overflow:scroll;
+	border-color: #F5D21F;
 }
 
-#right-frame {
-    float: right;
-    width: 72%;
+.well{
+	margin-bottom: 20px;
+	background-color:#2E9CCA;
+	color: #D9D9D9;
+	border-radius:1.5%;
+	border-color: #F5D21F;
+	
 }
+
+button {
+	margin: 2px;
+	color: black;
+}
+
+#save{
+background-color: #45DE0E;
+float: right;
+
+}
+
+#play{
+	background-color: #F5D21F;
+	float: right;
+	
+}
+
+.artist{
+	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+.title{
+	color: black;
+	font-weight: bold;
+}
+.critic{
+
+	float: right;
+}
+
+.navbar{
+	background-color: #29648A;
+	border-radius: 2.5%;
+	padding: 10px;
+	margin-top: 10px;
+	border-style: ridge;
+	border-color: #F5D21F;
+	font-family: 'Lato', sans-serif;
+}
+
+iframe{
+	margin-top: 70px;
+	border-color: #F5D21F;
+}
+
+

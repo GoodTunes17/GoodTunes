@@ -91,7 +91,9 @@ module.exports = function(app) {
             $('ul.artist-list').each(function(i, element) {
                 console.log("scraping");
                 result.artist = $(element).children().text();
-                result.title = $(element).siblings().text();
+                var pTitle = $(element).siblings().text();
+                //removing the "" around the title, messes up when the tile has a "title" [ft Beyonce] format
+                result.title = pTitle.substring(1, pTitle.length-1);
                 result.critic = "Pitchfork";
                 //use Tracks model to create new entries
                 entry.push(new Track(result));
@@ -138,14 +140,13 @@ module.exports = function(app) {
 
     });
 
-    //get for the spotify API, need to connect to front end - grab song title from the button click in scrape.js
-    // ajax it back to /spotify, use it in the url query as req.body
+   //spotify query to get the spotify id# that we need to use in the iframe player
     app.get("/spotify2/:title", function(req, res) {
+    //removing spaces in the title for the query
         var songName = req.params.title;
         var space = / /gi;
         var newSongName =  songName.replace(space, "%20");
-        newSongName = newSongName.substring(1, newSongName.length-1);
-
+    
         console.log("name of song in routes: " + newSongName);
 
         var requestUrl="https://api.spotify.com/v1/search?q="+newSongName+"&type=track&year=2017&limit=1";
