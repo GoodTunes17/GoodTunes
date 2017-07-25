@@ -3,7 +3,7 @@
 //var request = require("request");
 var axios = require("axios");
 
-  // var SpotifyWebApi = require('spotify-web-api-node');
+// var SpotifyWebApi = require('spotify-web-api-node');
 
 //   var SpotifyWebApi = require('spotify-web-api-node');
 
@@ -17,13 +17,14 @@ var helpers = {
     },
 
     playSong: function(result) {
-        console.log("helpers " + result.title)
-        return axios.get("/spotify2/"+result.title)
-        .then(function(response){
-            var id=response.data;
-    console.log("here - ",id); // ex.: { user: 'Your User'}
-  
-  });  
+
+        console.log("helpers " + result.title);
+        return axios.get("/spotify2/" + result.title)
+           .then(function(response) {
+               var id = response.data;
+               console.log("this is in helpers" + id);
+           });
+
     },
     // this is getting the initial scrapes from the database
 

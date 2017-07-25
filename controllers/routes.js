@@ -92,10 +92,14 @@ module.exports = function(app) {
             //entry is an array of result objects? 
             var entry = [];
             $('ul.artist-list').each(function(i, element) {
-                console.log("scraping")
+                console.log("scraping");
                 result.artist = $(element).children().text();
+                var pTitle = $(element).siblings().text();
+                //removing the "" around the title, messes up when the tile has a "title" [ft Beyonce] format
+                result.title = pTitle.substring(1, pTitle.length-1);
                 result.title = $(element).siblings().text();
                 result.source = "Pitchfork";
+
                 //use Tracks model to create new entries
                 entry.push(new Track(result));
                 console.log(result);
@@ -202,19 +206,16 @@ module.exports = function(app) {
 
     });
 
- 
-
-    //get for the spotify API, need to connect to front end - grab song title from the button click in scrape.js
-    // ajax it back to /spotify, use it in the url query as req.body
+   //spotify query to get the spotify id# that we need to use in the iframe player
     app.get("/spotify2/:title", function(req, res) {
-       
+    //removing spaces in the title for the query
         var songName = req.params.title;
         var space = / /gi;
         var newSongName =  songName.replace(space, "%20");
-        newSongName = newSongName.substring(1, newSongName.length-1);
-        var requestUrl="https://api.spotify.com/v1/search?q="+newSongName+"&type=track&year=2017&limit=1"
+    
+        console.log("name of song in routes: " + newSongName);
 
-        console.log("name of song" + newSongName)
+        var requestUrl="https://api.spotify.com/v1/search?q="+newSongName+"&type=track&year=2017&limit=1";
 
         function runQuery() {
             console.log("in runQuery");
@@ -233,7 +234,9 @@ module.exports = function(app) {
 
             request.post(authOptions, function(error, response, body) {
                 if (!error && response.statusCode === 200) {
+
                     console.log("url --" +  requestUrl)
+
                     // use the access token to access the Spotify Web API
                     var token = body.access_token;
                     var options = {
@@ -244,9 +247,11 @@ module.exports = function(app) {
                         json: true
                     };
                     request.get(options, function(error, response, body) {
-                        console.log(body.tracks.items[0].id);
-                        var id = body.tracks.items[0].id
-                        res.send(id);
+                      
+                        var id = body.tracks.items[0].id;
+                        console.log(id); 
+                         res.send(id);
+
                     });
                 }
             });
