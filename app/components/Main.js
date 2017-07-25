@@ -93,9 +93,10 @@ var Main = React.createClass({
   },
 
   playSong: function (result) {
-    console.log("helpers " + result.title)
+    console.log("main " + result.title);
+    console.log("main " + result.artist)
     // var self = this;
-    return axios.get("/spotify2/" + result.title)
+    return axios.get("/spotify2/" + result.title + "/" + result.artist)
       .then(function (response) {
         var id = response.data;
         console.log("here - ", id); // ex.: { user: 'Your User'}
@@ -135,7 +136,6 @@ var Main = React.createClass({
          */}
 
         {/* NAV BAR */}
-
 
         <nav className="navbar navbar-default">
               <div className="navbar-header col-md-9">
