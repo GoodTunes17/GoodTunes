@@ -36,8 +36,16 @@ var Main = React.createClass({
       this.scrape()
  
     }
+    this.getAllArticles();
   },
 
+  // componentDidMount: function() {
+  //   this.getAllArticles();
+  // },
+shouldComponentUpdate: function() {
+  return true 
+
+},
   scrape: function () {
 
     helpers.scrape().then(function (response) {
@@ -58,8 +66,8 @@ var Main = React.createClass({
     console.log("getallarticles")
     helpers.getArticle().then(function (response) {
 
-      console.log("The scrapes retreived from db: ", response.data);
-
+      console.log("getallarticles scrape from db: ", response.data);
+  this.setState({ scrapedArticles: response.data });
       //if nothing is in the database, then scrape -- 
 
       if (response.data !== this.state.scrapedArticles) {
@@ -88,7 +96,7 @@ var Main = React.createClass({
       }
     }
     this.setState({ playlist: prePlaylist })
-    console.log(this.state.playlist);
+    console.log("playlist = " + this.state.playlist[0]);
   },
 
   // this will change the "saved" database property to true
