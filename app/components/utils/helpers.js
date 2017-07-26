@@ -8,7 +8,11 @@ var helpers = {
     //this actualy scrapes - 
 
     scrape: function() {
-        return axios.get("/scrape");
+        return axios.get("/scrape")
+        //  .then(function(response) {
+        //      console.log("helper -- " + response)
+        //     })
+   
     },
 
     playSong: function(result) {
@@ -22,11 +26,36 @@ var helpers = {
            });
 
     },
+
+       getArticle: function() {
+           console.log("helpers.getarticle")
+        return axios.get("/api")
+        // .then(function(response) {
+        //     console.log("helpers response - " + response.data)
+        //     })
+    },
+// the old rating system - 
+//    rating: function (result) {
+//     console.log("id - " + result[0])
+//       console.log("rating -- " +result[1])
+//     return axios.post("/rating/"+result[0], {
+//         name: result[1]
+//     })
+          
+//   },
+
+    rating: function (result) {
+    console.log("id - " + result[0])
+      console.log("rating -- " +result[1])
+    return axios.post("/rating/", {
+        id: result[0],
+        rating: result[1]
+    })
+          
+  },
     // this is getting the initial scrapes from the database
 
-    getArticle: function() {
-        return axios.get("/api");
-    },
+ 
 
     // this will change the "saved" database property to true
 
@@ -41,6 +70,8 @@ var helpers = {
         console.log("helper reached with " + result);
         return axios.post('/delete', { id: result });
     }
+
+
 };
 // We export the API helper
 module.exports = helpers;
