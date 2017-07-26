@@ -43,14 +43,13 @@ module.exports = function(app) {
     function isLoggedIn(req, res, next) {
         if (req.isAuthenticated()) {
             return next();
-        }
-        else {
+        } else {
             res.redirect('/login');
         }
     }
 
     app.get('/signup', function(req, res, next) {
-        res.render('signup.ejs', {message: req.flash('signupMessage')});
+        res.render('signup.ejs', { message: req.flash('signupMessage') });
     });
 
     // Creating a new user
@@ -94,10 +93,10 @@ module.exports = function(app) {
             $('ul.artist-list').each(function(i, element) {
                 console.log("scraping");
                 result.artist = $(element).children().text();
-                var pTitle = $(element).siblings().text();
-                //removing the "" around the title, messes up when the tile has a "title" [ft Beyonce] format
-                result.title = pTitle.substring(1, pTitle.length-1);
-                result.title = $(element).siblings().text();
+                var title = $(element).siblings().text();
+                //replace double quotes with nothing!
+                title = title.replace(/[\u201C\u201D]/g, '');
+                result.title = title;
                 result.source = "Pitchfork";
 
                 //use Tracks model to create new entries
@@ -110,7 +109,7 @@ module.exports = function(app) {
                     if (err) {
                         console.log(err);
                     } else {
-                        console.log(data);
+                        // console.log(data);
                     }
                 });
             }
@@ -137,7 +136,7 @@ module.exports = function(app) {
                     if (err) {
                         console.log(err);
                     } else {
-                        console.log(data);
+                        // console.log(data);
                     }
                 });
             }
@@ -145,47 +144,57 @@ module.exports = function(app) {
         request("http://www.npr.org/series/122356178/songs-we-love/", function(error, response, html) {
             var $ = cheerio.load(html);
             var result = {};
+            // $("h2.title").each(function(i,element){
+            //     result.artist = $(this).children("a");
+            //     result.title = $(this).children("a");
 
             $("h2.audio-module-title").each(function(i, element) {
-                var song = $(this).text().split(",")
-                result.artist = song[0];
-                result.title = song[1];
-                result.source = "NPR";
-                var entry = new Track(result);
-                entry.save(function(err, doc) {
-                  if (err) {
-                      console.log(err);
-                  }
-                    else {
-                      console.log(doc);
-                    }
-                });
-            });
-        });
-        request("http://www.spin.com/2016/08/favorite-songs-of-the-week-joyce-manor-isaiah-rashad/", function(error, response, html) {
-            var $ = cheerio.load(html);
-            var result = {};
-
-            $("strong").each(function(i, element) {
                 var song = $(this).text().split(",");
                 result.artist = song[0];
                 result.title = song[1];
-                result.source = "SPIN";
+                // var title = song[1];
+                // title = title.replace(/[\u2018\u2019]/g, "'");
+                // result.title = title;
+
+                result.source = "NPR";
                 var entry = new Track(result);
                 entry.save(function(err, doc) {
-                  if (err) {
-                      console.log(err);
-                  }
-                    else {
-                      console.log(doc);
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        // console.log(doc);
                     }
                 });
             });
         });
+        // I think we should skip spin for now as the url changes weekly and we have to format the title to remove quotes and the name of the album
+
+        // request("http://www.spin.com/2016/08/favorite-songs-of-the-week-joyce-manor-isaiah-rashad/", function(error, response, html) {
+        //     var $ = cheerio.load(html);
+        //     var result = {};
+
+        //     $("strong").each(function(i, element) {
+        //         var song = $(this).text().split(",");
+        //         result.artist = song[0];
+        //         result.title = song[1];
+
+        //         result.source = "SPIN";
+        //         var entry = new Track(result);
+        //         entry.save(function(err, doc) {
+        //           if (err) {
+        //               console.log(err);
+        //           }
+        //             else {
+        //               console.log(doc);
+        //             }
+        //         });
+        //     });
+        // });
+
         request("https://www.indieshuffle.com/new-songs", function(error, response, html) {
             var $ = cheerio.load(html);
             var result = {};
-            
+
             $("span.title-dash").each(function(i, element) {
                 var song = $(this).parent("h5").text();
                 song = song.split(" - ");
@@ -194,11 +203,10 @@ module.exports = function(app) {
                 result.source = "Indie Shuffle";
                 var entry = new Track(result);
                 entry.save(function(err, doc) {
-                  if (err) {
-                      console.log(err);
-                  }
-                    else {
-                      console.log(doc);
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        // console.log(doc);
                     }
                 });
             });
@@ -206,20 +214,16 @@ module.exports = function(app) {
 
     });
 
-   //spotify query to get the spotify id# that we need to use in the iframe player
-    app.get("/spotify2/:title", function(req, res) {
-    //removing spaces in the title for the query
+    //spotify query to get the spotify id# that we need to use in the iframe player
+    app.get("/spotify2/:title/:artist", function(req, res) {
+        //removing spaces in the title for the query
         var songName = req.params.title;
-        var space = / /gi;
-        var newSongName =  songName.replace(space, "%20");
-    
-        console.log("name of song in routes: " + newSongName);
-
-        var requestUrl="https://api.spotify.com/v1/search?q="+newSongName+"&type=track&year=2017&limit=1";
+        songName = songName.replace(/ /gi, "%20");
+        console.log("name of song in routes: " + songName);
+        var requestUrl = "https://api.spotify.com/v1/search?q=" + songName + "&type=track&year=2017&limit=5";
 
         function runQuery() {
             console.log("in runQuery");
-
             // your application requests authorization
             var authOptions = {
                 url: 'https://accounts.spotify.com/api/token',
@@ -235,8 +239,7 @@ module.exports = function(app) {
             request.post(authOptions, function(error, response, body) {
                 if (!error && response.statusCode === 200) {
 
-                    console.log("url --" +  requestUrl)
-
+                    console.log("url --" + requestUrl);
                     // use the access token to access the Spotify Web API
                     var token = body.access_token;
                     var options = {
@@ -247,10 +250,26 @@ module.exports = function(app) {
                         json: true
                     };
                     request.get(options, function(error, response, body) {
-                      
+                       console.log(body.tracks.items[0].artists[0].name);
+                        console.log(req.params.artist);
+                        //checks to see if any of the 5 tracks returned include the one we are looking for
+                        if (body.tracks.items[0].artists[0].name.includes(req.params.artist)){
+                            console.log("it's the right song!");
+                        }else if (body.tracks.items[1].artists[0].name.includes(req.params.artist)){
+                            console.log("#2 is the right song!");
+                        }else if (body.tracks.items[2].artists[0].name.includes(req.params.artist)){
+                            console.log("#3 is the right song!");
+                        }else if (body.tracks.items[3].artists[0].name.includes(req.params.artist)){
+                            console.log("#4 is the right song!");
+                        }else if (body.tracks.items[4].artists[0].name.includes(req.params.artist)){
+                            console.log("#5 is the right song!");
+                        }else{
+                            console.log("can't find it!")
+                        } 
+
                         var id = body.tracks.items[0].id;
-                        console.log(id); 
-                         res.send(id);
+                        console.log(id);
+                        res.send(id);
 
                     });
                 }

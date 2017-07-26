@@ -27,35 +27,52 @@ var Main = React.createClass({
     };
   },
 
-  // When the page loads, we run the helpers.getArticle function
-  // this function populates the scrapedArticles variable with the scrapes in the database
-  // since savedArticles is a "state" variable, it will render in the first child, called "Scrape"
+  // componentWillMount is called before the render method is executed. It is important to note that setting the state in this phase will not trigger a re-rendering.
 
-componentDidUpdate: function() {
-  // componentDidMount: function () {
-    // helpers.scrape().then(function (response) {
-    //    console.log("scraped!!!!!!!")
-    //     this.setState({ scrapedArticles: response.data });
-    // })
-   this.getAllArticles();
-    // this gets the scrapes from the database
-  // this.setState({ scrapedArticles: response.data });
+  componentWillMount: function () {
+
+    if (this.state.scrapedArticles.length < 1) {
+      console.log("no scrapes")
+      this.scrape()
+ 
+    }
   },
-/// scrape  / save articles 
-/// get articl
+
+  scrape: function () {
+
+    helpers.scrape().then(function (response) {
+      console.log("scraped!")
+      this.setState({ scrapedArticles: response.data });
+      console.log("save1")
+      // nothing will happen in this zone... 
+      //    
+    }.bind(this))
+
+    console.log("did scrape scrape?")
+ 
+    this.getAllArticles()
+
+  },
 
   getAllArticles: function () {
+    console.log("getallarticles")
     helpers.getArticle().then(function (response) {
 
-      console.log("The scrapes: ", response.data);
+      console.log("The scrapes retreived from db: ", response.data);
+
       //if nothing is in the database, then scrape -- 
+
       if (response.data !== this.state.scrapedArticles) {
+        console.log("save2")
         this.setState({ scrapedArticles: response.data });
       }
+
       this.getPlaylist()
 
     }.bind(this))
+
   },
+
   // this will run through the scrapedArticles, 
   // find those that are "saved" and put them in the 
   // "playlist" variable.. 
@@ -97,9 +114,10 @@ componentDidUpdate: function() {
     helpers.rating(result);
   },
   playSong: function (result) {
-    console.log("helpers " + result.title)
+    console.log("main " + result.title);
+    console.log("main " + result.artist)
     // var self = this;
-    return axios.get("/spotify2/" + result.title)
+    return axios.get("/spotify2/" + result.title + "/" + result.artist)
       .then(function (response) {
         var id = response.data;
         console.log("here - ", id); // ex.: { user: 'Your User'}
@@ -134,21 +152,16 @@ componentDidUpdate: function() {
 
       <div className="container">
 
-        {/* Display user message
-        <div className="alert alert-success">
-          {this.data.messages.map((message, index) => <Flash key={index} message={message} />)}
-        </div>
-         */}
+
 
         {/* NAV BAR */}
-
 
         <nav className="navbar navbar-default">
           <div className="navbar-header col-md-9">
             <h1>Good Tunes</h1>
             <h2>{this.props.user}</h2>
           </div>
-          <Link to="/Scrape"><button className="btn btn-nav"> Show Scrape</button></Link>
+          <Link to="/Scrape"><button className="btn btn-nav" onClick={this.scrape}> Show Scrape</button></Link>
           <Link to="/Playlist"><button className="btn btn-nav"> Show Playlist</button></Link>
         </nav>
 
