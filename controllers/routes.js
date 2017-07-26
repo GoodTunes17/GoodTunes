@@ -37,6 +37,7 @@ module.exports = function(app) {
             message: req.flash('userMessage'),
             user: req.user
         });
+        console.log("USER: ", req.user.email);
     });
 
     // Function for determining if user is logged in, gets passed into the route above
@@ -293,24 +294,6 @@ module.exports = function(app) {
         });
     });
 
-    // app.post("/saved/:id"), function(req, res) {
-    app.post("/api/saved", function(req, res) {
-        console.log("this is the id to save: " + req.body);
-        // Tracks.findOneAndUpdate(
-        //     { "_id": req.params.id },
-        //     { "saved": true }
-        // )
-        //     .exec(function (err, doc) {
-        //         // logs any errors
-        //         if (err) {
-        //             console.log(err);
-        //         } else {
-        //             // or sends the document to the browser
-        //             console.log(doc);
-        //             res.send(doc);
-        //         }
-        //     });
-    });
     // this will change the "saved" database property to true
 
     app.post("/saved", function(req, res) {

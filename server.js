@@ -15,6 +15,7 @@ mongoose.Promise = Promise;
 var passport = require("passport");
 var session = require("express-session");
 var flash = require("connect-flash");
+var cookieParser = require("cookie-parser");
 
 var PORT = process.env.PORT || 3000;
 // ========SERVER AND DB SETUP============================
@@ -24,6 +25,7 @@ var app = express();
 
 // Use morgan and body parser with our app
 app.use(logger("dev"));
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.text());
