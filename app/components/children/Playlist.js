@@ -1,6 +1,6 @@
 // Include React
 var React = require("react");
-
+import styles from "../styles.css";
 // Creating the Results component
 var Playlist = React.createClass({
   // Here we render the function
@@ -47,7 +47,7 @@ var Playlist = React.createClass({
               <p> ARTIST: {search.artist} - SONG: {search.title}</p>
               <button key={"b" + i} onClick={boundClick3}> delete </button>
               <button key={"a" + i} onClick={boundClick2}> play </button>
-              <div class="rating"> Rate:
+              <div className="rating"> 
                 <span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
               </div>
               <p> _________________________________</p>
