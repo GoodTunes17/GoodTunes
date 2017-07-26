@@ -31,35 +31,31 @@ var Main = React.createClass({
   // this function populates the scrapedArticles variable with the scrapes in the database
   // since savedArticles is a "state" variable, it will render in the first child, called "Scrape"
 
-
-  componentDidMount: function () {
-    helpers.scrape().then(function(response){
-      this.setState({ scrapedArticles: response.data })
-    })
-    this.getAllArticles();
+componentDidUpdate: function() {
+  // componentDidMount: function () {
+    // helpers.scrape().then(function (response) {
+    //    console.log("scraped!!!!!!!")
+    //     this.setState({ scrapedArticles: response.data });
+    // })
+   this.getAllArticles();
     // this gets the scrapes from the database
-
+  // this.setState({ scrapedArticles: response.data });
   },
+/// scrape  / save articles 
+/// get articl
+
   getAllArticles: function () {
     helpers.getArticle().then(function (response) {
 
       console.log("The scrapes: ", response.data);
-
       //if nothing is in the database, then scrape -- 
-
       if (response.data !== this.state.scrapedArticles) {
         this.setState({ scrapedArticles: response.data });
-
       }
-
       this.getPlaylist()
 
     }.bind(this))
-
   },
-
-
-
   // this will run through the scrapedArticles, 
   // find those that are "saved" and put them in the 
   // "playlist" variable.. 
@@ -98,7 +94,7 @@ var Main = React.createClass({
   },
   rating: function (result) {
     console.log("ratings - " + result)
-    helpers.rating(result); 
+    helpers.rating(result);
   },
   playSong: function (result) {
     console.log("helpers " + result.title)
@@ -133,13 +129,10 @@ var Main = React.createClass({
     var url = "https://open.spotify.com/embed?uri=spotify:track:" + this.state.id;
 
 
-    const nav = { "text-align": "center" };
-    const body = { "background-color": "#669999" };
-
-    var children = React.Children.map(this.props.children, function (child) { return React.cloneElement(child, { scrapedArticles: this.state.scrapedArticles, savedArticles: this.savedArticles, playSong: this.playSong, deletedArticle: this.deletedArticle, id: this.state.id, playlist: this.state.playlist, rating: this.rating}) }.bind(this))
+    var children = React.Children.map(this.props.children, function (child) { return React.cloneElement(child, { scrapedArticles: this.state.scrapedArticles, savedArticles: this.savedArticles, playSong: this.playSong, deletedArticle: this.deletedArticle, id: this.state.id, playlist: this.state.playlist, rating: this.rating }) }.bind(this))
     return (
 
-      <div style={body}>
+      <div className="container">
 
         {/* Display user message
         <div className="alert alert-success">
@@ -149,54 +142,37 @@ var Main = React.createClass({
 
         {/* NAV BAR */}
 
-        <nav>
-          <div style={nav}>
+
+        <nav className="navbar navbar-default">
+          <div className="navbar-header col-md-9">
+            <h1>Good Tunes</h1>
             <h2>{this.props.user}</h2>
-            <h2>Good Tunes</h2>
-            <Link to="/Scrape"><button className="btn btn-elegant">Show Scrape</button></Link>
-            <Link to="/Playlist"><button className="btn btn-elegant">Show Playlist</button></Link>
-    
-            <Link to="/Rating"><button className="btn btn-elegant">By Rating</button></Link>
           </div>
+          <Link to="/Scrape"><button className="btn btn-nav"> Show Scrape</button></Link>
+          <Link to="/Playlist"><button className="btn btn-nav"> Show Playlist</button></Link>
         </nav>
-        <body>
-          <hr></hr>
 
-          <div id="left-frame">
-            <iframe src={url}
-              width="300" height="80" frameborder="0" allowtransparency="true"></iframe>
+        <div className="col-md-4">
+          <iframe src={url}
+            width="300" height="380" frameborder="0" allowtransparency="true"></iframe>
+        </div>
 
-          </div>
-          <div id="right-frame">
+        {/* SCRAPED SONGS -  */}
+        {/* scrapedArticles contain scraped articles / savedArticles contain articles that the user wants saved for his playlist */}
 
-
-            {/* SCRAPED SONGS -  */}
-            {/* scrapedArticles contain scraped articles / savedArticles contain articles that the user wants saved for his playlist */}
-
-            <div className="panel panel-default">
-              <div className="panel-heading">
-                <h3 className="panel-title text-center"> </h3>
-              </div>
-              <div className="panel-body text-center">
-
-                {/* <Scrape scrape={this.state.scrapedArticles} savedArticles={this.savedArticles} />*/}
-
-                {/* YOU CAN INSERT THE NEXT CHILD HERE, POPULATING WITH THE API CALLS? */}
-                {children}
-
-                {/*{React.cloneElement(this.props.children, {scrape: this.state.scrape})}*/}
-                {/*
+        <div className="panel panel-default col-md-8">
+          <div className="panel-body">
+            {/* <Scrape scrape={this.state.scrapedArticles} savedArticles={this.savedArticles} />*/}
+            {/* YOU CAN INSERT THE NEXT CHILD HERE, POPULATING WITH THE API CALLS? */}
+            {children}
+            {/*{React.cloneElement(this.props.children, {scrape: this.state.scrape})}*/}
+            {/*
    
-  */}
-              </div>
-            </div>
+                */}
           </div>
-        </body>
-
+        </div>
         <footer>
-
         </footer>
-
       </div>
 
     )

@@ -3,6 +3,9 @@ var React = require("react");
 // Including the Link component from React Router to navigate within our application without full page reloads
 var Link = require("react-router").Link;
 
+var axios = require("axios");
+
+
 var Rating = require('react-rating');
 
 var helpers = require("../utils/helpers");
@@ -18,6 +21,10 @@ var Scrape = React.createClass({
     };
   },
 
+  componentDidUpdate: function () {
+      
+          
+  },
   // This function will respond to the user input
   handleChange: function (event) {
 
@@ -42,58 +49,60 @@ var Scrape = React.createClass({
   },
 
 
-  handleClick3: function(rate, search) {
+  handleClick3: function (rate, search) {
     // this.props.callbackFn(key)
-    var rating=[];
+    var rating = [];
     console.log(rate._id); // this is the id
     console.log(search);  // this is the rating.. 
-    rating.push(rate._id); 
+    rating.push(rate._id);
     rating.push(search)
     this.props.rating(rating)
   },
- 
+
   // HERE we render the scraped info -  then send it to main.js
 
   render: function () {
-    const body = { "background-color": "#B1D2D2" }
-//  const SVGIcon = (props) =>
-//   <div>
-//     <svg className={props.className}>
-//       <use xlinkHref={props.href} />
-//     </svg>
-  // </div>;
+
+    //  const SVGIcon = (props) =>
+    //   <div>
+    //     <svg className={props.className}>
+    //       <use xlinkHref={props.href} />
+    //     </svg>
+    // </div>;
     var url = "https://open.spotify.com/embed?uri=spotify:track:" + this.props.id;
     console.log(this.props.id)
-    var rate=[];
+    var rate = [];
     return (
 
-      <div style={body}>
-        <h2>   Scraped Playlist </h2>
+      <div className="col-md-11" >
+
         {this.props.scrapedArticles.map(function (search, i) {
-          
-          rate.push(Math.floor((Math.random() * 5) + 1))
-     console.log(search.name)
+
+          // rate.push(Math.floor((Math.random() * 5) + 1))
+          // console.log(search.name)
           var boundClick1 = this.handleClick1.bind(this, search);
           var boundClick2 = this.handleClick2.bind(this, search);
           var boundClick3 = this.handleClick3.bind(this, search);
           return (
-            
-            <div className="col-md-6" style={body}>
-              <p> <strong> {search.artist}</strong></p>
-              <p>  {search.title}</p>
-              <button key={i} onClick={boundClick1}> save </button>
-              <button key={"a" + i} onClick={boundClick2}> play </button>
-              <div>
 
-                 <Rating key={search.id} start={0} step={1} stop={5} initialRate={search.rating}
+
+            <div className="well">
+              <p className="critic"> <small> Source: <br /> {search.critic} </small> </p>
+              <h4 className="artist"> <strong> {search.artist}</strong></h4>
+              <p className="title">  {search.title} </p>
+              <button className="btn" id="save" key={i} onClick={boundClick1}> save </button>
+              <button className="btn" id="play" key={"a" + i} onClick={boundClick2}> play </button>
+              <div className="rating">
+
+                <Rating key={search.id} start={0} step={1} stop={5} initialRate={search.rating}
                   //  empty={<SVGIcon href="#icon-star-empty" className="icon" />}
-  // full={<SVGIcon href="#icon-star-full" className="icon" />}
+                  // full={<SVGIcon href="#icon-star-full" className="icon" />}
                   onClick={boundClick3} />
               </div>
-               
 
-              <hr />
             </div>
+
+
           );
         }.bind(this)
         )
@@ -101,7 +110,8 @@ var Scrape = React.createClass({
 
       </div>
     )
+
   }
-});
+})
 // Export the component back for use in other files
 module.exports = Scrape;

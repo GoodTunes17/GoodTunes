@@ -3,7 +3,7 @@
 //var request = require("request");
 var axios = require("axios");
 
-  // var SpotifyWebApi = require('spotify-web-api-node');
+// var SpotifyWebApi = require('spotify-web-api-node');
 
 //   var SpotifyWebApi = require('spotify-web-api-node');
 
@@ -13,17 +13,27 @@ var helpers = {
     //this actualy scrapes - 
 
     scrape: function() {
-        return axios.get("/scrape");
+        return axios.get("/scrape")
+         .then(function(response) {
+            })
+        ;
     },
 
     playSong: function(result) {
-        console.log("helpers " + result.title)
-        return axios.get("/spotify2/"+result.title)
-        .then(function(response){
-            var id=response.data;
-    console.log("here - ",id); // ex.: { user: 'Your User'}
-  
-  });  
+
+        console.log("helpers " + result.title);
+        return axios.get("/spotify2/" + result.title)
+           .then(function(response) {
+               var id = response.data;
+               console.log("this is in helpers" + id);
+           });
+
+    },
+
+       getArticle: function() {
+        return axios.get("/api")
+        .then(function(response) {
+            })
     },
 // the old rating system - 
 //    rating: function (result) {
@@ -46,9 +56,7 @@ var helpers = {
   },
     // this is getting the initial scrapes from the database
 
-    getArticle: function() {
-        return axios.get("/api");
-    },
+ 
 
     // this will change the "saved" database property to true
 
