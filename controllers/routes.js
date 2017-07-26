@@ -217,10 +217,14 @@ module.exports = function(app) {
     //spotify query to get the spotify id# that we need to use in the iframe player
     app.get("/spotify2/:title/:artist", function(req, res) {
         //removing spaces in the title for the query
+        var artist = req.params.artist;
+        console.log( artist);
+         artist = artist.replace(/ /gi, "%20");
         var songName = req.params.title;
         songName = songName.replace(/ /gi, "%20");
+        songname = songName.replace(/[]/gi, '');
         console.log("name of song in routes: " + songName);
-        var requestUrl = "https://api.spotify.com/v1/search?q=" + songName + "&type=track&year=2017&limit=5";
+        var requestUrl = "https://api.spotify.com/v1/search?q=track:" + songName + "%20artist:" + artist + "&type=track&limit=1";
 
         function runQuery() {
             console.log("in runQuery");
@@ -250,31 +254,36 @@ module.exports = function(app) {
                         json: true
                     };
                     request.get(options, function(error, response, body) {
-                       console.log(body.tracks.items[0].artists[0].name);
-                        console.log(req.params.artist);
+                       // console.log(body.tracks.items[0].artists[0].name);
+                       //  console.log(req.params.artist);
                         //checks to see if any of the 5 tracks returned include the one we are looking for
-                        if (body.tracks.items[0].artists[0].name.includes(req.params.artist)){
-                            console.log("it's the right song!");
-                        }else if (body.tracks.items[1].artists[0].name.includes(req.params.artist)){
-                            console.log("#2 is the right song!");
-                        }else if (body.tracks.items[2].artists[0].name.includes(req.params.artist)){
-                            console.log("#3 is the right song!");
-                        }else if (body.tracks.items[3].artists[0].name.includes(req.params.artist)){
-                            console.log("#4 is the right song!");
-                        }else if (body.tracks.items[4].artists[0].name.includes(req.params.artist)){
-                            console.log("#5 is the right song!");
+                        // if (body.tracks.items[0].artists[0].name.includes(req.params.artist)){
+                        //     console.log("it's the right song!");
+                        // }else if (body.tracks.items[1].artists[0].name.includes(req.params.artist)){
+                        //     console.log("#2 is the right song!");
+                        // }else if (body.tracks.items[2].artists[0].name.includes(req.params.artist)){
+                        //     console.log("#3 is the right song!");
+                        // }else if (body.tracks.items[3].artists[0].name.includes(req.params.artist)){
+                        //     console.log("#4 is the right song!");
+                        // }else if (body.tracks.items[4].artists[0].name.includes(req.params.artist)){
+                        //     console.log("#5 is the right song!");
+                        // }else{
+                        //     console.log("can't find it!")
+                        // } 
+
+                        if (body.tracks.items[0] === undefined) {
+                            console.log("broken");
+                           var id = "#";
+                           res.send(id);
                         }else{
-                            console.log("can't find it!")
-                        } 
+                             var id = body.tracks.items[0].id;
+                             console.log(id);
+                             res.send(id);
 
-                        var id = body.tracks.items[0].id;
-                        console.log(id);
-                        res.send(id);
-
+                        }                       
                     });
                 }
             });
-
         }
         runQuery();
     });

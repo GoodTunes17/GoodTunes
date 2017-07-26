@@ -11,17 +11,6 @@ var helpers = {
         return axios.get("/scrape");
     },
 
-    playSong: function(result) {
-        console.log("helpers " + result.title);
-        return axios.get("/spotify2/" + result.title)
-           .then(function(response) {
-               var id = response.data;
-               var artist = response.artist;
-               console.log("in helpers" + artist);
-               console.log("this is in helpers" + id);
-           });
-
-    },
     // this is getting the initial scrapes from the database
 
     getArticle: function() {

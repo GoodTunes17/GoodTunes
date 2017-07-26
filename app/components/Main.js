@@ -36,24 +36,17 @@ var Main = React.createClass({
     // this gets the scrapes from the database
 
   },
+
   getAllArticles: function () {
     helpers.getArticle().then(function (response) {
-
       console.log("The scrapes: ", response.data);
-
       //if nothing is in the database, then scrape -- 
-
       if (response.data !== this.state.scrapedArticles) {
         this.setState({ scrapedArticles: response.data });
-
       }
-
       this.getPlaylist()
-
     }.bind(this))
-
   },
-
 
   // this will run through the scrapedArticles, 
   // find those that are "saved" and put them in the 
@@ -64,9 +57,7 @@ var Main = React.createClass({
     for (var i = 0; i < this.state.scrapedArticles.length; i++) {
       if (this.state.scrapedArticles[i].saved) {
         console.log(this.state.scrapedArticles[i].saved)
-
         prePlaylist.push(this.state.scrapedArticles[i])
-
       }
     }
     this.setState({ playlist: prePlaylist })

@@ -1,6 +1,7 @@
 // Include React
 var React = require("react");
 
+import styles from "../styles.css";
 // Creating the Results component
 var Playlist = React.createClass({
   // Here we render the function
