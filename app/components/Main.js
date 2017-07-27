@@ -3,7 +3,7 @@ var React = require("react");
 var axios = require('axios');
 // Including the Link component from React Router to navigate within our application without full page reloads
 var Link = require("react-router").Link;
-
+ 
 import styles from "./styles.css";
 
 // Here we include all of the sub-components
@@ -23,7 +23,10 @@ var Main = React.createClass({
     return {
       scrapedArticles: [],
       playlist: [],
-      id: ""
+      id: "",
+      message: {},
+      user: {}
+
     };
   },
 
@@ -31,10 +34,17 @@ var Main = React.createClass({
 
   componentWillMount: function () {
 
+   
+    // var self = this;
+    return axios.get("/signup")
+      .then(function (response) {
+        console.log("signup " + response.usernameField) })
+
+
     if (this.state.scrapedArticles.length < 1) {
       console.log("no scrapes")
       this.scrape()
- 
+
     }
     this.getAllArticles();
   },
@@ -42,10 +52,10 @@ var Main = React.createClass({
   // componentDidMount: function() {
   //   this.getAllArticles();
   // },
-shouldComponentUpdate: function() {
-  return true 
+  shouldComponentUpdate: function () {
+    return true
 
-},
+  },
   scrape: function () {
 
     helpers.scrape().then(function (response) {
@@ -57,7 +67,7 @@ shouldComponentUpdate: function() {
     }.bind(this))
 
     console.log("did scrape scrape?")
- 
+
     this.getAllArticles()
 
   },
@@ -67,7 +77,7 @@ shouldComponentUpdate: function() {
     helpers.getArticle().then(function (response) {
 
       console.log("getallarticles scrape from db: ", response.data);
-  this.setState({ scrapedArticles: response.data });
+      this.setState({ scrapedArticles: response.data });
       //if nothing is in the database, then scrape -- 
 
       if (response.data !== this.state.scrapedArticles) {
