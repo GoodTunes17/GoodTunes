@@ -12,6 +12,9 @@ var UserSchema = new Schema({
   	type: String,
   	required: true
   },
+  playlist: {
+    type: Array
+  }
 });
 
 // Encrypting a user's password for storage in the database
