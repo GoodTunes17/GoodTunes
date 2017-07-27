@@ -51,6 +51,8 @@ module.exports = function(app) {
 
     app.get('/signup', function(req, res, next) {
         res.render('signup.ejs', { message: req.flash('signupMessage') });
+        //  res.send({ message: req.flash('signupMessage') });
+
     });
 
     // Creating a new user
