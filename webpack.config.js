@@ -28,7 +28,11 @@ module.exports = {
       test: /\.s?css$/,
       loaders: ["style", "css"],
       include: /app/
-      }
+      },
+       { 
+        test: /\.(png|jpg)$/, 
+        loader: 'url-loader?limit=8192' }
+
     ]
   },
   // This lets us debug our react code in chrome dev tools. Errors will have lines and file names

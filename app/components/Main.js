@@ -27,21 +27,51 @@ var Main = React.createClass({
     };
   },
 
-  // When the page loads, we run the helpers.getArticle function
-  // this function populates the scrapedArticles variable with the scrapes in the database
-  // since savedArticles is a "state" variable, it will render in the first child, called "Scrape"
+  // componentWillMount is called before the render method is executed. It is important to note that setting the state in this phase will not trigger a re-rendering.
 
-  componentDidMount: function () {
+  componentWillMount: function () {
+
+    if (this.state.scrapedArticles.length < 1) {
+      console.log("no scrapes")
+      this.scrape()
+ 
+    }
     this.getAllArticles();
-    // this gets the scrapes from the database
+  },
+
+  // componentDidMount: function() {
+  //   this.getAllArticles();
+  // },
+shouldComponentUpdate: function() {
+  return true 
+
+},
+  scrape: function () {
+
+    helpers.scrape().then(function (response) {
+      console.log("scraped!")
+      this.setState({ scrapedArticles: response.data });
+      console.log("save1")
+      // nothing will happen in this zone... 
+      //    
+    }.bind(this))
+
+    console.log("did scrape scrape?")
+ 
+    this.getAllArticles()
 
   },
 
   getAllArticles: function () {
+    console.log("getallarticles")
     helpers.getArticle().then(function (response) {
-      console.log("The scrapes: ", response.data);
+   
+      console.log("getallarticles scrape from db: ", response.data);
+  this.setState({ scrapedArticles: response.data });
+
       //if nothing is in the database, then scrape -- 
       if (response.data !== this.state.scrapedArticles) {
+        console.log("save2")
         this.setState({ scrapedArticles: response.data });
       }
       this.getPlaylist()
@@ -61,7 +91,7 @@ var Main = React.createClass({
       }
     }
     this.setState({ playlist: prePlaylist })
-    console.log(this.state.playlist);
+    console.log("playlist = " + this.state.playlist[0]);
   },
 
   // this will change the "saved" database property to true
@@ -82,7 +112,10 @@ var Main = React.createClass({
     this.getAllArticles();
     // shouldn't this refresh the saved articles? 
   },
-
+  rating: function (result) {
+    console.log("ratings - " + result)
+    helpers.rating(result);
+  },
   playSong: function (result) {
     console.log("main " + result.title);
     console.log("main " + result.artist)
@@ -96,6 +129,8 @@ var Main = React.createClass({
       }.bind(this))
     console.log("idhere", this.state.id)
   },
+
+
 
   componentDidUpdate: function () {
 
@@ -113,52 +148,48 @@ var Main = React.createClass({
 
   render: function () {
     var url = "https://open.spotify.com/embed?uri=spotify:track:" + this.state.id;
- 
 
-    var children = React.Children.map(this.props.children, function (child) { return React.cloneElement(child, { scrapedArticles: this.state.scrapedArticles, savedArticles: this.savedArticles, playSong: this.playSong, deletedArticle: this.deletedArticle, id: this.state.id, playlist: this.state.playlist }) }.bind(this))
+
+    var children = React.Children.map(this.props.children, function (child) { return React.cloneElement(child, { scrapedArticles: this.state.scrapedArticles, savedArticles: this.savedArticles, playSong: this.playSong, deletedArticle: this.deletedArticle, id: this.state.id, playlist: this.state.playlist, rating: this.rating }) }.bind(this))
     return (
 
       <div className="container">
 
-        {/* Display user message
-        <div className="alert alert-success">
-          {this.data.messages.map((message, index) => <Flash key={index} message={message} />)}
-        </div>
-         */}
+
 
         {/* NAV BAR */}
 
         <nav className="navbar navbar-default">
-              <div className="navbar-header col-md-9">
-                <h1>Good Tunes</h1>
-                 <h2>{this.props.user}</h2>
-              </div>
-            <Link to="/Scrape"><button className="btn btn-nav"> Show Scrape</button></Link>
-            <Link to="/Playlist"><button className="btn btn-nav"> Show Playlist</button></Link>
-        </nav>
-   
-          <div className="col-md-4">
-            <iframe src={url}
-             width="300" height="380" frameborder="0" allowtransparency="true"></iframe>
+          <div className="navbar-header col-md-9">
+            <h1>Good Tunes</h1>
+            <h2>{this.props.user}</h2>
           </div>
+          <Link to="/Scrape"><button className="btn btn-nav" onClick={this.scrape}> Show Scrape</button></Link>
+          <Link to="/Playlist"><button className="btn btn-nav"> Show Playlist</button></Link>
+        </nav>
 
-            {/* SCRAPED SONGS -  */}
-            {/* scrapedArticles contain scraped articles / savedArticles contain articles that the user wants saved for his playlist */}
+        <div className="col-md-4">
+          <iframe src={url}
+            width="300" height="380" frameborder="0" allowtransparency="true"></iframe>
+        </div>
 
-            <div className="panel panel-default col-md-8">
-              <div className="panel-body">
-                {/* <Scrape scrape={this.state.scrapedArticles} savedArticles={this.savedArticles} />*/}
-                {/* YOU CAN INSERT THE NEXT CHILD HERE, POPULATING WITH THE API CALLS? */}
-                {children}
-                {/*{React.cloneElement(this.props.children, {scrape: this.state.scrape})}*/}
-                {/*
+        {/* SCRAPED SONGS -  */}
+        {/* scrapedArticles contain scraped articles / savedArticles contain articles that the user wants saved for his playlist */}
+
+        <div className="panel panel-default col-md-8">
+          <div className="panel-body">
+            {/* <Scrape scrape={this.state.scrapedArticles} savedArticles={this.savedArticles} />*/}
+            {/* YOU CAN INSERT THE NEXT CHILD HERE, POPULATING WITH THE API CALLS? */}
+            {children}
+            {/*{React.cloneElement(this.props.children, {scrape: this.state.scrape})}*/}
+            {/*
    
                 */}
-              </div>
-            </div>
-           <footer>
+          </div>
+        </div>
+        <footer>
         </footer>
-     </div>
+      </div>
 
     )
   }

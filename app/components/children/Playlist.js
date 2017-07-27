@@ -1,7 +1,10 @@
 // Include React
 var React = require("react");
 
-import styles from "../styles.css";
+var Rating = require('react-rating');
+
+import styles from "./styles-children.css";
+
 // Creating the Results component
 var Playlist = React.createClass({
   // Here we render the function
@@ -29,29 +32,39 @@ var Playlist = React.createClass({
     this.props.deletedArticle(result);
   },
 
-
+ handleClick4: function (rate, search) {
+    // this.props.callbackFn(key)
+    var rating = [];
+    console.log(rate._id); // this is the id
+    console.log(search);  // this is the rating.. 
+    rating.push(rate._id);
+    rating.push(search)
+    this.props.rating(rating)
+  },
 
   //  var articles = this.props.results.map(function (article, index) {
 
   render: function () {
-    const body = { "background-color": "#B1D2D2" }
+   
     return (
-
-      <div>
-        <h2>   Saved Playlist </h2>
-
+      <div >
         {this.props.playlist.map(function (search, i) {
           var boundClick3 = this.handleClick3.bind(this, search);
           var boundClick2 = this.handleClick2.bind(this, search);
+          var boundClick4 = this.handleClick4.bind(this, search)
           return (
-            <div style={body}>
-              <p> ARTIST: {search.artist} - SONG: {search.title}</p>
-              <button key={"b" + i} onClick={boundClick3}> delete </button>
-              <button key={"a" + i} onClick={boundClick2}> play </button>
-              <div class="rating"> Rate:
-                <span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
+            <div className="well playlist-well">
+              <p className="critic"> <small> Source: <br /> {search.source} </small></p>
+              <h4 className="artist"> <strong> {search.artist}</strong></h4>
+               <p className="title">  {search.title} </p>
+              <button className="btn delete" key={"b" + i} onClick={boundClick3}> delete </button>
+               <button className="btn play"  key={"a" + i} onClick={boundClick2}> play </button>
+              <div className="rating"> 
+                <Rating key={search.id} start={0} step={1} stop={5} initialRate={search.rating}
+                  empty="glyphicon glyphicon-star-empty"
+                  full="glyphicon glyphicon-star"
+                  onClick={boundClick4} />
               </div>
-              <p> _________________________________</p>
             </div>
           )
         }.bind(this)

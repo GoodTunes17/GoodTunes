@@ -22,7 +22,7 @@ var IndexRoute = router.IndexRoute;
 var Main = require("../components/Main");
 var Scrape = require("../components/children/Scrape");
 var Playlist = require("../components/children/Playlist");
-
+var Extra = require("../components/children/Extra");
 
 // Export the Routes
 module.exports = (
@@ -30,10 +30,12 @@ module.exports = (
   // The high level component is the Router component
   <Router history={hashHistory}>
     <Route path="/" component={Main}>
+   
 
       {/* If user selects Info or Chat show the appropriate component */}
       <Route path="Scrape" component={Scrape} />
       <Route path="Playlist" component={Playlist} />
+     
 
       {/* If user selects any other path... we get the Info Route */}
       <IndexRoute component={Scrape} />
