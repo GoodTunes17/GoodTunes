@@ -31,23 +31,25 @@ var Signup = React.createClass({
   },
   render: function() {
 	return (
-	  <div class="container">
+    
+	  <div className="container login">
 
-	  	<h1>Enter your information in order to register:</h1>
+	  	<h2>Sign up to save your favorite songs!</h2>
+      <h3>Enter your information</h3>
 
 	    <form onSubmit={this.onSubmit}>
-		  <div class="form-group">
+		  <div className="form-group">
 		    <label for="email">Email address</label>
-		    <input type="email" class="form-control" id="email" name="email" placeholder="Email" onChange={this.updateEmail} required></input>
+		    <input type="email" className="form-control" id="email" name="email" placeholder="Email" onChange={this.updateEmail} required></input>
 		  </div>
 		  <div class="form-group">
 		    <label for="password">Password</label>
-		    <input type="password" class="form-control" id="password" name="password" placeholder="Password" onChange={this.updatePassword} required></input>
+		    <input type="password" className="form-control" id="password" name="password" placeholder="Password" onChange={this.updatePassword} required></input>
 		  </div>
-		  <button type="submit" class="btn btn-default">Sign Up</button>
+		  <button type="submit" className="btn btn-default">Sign Up</button>
 		</form>
-
 	  </div>
+ 
 	);
   }
 });

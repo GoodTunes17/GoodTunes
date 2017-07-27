@@ -9,7 +9,7 @@ var axios = require("axios");
 var Rating = require('react-rating');
 
 var helpers = require("../utils/helpers");
-import styles from "../styles.css";
+import styles from "./styles-children.css";
 // Creating the Form component
 var Scrape = React.createClass({
 
@@ -21,28 +21,12 @@ var Scrape = React.createClass({
     };
   },
 
-  componentDidUpdate: function () {
-      
-          
-  },
-  // This function will respond to the user input
-  handleChange: function (event) {
-
-  },
-
-  // When a user submits...
-  handleSubmit: function (event) {
-
-  },
-
   //this places song in "saved" playlist
-
   handleClick1: function (result, e) {
     this.props.savedArticles(result);
   },
 
   //this plays the song
-
   handleClick2: function (result, e) {
     console.log("play clicked for: " + result.title)
     this.props.playSong(result);
@@ -59,16 +43,10 @@ var Scrape = React.createClass({
     this.props.rating(rating)
   },
 
-  // HERE we render the scraped info -  then send it to main.js
 
+  // HERE we render the scraped info -  then send it to main.js
   render: function () {
 
-    //  const SVGIcon = (props) =>
-    //   <div>
-    //     <svg className={props.className}>
-    //       <use xlinkHref={props.href} />
-    //     </svg>
-    // </div>;
     var url = "https://open.spotify.com/embed?uri=spotify:track:" + this.props.id;
     console.log(this.props.id)
     var rate = [];
@@ -77,32 +55,23 @@ var Scrape = React.createClass({
       <div className="col-md-11" >
 
         {this.props.scrapedArticles.map(function (search, i) {
-
-          // rate.push(Math.floor((Math.random() * 5) + 1))
-          // console.log(search.name)
           var boundClick1 = this.handleClick1.bind(this, search);
           var boundClick2 = this.handleClick2.bind(this, search);
           var boundClick3 = this.handleClick3.bind(this, search);
           return (
-
-
             <div className="well">
-              <p className="critic"> <small> Source: <br /> {search.source} </small> </p>
+              <p className="critic"> {search.source} </p>
               <h4 className="artist"> <strong> {search.artist}</strong></h4>
               <p className="title">  {search.title} </p>
-              <button className="btn" id="save" key={i} onClick={boundClick1}> save </button>
-              <button className="btn" id="play" key={"a" + i} onClick={boundClick2}> play </button>
+              <button className="btn save"  key={i} onClick={boundClick1}> save </button>
+              <button className="btn play"  key={"a" + i} onClick={boundClick2}> play </button>
               <div className="rating">
-
                 <Rating key={search.id} start={0} step={1} stop={5} initialRate={search.rating}
-                  //  empty={<SVGIcon href="#icon-star-empty" className="icon" />}
-                  // full={<SVGIcon href="#icon-star-full" className="icon" />}
+                  empty="glyphicon glyphicon-star-empty"
+                  full="glyphicon glyphicon-star"
                   onClick={boundClick3} />
               </div>
-
             </div>
-
-
           );
         }.bind(this)
         )

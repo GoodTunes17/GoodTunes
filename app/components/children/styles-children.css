@@ -1,0 +1,91 @@
+
+.well{
+	margin-bottom: 20px;
+	background-color:#2E9CCA;
+	color: #D9D9D9;
+	border-radius:1.5%;
+	border-color: #F5D21F;
+	border-width: 2px;
+	
+}
+
+button {
+	margin: 2px;
+	color: black;
+}
+
+button:hover{
+		-webkit-transform: scale(1.1);
+        -ms-transform: scale(1.1);
+        transform: scale(1.1);
+}
+
+.save{
+background-color: #45DE0E;
+float: right;
+margin-left: 2px;
+}
+
+
+.play{
+	background-color: #F5D21F;
+	float: right;
+	margin-right: 2px;
+}
+
+.delete{
+	float: right;
+	margin-left: 2px;
+	background-color: red;
+}
+
+
+.artist{
+	text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+.title{
+	color: black;
+	font-weight: bold;
+}
+.critic{
+
+	float: right;
+}
+.glyphicon-star-empty{
+	font-size: 20px;
+	letter-spacing: 5px;
+}
+
+.glyphicon-star{
+	color:#FD7C1A;
+	font-size: 20px;
+	letter-spacing: 5px;
+}
+
+
+.playlist-well{
+	margin-bottom: 20px;
+	background-color:#2E9CCA;
+	color: #D9D9D9;
+	border-radius:1.5%;
+	border-color: #45DE0E;
+	border-width: 2px;
+	width: 85%
+
+}
+
+
+.login{
+	width: 85%;
+	background-color: #29648A;
+	color: white;
+}
+
+
+
+
+
+
+
+

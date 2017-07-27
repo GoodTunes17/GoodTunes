@@ -74,20 +74,18 @@ var Main = React.createClass({
   getAllArticles: function () {
     console.log("getallarticles")
     helpers.getArticle().then(function (response) {
-
+   
       console.log("getallarticles scrape from db: ", response.data);
-      this.setState({ scrapedArticles: response.data });
-      //if nothing is in the database, then scrape -- 
 
+      this.setState({ scrapedArticles: response.data });
+
+      //if nothing is in the database, then scrape -- 
       if (response.data !== this.state.scrapedArticles) {
         console.log("save2")
         this.setState({ scrapedArticles: response.data });
       }
-
       this.getPlaylist()
-
     }.bind(this))
-
   },
 
   // this will run through the scrapedArticles, 
@@ -99,9 +97,7 @@ var Main = React.createClass({
     for (var i = 0; i < this.state.scrapedArticles.length; i++) {
       if (this.state.scrapedArticles[i].saved) {
         console.log(this.state.scrapedArticles[i].saved)
-
         prePlaylist.push(this.state.scrapedArticles[i])
-
       }
     }
     this.setState({ playlist: prePlaylist })
