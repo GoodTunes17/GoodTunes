@@ -31,20 +31,20 @@ var Login = React.createClass({
   },
   render: function() {
   	return (
-  	  <div class="container">
+  	  <div className="container login">
 
-  	    <h1>Enter your information in order to login:</h1>
+  	    <h2>Enter your information to login:</h2>
 
   	    <form onSubmit={this.handleSubmit}>
-    		  <div class="form-group">
+    		  <div className="form-group">
     			  <label for="email">Email address</label>
-    			  <input type="email" class="form-control" id="email" name="email" placeholder="Email" onChange={this.updateEmail} required></input>
+    			  <input type="email" className="form-control" id="email" name="email" placeholder="Email" onChange={this.updateEmail} required></input>
     	    </div>
-    	    <div class="form-group">
+    	    <div className="form-group">
       			<label for="password">Password</label>
-      			<input type="password" class="form-control" id="password" name="password" placeholder="Password" onChange={this.updatePassword} required></input>
+      			<input type="password" className="form-control" id="password" name="password" placeholder="Password" onChange={this.updatePassword} required></input>
     		  </div>
-    		  <button type="submit" class="btn btn-default">Login</button>
+    		  <button type="submit" className="btn btn-default">Login</button>
   	    </form>
 
   		  <h4>Don't have an account? <a href="/signup">Sign up here!</a></h4>

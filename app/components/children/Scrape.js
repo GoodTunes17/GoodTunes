@@ -60,7 +60,7 @@ var Scrape = React.createClass({
           var boundClick3 = this.handleClick3.bind(this, search);
           return (
             <div className="well">
-              <p className="critic"> <img src={require('../utils/pitchfork_logo.png')}/> </p>
+              <p className="critic"> {search.source} </p>
               <h4 className="artist"> <strong> {search.artist}</strong></h4>
               <p className="title">  {search.title} </p>
               <button className="btn save"  key={i} onClick={boundClick1}> save </button>

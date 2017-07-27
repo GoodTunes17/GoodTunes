@@ -156,7 +156,7 @@ module.exports = function(app) {
                 result.artist = song[0];
                 result.title = song[1];
                 // var title = song[1];
-                // title = title.replace(/[\u2018\u2019]/g, "'");
+                // title = title.replace(/[\u2018\u2019]/g, '');
                 // result.title = title;
 
                 result.source = "NPR";
