@@ -25,8 +25,8 @@ var Main = React.createClass({
       scrapedArticles: [],
       playlist: [],
       id: "",
-      email: "",
-      password: ""
+      // email: "",
+      // password: ""
     };
   },
 
@@ -34,10 +34,14 @@ var Main = React.createClass({
 
   componentWillMount: function () {
 
+   
+    // var self = this;
+ 
+
     if (this.state.scrapedArticles.length < 1) {
       console.log("no scrapes")
       this.scrape()
- 
+
     }
     this.getAllArticles();
   },
@@ -45,10 +49,12 @@ var Main = React.createClass({
   // componentDidMount: function() {
   //   this.getAllArticles();
   // },
-shouldComponentUpdate: function() {
-  return true 
+  shouldComponentUpdate: function () {
+    return true
 
-},
+  },
+
+ 
   scrape: function () {
 
     helpers.scrape().then(function (response) {
@@ -60,7 +66,7 @@ shouldComponentUpdate: function() {
     }.bind(this))
 
     console.log("did scrape scrape?")
- 
+
     this.getAllArticles()
 
   },
@@ -70,7 +76,7 @@ shouldComponentUpdate: function() {
     helpers.getArticle().then(function (response) {
 
       console.log("getallarticles scrape from db: ", response.data);
-  this.setState({ scrapedArticles: response.data });
+      this.setState({ scrapedArticles: response.data });
       //if nothing is in the database, then scrape -- 
 
       if (response.data !== this.state.scrapedArticles) {
@@ -139,31 +145,53 @@ shouldComponentUpdate: function() {
   },
 
   // When a new user tries to log in 
-  componentDidUpdate: function () {
-    helpers.logIn(this.email, this.password).then(function(data) {
+  // componentDidUpdate: function () {
+  //   helpers.logIn(this.email, this.password).then(function(data) {
+  //     console.log(data);
+  //   }.bind(this));
+
+  // },
+ 
+
+userInfo: function(result) {
+  console.log("in main - email - " + result.email)
+  console.log("in main - password - " + result.password);
+
+//two approaches: 
+
+// one - call helpers, which has axios
+
+   helpers.logIn(result.email, result.password).then(function(data) {
       console.log(data);
     }.bind(this));
 
-  },
 
+// two - just use axios here - 
 
-  setTerm: function () {
-    // This function allows childrens to update the parent.
+//  return axios.get("/login", {
+//    email: result.email, 
+//    password: result.password
+//   }).then(function (response) {
+//         var yo = response;
+//         console.log("here - ", yo); // ex.: { user: 'Your User'}
+//       }.bind(this))
+ 
+},
 
-  },
-  setEmail: function(email) {
-    this.setState({email: email});
-  },
-  setPassword: function(password) {
-    this.setState({password: password});
-  },
+  // setEmail: function(email) {
+  //   this.setState({email: email});
+  //   console.log ("main email - " + this.state.email)
+  // },
+  // setPassword: function(password) {
+  //   this.setState({password: password});
+  // },
   // Here we render the function
 
   render: function () {
     var url = "https://open.spotify.com/embed?uri=spotify:track:" + this.state.id;
 
 
-    var children = React.Children.map(this.props.children, function (child) { return React.cloneElement(child, { scrapedArticles: this.state.scrapedArticles, savedArticles: this.savedArticles, playSong: this.playSong, deletedArticle: this.deletedArticle, id: this.state.id, playlist: this.state.playlist, rating: this.rating }) }.bind(this))
+    var children = React.Children.map(this.props.children, function (child) { return React.cloneElement(child, { scrapedArticles: this.state.scrapedArticles, savedArticles: this.savedArticles, playSong: this.playSong, deletedArticle: this.deletedArticle, id: this.state.id, playlist: this.state.playlist, rating: this.rating, userInfo:this.userInfo }) }.bind(this))
     return (
 
       <div className="container">

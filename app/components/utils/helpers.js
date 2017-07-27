@@ -88,6 +88,7 @@ var helpers = {
             password: password
         }).then(function(data) {
             console.log("User signed in: ", data);
+    
         });
     }
 

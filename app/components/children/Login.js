@@ -21,14 +21,13 @@ var Login = React.createClass({
   },
   handleSubmit: function(event) {
     event.preventDefault();
-    console.log("Email: ", this.state.email);
-    console.log("Password: ", this.state.password);
-    this.props.setEmail(this.state.email);
-    this.props.setPassword(this.state.password);
-    this.setState({
-      email: "",
-      password: ""
-    });
+    console.log("in login - Email: ", this.state.email);
+    console.log("in login - Password: ", this.state.password);
+    var user = {}
+    user ={email: this.state.email, password: this.state.password}
+    this.props.userInfo(user);
+    // this.props.password(this.state.password);
+    
   },
   render: function() {
   	return (
@@ -43,7 +42,7 @@ var Login = React.createClass({
     	    </div>
     	    <div class="form-group">
       			<label for="password">Password</label>
-      			<input type="password" class="form-control" id="password" name="password" placeholder="Password" onChange={this.updateEmail} required></input>
+      			<input type="password" class="form-control" id="password" name="password" placeholder="Password" onChange={this.updatePassword} required></input>
     		  </div>
     		  <button type="submit" class="btn btn-default">Login</button>
   	    </form>
