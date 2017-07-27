@@ -3,7 +3,8 @@ var React = require("react");
 var axios = require('axios');
 // Including the Link component from React Router to navigate within our application without full page reloads
 var Link = require("react-router").Link;
- 
+var Login = require("./children/Login");
+
 import styles from "./styles.css";
 
 // Here we include all of the sub-components
@@ -24,9 +25,8 @@ var Main = React.createClass({
       scrapedArticles: [],
       playlist: [],
       id: "",
-      message: {},
-      user: {}
-
+      // email: "",
+      // password: ""
     };
   },
 
@@ -36,10 +36,7 @@ var Main = React.createClass({
 
    
     // var self = this;
-    return axios.get("/signup")
-      .then(function (response) {
-        console.log("signup " + response.usernameField) })
-
+ 
 
     if (this.state.scrapedArticles.length < 1) {
       console.log("no scrapes")
@@ -56,6 +53,8 @@ var Main = React.createClass({
     return true
 
   },
+
+ 
   scrape: function () {
 
     helpers.scrape().then(function (response) {
@@ -145,27 +144,54 @@ var Main = React.createClass({
     console.log("idhere", this.state.id)
   },
 
+  // When a new user tries to log in 
+  // componentDidUpdate: function () {
+  //   helpers.logIn(this.email, this.password).then(function(data) {
+  //     console.log(data);
+  //   }.bind(this));
+
+  // },
+ 
+
+userInfo: function(result) {
+  console.log("in main - email - " + result.email)
+  console.log("in main - password - " + result.password);
+
+//two approaches: 
+
+// one - call helpers, which has axios
+
+   helpers.logIn(result.email, result.password).then(function(data) {
+      console.log(data);
+    }.bind(this));
 
 
-  componentDidUpdate: function () {
+// two - just use axios here - 
 
-    // What happens if something updates? 
+//  return axios.get("/login", {
+//    email: result.email, 
+//    password: result.password
+//   }).then(function (response) {
+//         var yo = response;
+//         console.log("here - ", yo); // ex.: { user: 'Your User'}
+//       }.bind(this))
+ 
+},
 
-  },
-
-
-  setTerm: function () {
-    // This function allows childrens to update the parent.
-
-  },
-
+  // setEmail: function(email) {
+  //   this.setState({email: email});
+  //   console.log ("main email - " + this.state.email)
+  // },
+  // setPassword: function(password) {
+  //   this.setState({password: password});
+  // },
   // Here we render the function
 
   render: function () {
     var url = "https://open.spotify.com/embed?uri=spotify:track:" + this.state.id;
 
 
-    var children = React.Children.map(this.props.children, function (child) { return React.cloneElement(child, { scrapedArticles: this.state.scrapedArticles, savedArticles: this.savedArticles, playSong: this.playSong, deletedArticle: this.deletedArticle, id: this.state.id, playlist: this.state.playlist, rating: this.rating }) }.bind(this))
+    var children = React.Children.map(this.props.children, function (child) { return React.cloneElement(child, { scrapedArticles: this.state.scrapedArticles, savedArticles: this.savedArticles, playSong: this.playSong, deletedArticle: this.deletedArticle, id: this.state.id, playlist: this.state.playlist, rating: this.rating, userInfo:this.userInfo }) }.bind(this))
     return (
 
       <div className="container">
@@ -181,6 +207,8 @@ var Main = React.createClass({
           </div>
           <Link to="/Scrape"><button className="btn btn-nav" onClick={this.scrape}> Show Scrape</button></Link>
           <Link to="/Playlist"><button className="btn btn-nav"> Show Playlist</button></Link>
+          <Link to="/login"><button className="btn btn-nav"> Login</button></Link>
+          <Link to="/signup"><button className="btn btn-nav"> Sign Up</button></Link>
         </nav>
 
         <div className="col-md-4">
@@ -200,6 +228,7 @@ var Main = React.createClass({
             {/*
    
                 */}
+            {/*<Login setEmail={this.setEmail} setPassword={this.setPassword} />*/}
           </div>
         </div>
         <footer>
