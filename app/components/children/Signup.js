@@ -21,7 +21,13 @@ var Signup = React.createClass({
   },
   handleSubmit: function(event) {
     event.preventDefault();
-    // Need to add logic here
+    helpers.createUser(this.email, this.password).then(function(data) {
+      console.log(data);
+    }.bind(this));
+    this.setState({
+      email: "",
+      password: ""
+    });
   },
   render: function() {
 	return (

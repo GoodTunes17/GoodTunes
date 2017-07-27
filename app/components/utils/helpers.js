@@ -71,6 +71,7 @@ var helpers = {
         return axios.post('/delete', { id: result });
     },
 
+    // Creating a new user from the signup page
     createUser: function(email, password) {
         return axios.post('/signup', {
             email: email,
@@ -80,6 +81,7 @@ var helpers = {
         });
     },
 
+    // Logging in a user from the login page
     logIn: function(email, password) {
         return axios.post('/login', {
             email: email, 

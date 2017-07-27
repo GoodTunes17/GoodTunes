@@ -200,7 +200,7 @@ shouldComponentUpdate: function() {
             {/*
    
                 */}
-            <Login setEmail={this.setEmail} setPassword={this.setPassword} />
+            {/*<Login setEmail={this.setEmail} setPassword={this.setPassword} />*/}
           </div>
         </div>
         <footer>
