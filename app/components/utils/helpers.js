@@ -69,6 +69,26 @@ var helpers = {
     deleteArticle: function(result) {
         console.log("helper reached with " + result);
         return axios.post('/delete', { id: result });
+    },
+
+    // Creating a new user from the signup page
+    createUser: function(email, password) {
+        return axios.post('/signup', {
+            email: email,
+            password: password
+        }).then(function(data) {
+          console.log("User created: ", data);
+        });
+    },
+
+    // Logging in a user from the login page
+    logIn: function(email, password) {
+        return axios.post('/login', {
+            email: email, 
+            password: password
+        }).then(function(data) {
+            console.log("User signed in: ", data);
+        });
     }
 
 

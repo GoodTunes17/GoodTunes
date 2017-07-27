@@ -20,6 +20,8 @@ var IndexRoute = router.IndexRoute;
 
 // Reference the high-level components
 var Main = require("../components/Main");
+var Signup = require("../components/children/Signup");
+var Login = require("../components/children/Login");
 var Scrape = require("../components/children/Scrape");
 var Playlist = require("../components/children/Playlist");
 var Extra = require("../components/children/Extra");
@@ -35,6 +37,8 @@ module.exports = (
       {/* If user selects Info or Chat show the appropriate component */}
       <Route path="Scrape" component={Scrape} />
       <Route path="Playlist" component={Playlist} />
+      <Route path="signup" component={Signup} />
+      <Route path="login" component={Login} />
      
 
       {/* If user selects any other path... we get the Info Route */}
