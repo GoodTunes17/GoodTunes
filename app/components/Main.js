@@ -3,6 +3,7 @@ var React = require("react");
 var axios = require('axios');
 // Including the Link component from React Router to navigate within our application without full page reloads
 var Link = require("react-router").Link;
+var Login = require("./children/Login");
 
 import styles from "./styles.css";
 
@@ -23,7 +24,9 @@ var Main = React.createClass({
     return {
       scrapedArticles: [],
       playlist: [],
-      id: ""
+      id: "",
+      email: "",
+      password: ""
     };
   },
 
@@ -130,11 +133,11 @@ shouldComponentUpdate: function() {
     console.log("idhere", this.state.id)
   },
 
-
-
+  // When a new user tries to log in 
   componentDidUpdate: function () {
-
-    // What happens if something updates? 
+    helpers.logIn(this.email, this.password).then(function(data) {
+      console.log(data);
+    }.bind(this));
 
   },
 
@@ -143,7 +146,12 @@ shouldComponentUpdate: function() {
     // This function allows childrens to update the parent.
 
   },
-
+  setEmail: function(email) {
+    this.setState({email: email});
+  },
+  setPassword: function(password) {
+    this.setState({password: password});
+  },
   // Here we render the function
 
   render: function () {
@@ -166,6 +174,8 @@ shouldComponentUpdate: function() {
           </div>
           <Link to="/Scrape"><button className="btn btn-nav" onClick={this.scrape}> Show Scrape</button></Link>
           <Link to="/Playlist"><button className="btn btn-nav"> Show Playlist</button></Link>
+          <Link to="/login"><button className="btn btn-nav"> Login</button></Link>
+          <Link to="/signup"><button className="btn btn-nav"> Sign Up</button></Link>
         </nav>
 
         <div className="col-md-4">
@@ -185,6 +195,7 @@ shouldComponentUpdate: function() {
             {/*
    
                 */}
+            {/*<Login setEmail={this.setEmail} setPassword={this.setPassword} />*/}
           </div>
         </div>
         <footer>
