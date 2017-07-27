@@ -98,7 +98,7 @@ module.exports = function(app) {
                 //replace double quotes with nothing!
                 title = title.replace(/[\u201C\u201D]/g, '');
                 result.title = title;
-                result.source = "('../utils/pitchfork_logo.png')";
+                result.source = "Pitchfork";
 
                 //use Tracks model to create new entries
                 entry.push(new Track(result));

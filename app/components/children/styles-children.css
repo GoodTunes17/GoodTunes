@@ -54,11 +54,13 @@ margin-left: 2px;
 }
 .glyphicon-star-empty{
 	font-size: 20px;
+	letter-spacing: 5px;
 }
 
 .glyphicon-star{
 	color:#FD7C1A;
 	font-size: 20px;
+	letter-spacing: 5px;
 }
 
 
