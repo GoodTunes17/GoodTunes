@@ -25,8 +25,8 @@ var Main = React.createClass({
       scrapedArticles: [],
       playlist: [],
       id: "",
-      // email: "",
-      // password: ""
+      email: "",
+      password: ""
     };
   },
 
@@ -199,7 +199,7 @@ userInfo: function(result) {
         <nav className="navbar navbar-default">
           <div className="navbar-header col-md-9">
             <h1>Good Tunes</h1>
-            <h2>{this.props.user}</h2>
+            <h2>recommended tunes from around the internet!</h2>
           </div>
           <Link to="/Scrape"><button className="btn btn-nav" onClick={this.scrape}> Show Scrape</button></Link>
           <Link to="/Playlist"><button className="btn btn-nav"> Show Playlist</button></Link>

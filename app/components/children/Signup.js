@@ -35,18 +35,19 @@ var Signup = React.createClass({
 	  <div className="container login">
 
 	  	<h2>Sign up to save your favorite songs!</h2>
-      <h3>Enter your information</h3>
+      <h3>Enter your information:</h3>
 
 	    <form onSubmit={this.onSubmit}>
 		  <div className="form-group">
-		    <label for="email">Email address</label>
+		    <label for="email" className="signup">Email address</label>
 		    <input type="email" className="form-control" id="email" name="email" placeholder="Email" onChange={this.updateEmail} required></input>
 		  </div>
 		  <div class="form-group">
-		    <label for="password">Password</label>
+		    <label for="password" className="signup">Password</label>
 		    <input type="password" className="form-control" id="password" name="password" placeholder="Password" onChange={this.updatePassword} required></input>
 		  </div>
-		  <button type="submit" className="btn btn-default">Sign Up</button>
+      <br/>
+		  <button type="submit" className="btn btn-default login-btn">Sign Up</button>
 		</form>
 	  </div>
  
