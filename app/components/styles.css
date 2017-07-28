@@ -9,6 +9,11 @@
  	color: white;
  }
 
+ h2{
+ 	color: white;
+ 	font-weight: lighter;
+ }
+
 .btn-nav{
 	margin-top: 20px;
 	margin-right: 15px;
@@ -54,6 +59,7 @@
 iframe{
 	margin-top: 70px;
 	border-color: #F5D21F;
+
 }
 
 

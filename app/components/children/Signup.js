@@ -35,22 +35,24 @@ var Signup = React.createClass({
   return (
     <div class="container">
 
-      <h1>Enter your information in order to register:</h1>
+	  	<h2>Sign up to save your favorite songs!</h2>
+      <h3>Enter your information:</h3>
 
-      <form onSubmit={this.handleSubmit}>
-      <div class="form-group">
-        <label for="email">Email address</label>
-        <input type="email" class="form-control" id="email" name="email" placeholder="Email" onChange={this.updateEmail} required></input>
-      </div>
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" class="form-control" value={this.state.password} id="password" name="password" placeholder="Password" onChange={this.updatePassword} required></input>
-      </div>
-      <button type="submit" class="btn btn-default">Sign Up</button>
-    </form>
-
-    </div>
-  );
+	    <form onSubmit={this.handleSubmit}>
+		  <div className="form-group">
+		    <label for="email" className="signup">Email address</label>
+		    <input type="email" className="form-control" id="email" name="email" placeholder="Email" onChange={this.updateEmail} required></input>
+		  </div>
+		  <div class="form-group">
+		    <label for="password" className="signup">Password</label>
+		    <input type="password" className="form-control" value={this.state.password} id="password" name="password" placeholder="Password" onChange={this.updatePassword} required></input>
+		  </div>
+      <br/>
+		  <button type="submit" className="btn btn-default login-btn">Sign Up</button>
+		</form>
+	  </div>
+ 
+	);
   }
 });
 
