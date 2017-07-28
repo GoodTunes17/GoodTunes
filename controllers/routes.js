@@ -260,22 +260,6 @@ module.exports = function(app) {
                         json: true
                     };
                     request.get(options, function(error, response, body) {
-                       // console.log(body.tracks.items[0].artists[0].name);
-                       //  console.log(req.params.artist);
-                        //checks to see if any of the 5 tracks returned include the one we are looking for
-                        // if (body.tracks.items[0].artists[0].name.includes(req.params.artist)){
-                        //     console.log("it's the right song!");
-                        // }else if (body.tracks.items[1].artists[0].name.includes(req.params.artist)){
-                        //     console.log("#2 is the right song!");
-                        // }else if (body.tracks.items[2].artists[0].name.includes(req.params.artist)){
-                        //     console.log("#3 is the right song!");
-                        // }else if (body.tracks.items[3].artists[0].name.includes(req.params.artist)){
-                        //     console.log("#4 is the right song!");
-                        // }else if (body.tracks.items[4].artists[0].name.includes(req.params.artist)){
-                        //     console.log("#5 is the right song!");
-                        // }else{
-                        //     console.log("can't find it!")
-                        // } 
 
                         if (body.tracks.items[0] === undefined) {
                             console.log("broken");

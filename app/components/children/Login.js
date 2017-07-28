@@ -26,8 +26,10 @@ var Login = React.createClass({
     var user = {}
     user ={email: this.state.email, password: this.state.password}
     this.props.userInfo(user);
-    // this.props.password(this.state.password);
-    
+    this.setState({
+      email: "", 
+      password: ""
+    });
   },
   render: function() {
   	return (
