@@ -372,7 +372,7 @@ app.post("/rating/:id", function(req, res) {
         if (error) {
             console.log(error);
         } else {
-            // uses the article id to find and update it's note
+            // uses the article id to find and update it's rating
             Track.findOneAndUpdate({ "_id": req.params.id }, { "note": doc._id })
                 .populate("name")
                 // executes the above query
