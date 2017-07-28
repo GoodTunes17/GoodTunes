@@ -338,6 +338,8 @@ module.exports = function(app) {
             });
     });
 
+    // saves rating to Track - easy 
+
     app.post("/rating", function(req, res) {
                     console.log("route - " + req.body.id)
                     console.log(" name - " + req.body.rating)
@@ -355,6 +357,8 @@ module.exports = function(app) {
                 }
             });
     });
+
+// saves rating to notes.js
 
     // creates a new note or replaces an existing note
 app.post("/rating/:id", function(req, res) {

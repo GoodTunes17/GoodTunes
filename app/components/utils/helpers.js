@@ -24,25 +24,26 @@ var helpers = {
         //     console.log("helpers response - " + response.data)
         //     })
     },
-// the old rating system - 
-//    rating: function (result) {
-//     console.log("id - " + result[0])
-//       console.log("rating -- " +result[1])
-//     return axios.post("/rating/"+result[0], {
-//         name: result[1]
-//     })
-          
-//   },
-
-    rating: function (result) {
+// submit rating to notes
+   rating: function (result) {
     console.log("id - " + result[0])
       console.log("rating -- " +result[1])
-    return axios.post("/rating/", {
-        id: result[0],
-        rating: result[1]
+    return axios.post("/rating/"+result[0], {
+        name: result[1]
     })
           
   },
+
+// submit rating to tracks --- 
+//     rating: function (result) {
+//     console.log("id - " + result[0])
+//       console.log("rating -- " +result[1])
+//     return axios.post("/rating/", {
+//         id: result[0],
+//         rating: result[1]
+//     })
+          
+//   },
     // this is getting the initial scrapes from the database
 
  

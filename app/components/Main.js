@@ -126,6 +126,10 @@ var Main = React.createClass({
     console.log("ratings - " + result)
     helpers.rating(result);
   },
+
+  avgrate: function () {
+    helpers.avgrate(result)
+  },
   playSong: function (result) {
     console.log("main " + result.title);
     console.log("main " + result.artist)
