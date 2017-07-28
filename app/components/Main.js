@@ -25,8 +25,6 @@ var Main = React.createClass({
       scrapedArticles: [],
       playlist: [],
       id: "",
-      // email: "",
-      // password: ""
     };
   },
 
@@ -174,20 +172,22 @@ userInfo: function(result) {
  
 },
 
-  // setEmail: function(email) {
-  //   this.setState({email: email});
-  //   console.log ("main email - " + this.state.email)
-  // },
-  // setPassword: function(password) {
-  //   this.setState({password: password});
-  // },
+userSignup: function(result) {
+  console.log("in main - email - " + result.email)
+  console.log("in main - password - " + result.password);
+
+  helpers.createUser(result.email, result.password).then(function(data) {
+    console.log(data);
+  }.bind(this));
+},
+
   // Here we render the function
 
   render: function () {
     var url = "https://open.spotify.com/embed?uri=spotify:track:" + this.state.id;
 
 
-    var children = React.Children.map(this.props.children, function (child) { return React.cloneElement(child, { scrapedArticles: this.state.scrapedArticles, savedArticles: this.savedArticles, playSong: this.playSong, deletedArticle: this.deletedArticle, id: this.state.id, playlist: this.state.playlist, rating: this.rating, userInfo:this.userInfo }) }.bind(this))
+    var children = React.Children.map(this.props.children, function (child) { return React.cloneElement(child, { scrapedArticles: this.state.scrapedArticles, savedArticles: this.savedArticles, playSong: this.playSong, deletedArticle: this.deletedArticle, id: this.state.id, playlist: this.state.playlist, rating: this.rating, userInfo: this.userInfo, userSignup: this.userSignup }) }.bind(this))
     return (
 
       <div className="container">
@@ -224,7 +224,6 @@ userInfo: function(result) {
             {/*
    
                 */}
-            {/*<Login setEmail={this.setEmail} setPassword={this.setPassword} />*/}
           </div>
         </div>
         <footer>

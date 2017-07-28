@@ -8,7 +8,7 @@ var helpers = {
     //this actualy scrapes - 
 
     scrape: function() {
-        return axios.get("/scrape")
+        return axios.get("/scrape");
         //  .then(function(response) {
         //      console.log("helper -- " + response)
         //     })
@@ -17,9 +17,9 @@ var helpers = {
 
 
 
-       getArticle: function() {
-           console.log("helpers.getarticle")
-        return axios.get("/api")
+    getArticle: function() {
+        console.log("helpers.getarticle");
+        return axios.get("/api");
         // .then(function(response) {
         //     console.log("helpers response - " + response.data)
         //     })
@@ -35,12 +35,12 @@ var helpers = {
 //   },
 
     rating: function (result) {
-    console.log("id - " + result[0])
-      console.log("rating -- " +result[1])
-    return axios.post("/rating/", {
+      console.log("id - " + result[0]);
+      console.log("rating -- " +result[1]);
+      return axios.post("/rating/", {
         id: result[0],
         rating: result[1]
-    })
+    });
           
   },
     // this is getting the initial scrapes from the database
@@ -66,8 +66,6 @@ var helpers = {
         return axios.post('/signup', {
             email: email,
             password: password
-        }).then(function(data) {
-          console.log("User created: ", data);
         });
     },
 
@@ -76,9 +74,6 @@ var helpers = {
         return axios.post('/login', {
             email: email, 
             password: password
-        }).then(function(data) {
-            console.log("User signed in: ", data);
-    
         });
     }
 
