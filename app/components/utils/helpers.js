@@ -8,7 +8,7 @@ var helpers = {
     //this actualy scrapes - 
 
     scrape: function() {
-        return axios.get("/scrape")
+        return axios.get("/scrape");
         //  .then(function(response) {
         //      console.log("helper -- " + response)
         //     })
@@ -17,9 +17,9 @@ var helpers = {
 
 
 
-       getArticle: function() {
-           console.log("helpers.getarticle")
-        return axios.get("/api")
+    getArticle: function() {
+        console.log("helpers.getarticle");
+        return axios.get("/api");
         // .then(function(response) {
         //     console.log("helpers response - " + response.data)
         //     })
@@ -67,8 +67,6 @@ var helpers = {
         return axios.post('/signup', {
             email: email,
             password: password
-        }).then(function(data) {
-          console.log("User created: ", data);
         });
     },
 
@@ -77,9 +75,6 @@ var helpers = {
         return axios.post('/login', {
             email: email, 
             password: password
-        }).then(function(data) {
-            console.log("User signed in: ", data);
-    
         });
     }
 

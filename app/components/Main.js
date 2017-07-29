@@ -25,8 +25,7 @@ var Main = React.createClass({
       scrapedArticles: [],
       playlist: [],
       id: "",
-      // email: "",
-      // password: ""
+      email: ""
     };
   },
 
@@ -34,7 +33,7 @@ var Main = React.createClass({
 
   componentWillMount: function () {
 
-   
+   console.log("here" +this.state.email)
     // var self = this;
  
 
@@ -156,42 +155,36 @@ var Main = React.createClass({
 userInfo: function(result) {
   console.log("in main - email - " + result.email)
   console.log("in main - password - " + result.password);
-
-//two approaches: 
-
-// one - call helpers, which has axios
-
+    this.setState({email: result.email});
+    console.log("user info" + this.state.email);
    helpers.logIn(result.email, result.password).then(function(data) {
       console.log(data);
     }.bind(this));
-
-
-// two - just use axios here - 
-
-//  return axios.get("/login", {
-//    email: result.email, 
-//    password: result.password
-//   }).then(function (response) {
-//         var yo = response;
-//         console.log("here - ", yo); // ex.: { user: 'Your User'}
-//       }.bind(this))
- 
+        console.log("user info" + this.state.email);
 },
 
-  // setEmail: function(email) {
-  //   this.setState({email: email});
-  //   console.log ("main email - " + this.state.email)
-  // },
-  // setPassword: function(password) {
-  //   this.setState({password: password});
-  // },
+ playlist: function() {
+   console.log("sending here - " +this.state.email)
+      return axios.post("/playlist/" + this.state.email)
+    },
+
+userSignup: function(result) {
+  console.log("in main - email - " + result.email)
+  console.log("in main - password - " + result.password);
+    this.setState({email: result.email});
+    console.log("usersignup - " +this.state.email);
+  helpers.createUser(result.email, result.password).then(function(data) {
+    console.log(data);
+  }.bind(this));
+},
+
   // Here we render the function
 
   render: function () {
     var url = "https://open.spotify.com/embed?uri=spotify:track:" + this.state.id;
 
 
-    var children = React.Children.map(this.props.children, function (child) { return React.cloneElement(child, { scrapedArticles: this.state.scrapedArticles, savedArticles: this.savedArticles, playSong: this.playSong, deletedArticle: this.deletedArticle, id: this.state.id, playlist: this.state.playlist, rating: this.rating, userInfo:this.userInfo }) }.bind(this))
+    var children = React.Children.map(this.props.children, function (child) { return React.cloneElement(child, { scrapedArticles: this.state.scrapedArticles, savedArticles: this.savedArticles, playSong: this.playSong, deletedArticle: this.deletedArticle, id: this.state.id, playlist: this.state.playlist, rating: this.rating, userInfo: this.userInfo, userSignup: this.userSignup }) }.bind(this))
     return (
 
       <div className="container">
@@ -228,7 +221,6 @@ userInfo: function(result) {
             {/*
    
                 */}
-            {/*<Login setEmail={this.setEmail} setPassword={this.setPassword} />*/}
           </div>
         </div>
         <footer>
