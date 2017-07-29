@@ -25,7 +25,15 @@ var Main = React.createClass({
       scrapedArticles: [],
       playlist: [],
       id: "",
+<<<<<<< HEAD
+      email: ""
+=======
       email: "",
+<<<<<<< HEAD
+      password: ""
+>>>>>>> 498d2454d2cfc6d6e50f7d566c82915c0ae4e3bd
+=======
+>>>>>>> 875eb5a7c9baf9ffe3c65240e3ba0ef6d3006f93
     };
   },
 
@@ -33,7 +41,7 @@ var Main = React.createClass({
 
   componentWillMount: function () {
 
-   
+   console.log("here" +this.state.email)
     // var self = this;
  
 
@@ -125,6 +133,10 @@ var Main = React.createClass({
     console.log("ratings - " + result)
     helpers.rating(result);
   },
+
+  avgrate: function () {
+    helpers.avgrate(result)
+  },
   playSong: function (result) {
     console.log("main " + result.title);
     console.log("main " + result.artist)
@@ -151,6 +163,14 @@ var Main = React.createClass({
 userInfo: function(result) {
   console.log("in main - email - " + result.email);
   console.log("in main - password - " + result.password);
+<<<<<<< HEAD
+    this.setState({email: result.email});
+    console.log("user info" + this.state.email);
+   helpers.logIn(result.email, result.password).then(function(data) {
+      console.log(data);
+    }.bind(this));
+        console.log("user info" + this.state.email);
+=======
 
 //two approaches: 
 
@@ -172,11 +192,22 @@ userInfo: function(result) {
 //         console.log("here - ", yo); // ex.: { user: 'Your User'}
 //       }.bind(this))
  
+>>>>>>> 875eb5a7c9baf9ffe3c65240e3ba0ef6d3006f93
 },
+
+ playlist: function() {
+   console.log("sending here - " +this.state.email)
+      return axios.post("/playlist/" + this.state.email)
+    },
 
 userSignup: function(result) {
   console.log("in main - email - " + result.email)
   console.log("in main - password - " + result.password);
+<<<<<<< HEAD
+    this.setState({email: result.email});
+    console.log("usersignup - " +this.state.email);
+=======
+>>>>>>> 875eb5a7c9baf9ffe3c65240e3ba0ef6d3006f93
   helpers.createUser(result.email, result.password).then(function(data) {
     console.log(data);
   }.bind(this));

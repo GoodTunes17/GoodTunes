@@ -8,6 +8,7 @@ var path = require("path");
 // var db = require("../models");
 var Note = require("../models/Note.js");
 var Track = require("../models/Track.js");
+var User = require("../models/User.js")
 // Set mongoose to leverage built in JavaScript ES6 Promises
 mongoose.Promise = Promise;
 // Requiring passport for user authentication
@@ -15,7 +16,7 @@ var passport = require("passport");
 var keys = require("../keys");
 
 
-module.exports = function(app) {
+module.exports = function (app) {
 
     // Main "/" Route. This will redirect the user to our rendered React application
     // app.get("/", function(req, res) {
@@ -24,7 +25,7 @@ module.exports = function(app) {
 
     // Route to be used for viewing the main page after logging in - currently goes to the 
     // index page even if a user isn't logged in due to React Router rendering
-    app.get('/', isLoggedIn, function(req, res) {
+    app.get('/', isLoggedIn, function (req, res) {
         res.render('index.ejs', {
             message: req.flash('userMessage'),
             user: req.user
@@ -32,7 +33,7 @@ module.exports = function(app) {
     });
 
     // Route to be used for viewing a specific user's homepage after logging in
-    app.get('/profile', isLoggedIn, function(req, res) {
+    app.get('/profile', isLoggedIn, function (req, res) {
         res.render('profile.ejs', {
             message: req.flash('userMessage'),
             user: req.user
@@ -51,7 +52,7 @@ module.exports = function(app) {
         }
     }
 
-    app.get('/signup', function(req, res, next) {
+    app.get('/signup', function (req, res, next) {
         res.render('signup.ejs', { message: req.flash('signupMessage') });
         //  res.send({ message: req.flash('signupMessage') });
 
@@ -65,7 +66,7 @@ module.exports = function(app) {
         successFlash: true
     }));
 
-    app.get('/login', function(req, res) {
+    app.get('/login', function (req, res) {
         res.render('login.ejs', {
             message: req.flash('loginMessage'),
             successMessage: req.flash('successMessage')
@@ -81,22 +82,22 @@ module.exports = function(app) {
     }));
 
     // User logout
-    app.get('/logout', function(req, res) {
+    app.get('/logout', function (req, res) {
         req.logout();
         res.redirect('/login');
         console.log("User logged out");
     });
 
-    app.get("/scrape", function(req, res) {
+    app.get("/scrape", function (req, res) {
         // First, we grab the body of the html with request
-        request("http://www.pitchfork.com/reviews/best/tracks/", function(error, response, html) {
+        request("http://www.pitchfork.com/reviews/best/tracks/", function (error, response, html) {
             // Then, we load that into cheerio and save it to $ for a shorthand selector
             var $ = cheerio.load(html);
             // Save an empty result object
             var result = {};
             //entry is an array of result objects? 
             var entry = [];
-            $('ul.artist-list').each(function(i, element) {
+            $('ul.artist-list').each(function (i, element) {
                 console.log("scraping");
                 result.artist = $(element).children().text();
                 var title = $(element).siblings().text();
@@ -111,7 +112,7 @@ module.exports = function(app) {
             });
             // this saves the array of pushed objects from website
             for (var i = 0; i < entry.length; i++) {
-                entry[i].save(function(err, data) {
+                entry[i].save(function (err, data) {
                     if (err) {
                         console.log(err);
                     } else {
@@ -120,14 +121,14 @@ module.exports = function(app) {
                 });
             }
         });
-        request("http://www.hypem.com/stack/", function(error, response, html) {
+        request("http://www.hypem.com/stack/", function (error, response, html) {
             // Then, we load that into cheerio and save it to $ for a shorthand selector
             var $ = cheerio.load(html);
             // Save an empty result object
             var result = {};
             //entry is an array of result objects? 
             var entry = [];
-            $(".section-player h3").each(function(i, element) {
+            $(".section-player h3").each(function (i, element) {
                 console.log("scraping");
                 result.artist = $(this).children(".artist").text();
                 result.title = $(this).find(".base-title").text();
@@ -139,7 +140,7 @@ module.exports = function(app) {
             });
             // this saves the array of pushed objects from website
             for (var i = 0; i < entry.length; i++) {
-                entry[i].save(function(err, data) {
+                entry[i].save(function (err, data) {
                     if (err) {
                         console.log(err);
                     } else {
@@ -148,14 +149,14 @@ module.exports = function(app) {
                 });
             }
         });
-        request("http://www.npr.org/series/122356178/songs-we-love/", function(error, response, html) {
+        request("http://www.npr.org/series/122356178/songs-we-love/", function (error, response, html) {
             var $ = cheerio.load(html);
             var result = {};
             // $("h2.title").each(function(i,element){
             //     result.artist = $(this).children("a");
             //     result.title = $(this).children("a");
 
-            $("h2.audio-module-title").each(function(i, element) {
+            $("h2.audio-module-title").each(function (i, element) {
                 var song = $(this).text().split(",");
                 result.artist = song[0];
                 result.title = song[1];
@@ -166,7 +167,7 @@ module.exports = function(app) {
                 result.source = "https://raw.githubusercontent.com/mariegadda/tunesimgs/master/npr_logo_rgb.JPG";
                 result.sourceLink = "http://www.npr.org/series/122356178/songs-we-love/";
                 var entry = new Track(result);
-                entry.save(function(err, doc) {
+                entry.save(function (err, doc) {
                     if (err) {
                         console.log(err);
                     } else {
@@ -199,11 +200,11 @@ module.exports = function(app) {
         //     });
         // });
 
-        request("https://www.indieshuffle.com/new-songs", function(error, response, html) {
+        request("https://www.indieshuffle.com/new-songs", function (error, response, html) {
             var $ = cheerio.load(html);
             var result = {};
 
-            $("span.title-dash").each(function(i, element) {
+            $("span.title-dash").each(function (i, element) {
                 var song = $(this).parent("h5").text();
                 song = song.split(" - ");
                 result.artist = song[0];
@@ -211,7 +212,7 @@ module.exports = function(app) {
                 result.source = "https://raw.githubusercontent.com/mariegadda/tunesimgs/31ab5ea7639bcf8d329c4f392a8d47bcd9ec62d8/indie_shuffle_logo.png";
                 result.sourceLink = "https://www.indieshuffle.com/new-songs";
                 var entry = new Track(result);
-                entry.save(function(err, doc) {
+                entry.save(function (err, doc) {
                     if (err) {
                         console.log(err);
                     } else {
@@ -224,11 +225,11 @@ module.exports = function(app) {
     });
 
     //spotify query to get the spotify id# that we need to use in the iframe player
-    app.get("/spotify2/:title/:artist", function(req, res) {
+    app.get("/spotify2/:title/:artist", function (req, res) {
         //removing spaces in the title for the query
         var artist = req.params.artist;
-        console.log( artist);
-         artist = artist.replace(/ /gi, "%20");
+        console.log(artist);
+        artist = artist.replace(/ /gi, "%20");
         var songName = req.params.title;
         songName = songName.replace(/ /gi, "%20");
         songname = songName.replace(/[]/gi, '');
@@ -249,7 +250,7 @@ module.exports = function(app) {
                 json: true
             };
 
-            request.post(authOptions, function(error, response, body) {
+            request.post(authOptions, function (error, response, body) {
                 if (!error && response.statusCode === 200) {
 
                     console.log("url --" + requestUrl);
@@ -266,14 +267,14 @@ module.exports = function(app) {
 
                         if (body.tracks.items[0] === undefined) {
                             console.log("broken");
-                           var id = "#";
-                           res.send(id);
-                        }else{
-                             var id = body.tracks.items[0].id;
-                             console.log(id);
-                             res.send(id);
+                            var id = "#";
+                            res.send(id);
+                        } else {
+                            var id = body.tracks.items[0].id;
+                            console.log(id);
+                            res.send(id);
 
-                        }                       
+                        }
                     });
                 }
             });
@@ -282,10 +283,10 @@ module.exports = function(app) {
     });
     // this grabs all the scrapes from the database --- 
 
-    app.get("/api", function(req, res) {
+    app.get("/api", function (req, res) {
         console.log("hello");
         // Find all results from the scrapedData collection in the db
-        Track.find({}, function(error, found) {
+        Track.find({}, function (error, found) {
             // Throw any errors to the console
             if (error) {
                 console.log(error);
@@ -297,10 +298,10 @@ module.exports = function(app) {
 
     // this will change the "saved" database property to true
 
-    app.post("/saved", function(req, res) {
+    app.post("/saved", function (req, res) {
         console.log("this is the id to save: " + req.body.id);
         Track.findOneAndUpdate({ "_id": req.body.id }, { "saved": true })
-            .exec(function(err, doc) {
+            .exec(function (err, doc) {
                 // logs any errors
                 if (err) {
                     console.log(err);
@@ -314,9 +315,9 @@ module.exports = function(app) {
 
     // this will change the "saved" database property to false
 
-    app.post("/delete", function(req, res) {
+    app.post("/delete", function (req, res) {
         Track.findOneAndUpdate({ "_id": req.body.id }, { "saved": false })
-            .exec(function(err, doc) {
+            .exec(function (err, doc) {
                 // logs any errors
                 if (err) {
                     console.log(err);
@@ -328,13 +329,15 @@ module.exports = function(app) {
             });
     });
 
-    app.post("/rating", function(req, res) {
-                    console.log("route - " + req.body.id)
-                    console.log(" name - " + req.body.rating)
+    // saves rating to Track - easy 
+
+    app.post("/rating", function (req, res) {
+        console.log("route - " + req.body.id)
+        console.log(" name - " + req.body.rating)
         Track.findOneAndUpdate(
-            { "_id": req.body.id }, 
+            { "_id": req.body.id },
             { "rating": req.body.rating })
-            .exec(function(err, doc) {
+            .exec(function (err, doc) {
                 // logs any errors
                 if (err) {
                     console.log(err);
@@ -345,58 +348,78 @@ module.exports = function(app) {
                 }
             });
     });
+
+    // saves rating to notes.js
 
     // creates a new note or replaces an existing note
-app.post("/rating/:id", function(req, res) {
-    // creates a new note and passes the req.body to the entry
-    var newComment = new Note(req.body);
-    console.log("in routes - " +req.body.name);
-    // saves the new note the db
-    newComment.save(function(error, doc) {
-        console.log("doc.id -- " + doc.name )
-        // logs any errors
-        if (error) {
-            console.log(error);
-        } else {
-            // uses the article id to find and update it's note
-            Track.findOneAndUpdate({ "_id": req.params.id }, { "note": doc._id })
-                .populate("name")
-                // executes the above query
-                .exec(function(err, doc) {
-                    // logs any errors
-                    if (err) {
-                        console.log(err);
-                    } else {
+    app.post("/rating/:id", function (req, res) {
+        // creates a new note and passes the req.body to the entry
+        var newComment = new Note(req.body);
+        console.log("in routes - " + req.body.name);
+        // saves the new note the db
+        newComment.save(function (error, doc) {
+            console.log("doc.id -- " + doc.name)
+            // logs any errors
+            if (error) {
+                console.log(error);
+            } else {
+                // uses the article id to find and update it's rating
+                Track.findOneAndUpdate({ "_id": req.params.id }, { "note": doc._id })
+                    .populate("name")
+                    // executes the above query
+                    .exec(function (err, doc) {
+                        // logs any errors
+                        if (err) {
+                            console.log(err);
+                        } else {
 
-                        // or sends the document to the browser
-                        console.log("here -- " +doc);
-                        res.send(doc);
-                    }
-                });
-        }
+                            // or sends the document to the browser
+                            console.log("here -- " + doc);
+                            res.send(doc);
+                        }
+                    });
+            }
+        });
     });
-});
 
 
-// 3. get a rating if in the note model 
+    // 3. get a rating if in the note model 
 
-app.get("/articles/:id", function (req, res) {
-  // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
-  Article.findOne({ "_id": req.params.id })
-    // ..and populate all of the notes associated with it
-    .populate("name")
-    // now, execute our query
-    .exec(function (error, doc) {
-      // Log any errors
-      if (error) {
-        console.log(error);
-      }
-      // Otherwise, send the doc to the browser as a json object
-      else {
-        res.json(doc);
-      }
+    app.get("/articles/:id", function (req, res) {
+        // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
+        Article.findOne({ "_id": req.params.id })
+            // ..and populate all of the notes associated with it
+            .populate("name")
+            // now, execute our query
+            .exec(function (error, doc) {
+                // Log any errors
+                if (error) {
+                    console.log(error);
+                }
+                // Otherwise, send the doc to the browser as a json object
+                else {
+                    res.json(doc);
+                }
+            });
     });
-});
+
+
+
+    app.post("/playlist/:email", function (req, res) {
+        
+        User.update({ "email": req.params.email }, { $push: { playlist: { "_id": "597b836810bf9a28eea18767" } } })
+            .exec(function (error, doc) {
+                if (error) {
+                    console.log(error);
+                }
+                // Otherwise, send the doc to the browser as a json object
+                else {
+                    res.json(doc);
+                }
+
+            })
+    })
+
 
     //close the module.exports(app) function
 };
