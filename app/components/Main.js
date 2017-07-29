@@ -405,24 +405,11 @@ var Main = React.createClass({
 userInfo: function(result) {
   console.log("in main - email - " + result.email);
   console.log("in main - password - " + result.password);
-<<<<<<< HEAD
-    this.setState({email: result.email});
-    console.log("user info" + this.state.email);
-   helpers.logIn(result.email, result.password).then(function(data) {
-      console.log(data);
-    }.bind(this));
-        console.log("user info" + this.state.email);
-=======
-
-//two approaches: 
-
-// one - call helpers, which has axios
   this.setState({email: result.email});
-  console.log("set state, email: ", this.state.email);
+  console.log("user info" + this.state.email);
   helpers.login(result.email, result.password).then(function(data) {
     console.log(data);
   }.bind(this));
-
 
 // two - just use axios here - 
 
@@ -433,34 +420,27 @@ userInfo: function(result) {
 //         var yo = response;
 //         console.log("here - ", yo); // ex.: { user: 'Your User'}
 //       }.bind(this))
- 
->>>>>>> 875eb5a7c9baf9ffe3c65240e3ba0ef6d3006f93
 },
 
- playlist: function() {
-   console.log("sending here - " +this.state.email)
-      return axios.post("/playlist/" + this.state.email)
-    },
+  playlist: function() {
+    console.log("sending here - " +this.state.email)
+    return axios.post("/playlist/" + this.state.email)
+  },
 
-userSignup: function(result) {
-  console.log("in main - email - " + result.email)
-  console.log("in main - password - " + result.password);
-<<<<<<< HEAD
-    this.setState({email: result.email});
-    console.log("usersignup - " +this.state.email);
-=======
->>>>>>> 875eb5a7c9baf9ffe3c65240e3ba0ef6d3006f93
-  helpers.createUser(result.email, result.password).then(function(data) {
-    console.log(data);
-  }.bind(this));
-},
+  userSignup: function(result) {
+    console.log("in main - email - " + result.email)
+    console.log("in main - password - " + result.password);
+    helpers.createUser(result.email, result.password).then(function(data) {
+      console.log(data);
+    }.bind(this));
+  },
 
-userLogout: function() {
-  this.setState({email: ""});
-  helpers.logout().then(function(data) {
-    console.log(data);
-  }.bind(this));
-},
+  userLogout: function() {
+    this.setState({email: ""});
+    helpers.logout().then(function(data) {
+      console.log(data);
+    }.bind(this));
+  },
 
   // Here we render the function
 
