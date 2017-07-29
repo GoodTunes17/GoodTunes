@@ -38,6 +38,8 @@ module.exports = function(app) {
             user: req.user
         });
         console.log("USER: ", req.user.email);
+        var user = req.user.email;
+        console.log(user);
     });
 
     // Function for determining if user is logged in, gets passed into the route above
