@@ -70,11 +70,16 @@ var helpers = {
     },
 
     // Logging in a user from the login page
-    logIn: function(email, password) {
+    login: function(email, password) {
         return axios.post('/login', {
             email: email, 
             password: password
         });
+    },
+
+    // User logout
+    logout: function() {
+        return axios.get('/logout');
     }
 
 
