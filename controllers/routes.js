@@ -82,6 +82,7 @@ module.exports = function(app) {
     app.get('/logout', function(req, res) {
         req.logout();
         res.redirect('/login');
+        console.log("User logged out");
     });
 
     app.get("/scrape", function(req, res) {

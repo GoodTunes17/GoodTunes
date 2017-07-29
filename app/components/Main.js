@@ -150,16 +150,16 @@ var Main = React.createClass({
  
 
 userInfo: function(result) {
-  console.log("in main - email - " + result.email)
+  console.log("in main - email - " + result.email);
   console.log("in main - password - " + result.password);
 
 //two approaches: 
 
 // one - call helpers, which has axios
 
-   helpers.logIn(result.email, result.password).then(function(data) {
-      console.log(data);
-    }.bind(this));
+  helpers.login(result.email, result.password).then(function(data) {
+    console.log(data);
+  }.bind(this));
 
 
 // two - just use axios here - 
@@ -183,13 +183,19 @@ userSignup: function(result) {
   }.bind(this));
 },
 
+userLogout: function() {
+  helpers.logout().then(function(data) {
+    console.log(data);
+  }.bind(this));
+},
+
   // Here we render the function
 
   render: function () {
     var url = "https://open.spotify.com/embed?uri=spotify:track:" + this.state.id;
 
 
-    var children = React.Children.map(this.props.children, function (child) { return React.cloneElement(child, { scrapedArticles: this.state.scrapedArticles, savedArticles: this.savedArticles, playSong: this.playSong, deletedArticle: this.deletedArticle, id: this.state.id, playlist: this.state.playlist, rating: this.rating, userInfo: this.userInfo, userSignup: this.userSignup }) }.bind(this))
+    var children = React.Children.map(this.props.children, function (child) { return React.cloneElement(child, { scrapedArticles: this.state.scrapedArticles, savedArticles: this.savedArticles, playSong: this.playSong, deletedArticle: this.deletedArticle, id: this.state.id, playlist: this.state.playlist, rating: this.rating, userInfo: this.userInfo, userSignup: this.userSignup, userLogout: this.userLogout }) }.bind(this))
     return (
 
       <div className="container">
@@ -207,6 +213,7 @@ userSignup: function(result) {
           <Link to="/Playlist"><button className="btn btn-nav"> Show Playlist</button></Link>
           <Link to="/login"><button className="btn btn-nav"> Login</button></Link>
           <Link to="/signup"><button className="btn btn-nav"> Sign Up</button></Link>
+          <Link to="/logout"><button className="btn btn-nav"> Logout</button></Link>
         </nav>
 
         <div className="col-md-4">
