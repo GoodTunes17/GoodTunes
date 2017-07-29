@@ -25,8 +25,12 @@ var Main = React.createClass({
       scrapedArticles: [],
       playlist: [],
       id: "",
+<<<<<<< HEAD
+      email: ""
+=======
       email: "",
       password: ""
+>>>>>>> 498d2454d2cfc6d6e50f7d566c82915c0ae4e3bd
     };
   },
 
@@ -34,7 +38,7 @@ var Main = React.createClass({
 
   componentWillMount: function () {
 
-   
+   console.log("here" +this.state.email)
     // var self = this;
  
 
@@ -126,6 +130,10 @@ var Main = React.createClass({
     console.log("ratings - " + result)
     helpers.rating(result);
   },
+
+  avgrate: function () {
+    helpers.avgrate(result)
+  },
   playSong: function (result) {
     console.log("main " + result.title);
     console.log("main " + result.artist)
@@ -152,32 +160,24 @@ var Main = React.createClass({
 userInfo: function(result) {
   console.log("in main - email - " + result.email);
   console.log("in main - password - " + result.password);
-
-//two approaches: 
-
-// one - call helpers, which has axios
-
-  helpers.login(result.email, result.password).then(function(data) {
-    console.log(data);
-  }.bind(this));
-
-
-// two - just use axios here - 
-
-//  return axios.get("/login", {
-//    email: result.email, 
-//    password: result.password
-//   }).then(function (response) {
-//         var yo = response;
-//         console.log("here - ", yo); // ex.: { user: 'Your User'}
-//       }.bind(this))
- 
+    this.setState({email: result.email});
+    console.log("user info" + this.state.email);
+   helpers.logIn(result.email, result.password).then(function(data) {
+      console.log(data);
+    }.bind(this));
+        console.log("user info" + this.state.email);
 },
+
+ playlist: function() {
+   console.log("sending here - " +this.state.email)
+      return axios.post("/playlist/" + this.state.email)
+    },
 
 userSignup: function(result) {
   console.log("in main - email - " + result.email)
   console.log("in main - password - " + result.password);
-
+    this.setState({email: result.email});
+    console.log("usersignup - " +this.state.email);
   helpers.createUser(result.email, result.password).then(function(data) {
     console.log(data);
   }.bind(this));
