@@ -29,8 +29,11 @@ var Main = React.createClass({
       email: ""
 =======
       email: "",
+<<<<<<< HEAD
       password: ""
 >>>>>>> 498d2454d2cfc6d6e50f7d566c82915c0ae4e3bd
+=======
+>>>>>>> 875eb5a7c9baf9ffe3c65240e3ba0ef6d3006f93
     };
   },
 
@@ -160,12 +163,36 @@ var Main = React.createClass({
 userInfo: function(result) {
   console.log("in main - email - " + result.email);
   console.log("in main - password - " + result.password);
+<<<<<<< HEAD
     this.setState({email: result.email});
     console.log("user info" + this.state.email);
    helpers.logIn(result.email, result.password).then(function(data) {
       console.log(data);
     }.bind(this));
         console.log("user info" + this.state.email);
+=======
+
+//two approaches: 
+
+// one - call helpers, which has axios
+  this.setState({email: result.email});
+  console.log("set state, email: ", this.state.email);
+  helpers.login(result.email, result.password).then(function(data) {
+    console.log(data);
+  }.bind(this));
+
+
+// two - just use axios here - 
+
+//  return axios.get("/login", {
+//    email: result.email, 
+//    password: result.password
+//   }).then(function (response) {
+//         var yo = response;
+//         console.log("here - ", yo); // ex.: { user: 'Your User'}
+//       }.bind(this))
+ 
+>>>>>>> 875eb5a7c9baf9ffe3c65240e3ba0ef6d3006f93
 },
 
  playlist: function() {
@@ -176,14 +203,18 @@ userInfo: function(result) {
 userSignup: function(result) {
   console.log("in main - email - " + result.email)
   console.log("in main - password - " + result.password);
+<<<<<<< HEAD
     this.setState({email: result.email});
     console.log("usersignup - " +this.state.email);
+=======
+>>>>>>> 875eb5a7c9baf9ffe3c65240e3ba0ef6d3006f93
   helpers.createUser(result.email, result.password).then(function(data) {
     console.log(data);
   }.bind(this));
 },
 
 userLogout: function() {
+  this.setState({email: ""});
   helpers.logout().then(function(data) {
     console.log(data);
   }.bind(this));
@@ -196,6 +227,11 @@ userLogout: function() {
 
 
     var children = React.Children.map(this.props.children, function (child) { return React.cloneElement(child, { scrapedArticles: this.state.scrapedArticles, savedArticles: this.savedArticles, playSong: this.playSong, deletedArticle: this.deletedArticle, id: this.state.id, playlist: this.state.playlist, rating: this.rating, userInfo: this.userInfo, userSignup: this.userSignup, userLogout: this.userLogout }) }.bind(this))
+    
+    if (this.state.email !== "") {
+      var welcomeStatement = "Welcome, " + this.state.email + "!";
+    }
+
     return (
 
       <div className="container">
@@ -208,6 +244,7 @@ userLogout: function() {
           <div className="navbar-header col-md-9">
             <h1>Good Tunes</h1>
             <h2>recommended tunes from around the internet!</h2>
+            <h2>{welcomeStatement}</h2>
           </div>
           <Link to="/Scrape"><button className="btn btn-nav" onClick={this.scrape}> Show Scrape</button></Link>
           <Link to="/Playlist"><button className="btn btn-nav"> Show Playlist</button></Link>
