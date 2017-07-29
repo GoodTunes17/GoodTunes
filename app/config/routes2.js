@@ -28,7 +28,7 @@ var Extra = require("../components/children/Extra");
 var Logout = require("../components/children/Logout");
 
 function loggedIn() {
-  return false;
+  return true;
 }
 
 function requireAuth(nextState, replace) {

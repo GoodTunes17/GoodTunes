@@ -99,7 +99,11 @@ module.exports = function(app) {
                 result.artist = $(element).children().text();
                 var title = $(element).siblings().text();
                 //replace double quotes with nothing!
+                title = title.replace('Best New Track', '');
+                title = title.replace('Read the Review', '');
+                title = title.replace(/\[.*?\]/g, "");
                 title = title.replace(/[\u201C\u201D]/g, '');
+              
                 result.title = title;
                 result.source = "https://raw.githubusercontent.com/mariegadda/tunesimgs/master/pitchfork_logo.png";
                 result.sourceLink = "http://www.pitchfork.com/reviews/best/tracks/";
