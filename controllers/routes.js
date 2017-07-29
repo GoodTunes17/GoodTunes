@@ -83,6 +83,7 @@ module.exports = function (app) {
     app.get('/logout', function (req, res) {
         req.logout();
         res.redirect('/login');
+        console.log("User logged out");
     });
 
     app.get("/scrape", function (req, res) {
@@ -101,8 +102,8 @@ module.exports = function (app) {
                 //replace double quotes with nothing!
                 title = title.replace(/[\u201C\u201D]/g, '');
                 result.title = title;
-                result.source = "Pitchfork";
-
+                result.source = "https://raw.githubusercontent.com/mariegadda/tunesimgs/master/pitchfork_logo.png";
+                result.sourceLink = "http://www.pitchfork.com/reviews/best/tracks/";
                 //use Tracks model to create new entries
                 entry.push(new Track(result));
                 console.log(result);
@@ -129,7 +130,8 @@ module.exports = function (app) {
                 console.log("scraping");
                 result.artist = $(this).children(".artist").text();
                 result.title = $(this).find(".base-title").text();
-                result.source = "Hype Machine";
+                result.source = "https://raw.githubusercontent.com/mariegadda/tunesimgs/master/stack_fb.png";
+                result.sourceLink ="http://www.hypem.com/stack/";
                 //use Tracks model to create new entries
                 entry.push(new Track(result));
                 console.log(result);
@@ -160,7 +162,8 @@ module.exports = function (app) {
                 // title = title.replace(/[\u2018\u2019]/g, '');
                 // result.title = title;
 
-                result.source = "NPR";
+                result.source = "https://raw.githubusercontent.com/mariegadda/tunesimgs/master/npr_logo_rgb.JPG";
+                result.sourceLink = "http://www.npr.org/series/122356178/songs-we-love/";
                 var entry = new Track(result);
                 entry.save(function (err, doc) {
                     if (err) {
@@ -204,7 +207,8 @@ module.exports = function (app) {
                 song = song.split(" - ");
                 result.artist = song[0];
                 result.title = song[1];
-                result.source = "Indie Shuffle";
+                result.source = "https://raw.githubusercontent.com/mariegadda/tunesimgs/31ab5ea7639bcf8d329c4f392a8d47bcd9ec62d8/indie_shuffle_logo.png";
+                result.sourceLink = "https://www.indieshuffle.com/new-songs";
                 var entry = new Track(result);
                 entry.save(function (err, doc) {
                     if (err) {
@@ -257,8 +261,7 @@ module.exports = function (app) {
                         },
                         json: true
                     };
-                    request.get(options, function (error, response, body) {
-                   
+                    request.get(options, function(error, response, body) {
 
                         if (body.tracks.items[0] === undefined) {
                             console.log("broken");

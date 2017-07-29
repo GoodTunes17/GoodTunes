@@ -25,7 +25,12 @@ var Main = React.createClass({
       scrapedArticles: [],
       playlist: [],
       id: "",
+<<<<<<< HEAD
       email: ""
+=======
+      email: "",
+      password: ""
+>>>>>>> 498d2454d2cfc6d6e50f7d566c82915c0ae4e3bd
     };
   },
 
@@ -153,7 +158,7 @@ var Main = React.createClass({
  
 
 userInfo: function(result) {
-  console.log("in main - email - " + result.email)
+  console.log("in main - email - " + result.email);
   console.log("in main - password - " + result.password);
     this.setState({email: result.email});
     console.log("user info" + this.state.email);
@@ -178,13 +183,19 @@ userSignup: function(result) {
   }.bind(this));
 },
 
+userLogout: function() {
+  helpers.logout().then(function(data) {
+    console.log(data);
+  }.bind(this));
+},
+
   // Here we render the function
 
   render: function () {
     var url = "https://open.spotify.com/embed?uri=spotify:track:" + this.state.id;
 
 
-    var children = React.Children.map(this.props.children, function (child) { return React.cloneElement(child, { scrapedArticles: this.state.scrapedArticles, savedArticles: this.savedArticles, playSong: this.playSong, deletedArticle: this.deletedArticle, id: this.state.id, playlist: this.state.playlist, rating: this.rating, userInfo: this.userInfo, userSignup: this.userSignup }) }.bind(this))
+    var children = React.Children.map(this.props.children, function (child) { return React.cloneElement(child, { scrapedArticles: this.state.scrapedArticles, savedArticles: this.savedArticles, playSong: this.playSong, deletedArticle: this.deletedArticle, id: this.state.id, playlist: this.state.playlist, rating: this.rating, userInfo: this.userInfo, userSignup: this.userSignup, userLogout: this.userLogout }) }.bind(this))
     return (
 
       <div className="container">
@@ -196,12 +207,13 @@ userSignup: function(result) {
         <nav className="navbar navbar-default">
           <div className="navbar-header col-md-9">
             <h1>Good Tunes</h1>
-            <h2>{this.props.user}</h2>
+            <h2>recommended tunes from around the internet!</h2>
           </div>
           <Link to="/Scrape"><button className="btn btn-nav" onClick={this.scrape}> Show Scrape</button></Link>
           <Link to="/Playlist"><button className="btn btn-nav"> Show Playlist</button></Link>
           <Link to="/login"><button className="btn btn-nav"> Login</button></Link>
           <Link to="/signup"><button className="btn btn-nav"> Sign Up</button></Link>
+          <Link to="/logout"><button className="btn btn-nav"> Logout</button></Link>
         </nav>
 
         <div className="col-md-4">

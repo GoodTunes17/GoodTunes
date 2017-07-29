@@ -54,7 +54,11 @@ var Playlist = React.createClass({
           var boundClick4 = this.handleClick4.bind(this, search)
           return (
             <div className="well playlist-well">
-              <p className="critic"> <small> Source: <br /> {search.source} </small></p>
+               <p className="critic"> 
+                <a href={search.sourceLink} target="blank">
+                  <img className="logo" src={search.source}/> 
+                </a>
+                </p>
               <h4 className="artist"> <strong> {search.artist}</strong></h4>
                <p className="title">  {search.title} </p>
               <button className="btn delete" key={"b" + i} onClick={boundClick3}> delete </button>

@@ -12,25 +12,14 @@ var TrackSchema = new Schema({
  //title is required to be unique so we don't get the same tracks everytime we scrape
   title: {
     type: String,
-    unique: true
-  },
-  album: {
-    type: String
+    unique: true,
+    required: true
   },
   id: {
     type: String
   },
-  genre: {
-    type: String 
-  },
-  critic: {
-    type: String  
-  },
-  reviewLink: {
+ sourceLink: {
     type: String
-  },
-  image: {
-    type: String,
   },
   source: {
     type: String   
