@@ -28,8 +28,10 @@ var helpers = {
    rating: function (result) {
     console.log("id - " + result[0])
       console.log("rating -- " +result[1])
+      console.log("email -- " + result[2])
     return axios.post("/rating/"+result[0], {
-        name: result[1]
+        name: result[1],
+        email: result[2]
     })
           
   },
@@ -51,7 +53,8 @@ var helpers = {
     // this will change the "saved" database property to true
 
     postArticle: function(result) {
-        console.log("id is: " + result);
+        console.log("the user email is  " + result[0]);
+        console.log("the song id is " + result[1])
         return axios.post('/saved', { id: result });
     },
 
@@ -59,7 +62,10 @@ var helpers = {
 
     deleteArticle: function(result) {
         console.log("helper reached with " + result);
-        return axios.post('/delete', { id: result });
+        return axios.post('/delete', { 
+            email: result[0],
+            song: result[1] 
+        });
     },
 
     // Creating a new user from the signup page
