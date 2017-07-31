@@ -25,7 +25,8 @@ var Main = React.createClass({
       scrapedArticles: [],
       playlist: [],
       id: "",
-      email: ""
+      email: "",
+      isLoggedIn: false
     };
   },
 
@@ -156,10 +157,12 @@ userInfo: function(result) {
   console.log("in main - email - " + result.email);
   console.log("in main - password - " + result.password);
   this.setState({email: result.email});
+  this.setState({isLoggedIn: true});
   console.log("user info" + this.state.email);
   helpers.login(result.email, result.password).then(function(data) {
     console.log(data);
   }.bind(this));
+  this.props.history.push('/Playlist');
 
 // two - just use axios here - 
 
@@ -183,10 +186,12 @@ userInfo: function(result) {
     helpers.createUser(result.email, result.password).then(function(data) {
       console.log(data);
     }.bind(this));
+    this.props.history.push('/login');
   },
 
   userLogout: function() {
     this.setState({email: ""});
+    this.setState({isLoggedIn: false});
     helpers.logout().then(function(data) {
       console.log(data);
     }.bind(this));
@@ -198,7 +203,7 @@ userInfo: function(result) {
     var url = "https://open.spotify.com/embed?uri=spotify:track:" + this.state.id;
 
 
-    var children = React.Children.map(this.props.children, function (child) { return React.cloneElement(child, { scrapedArticles: this.state.scrapedArticles, savedArticles: this.savedArticles, playSong: this.playSong, deletedArticle: this.deletedArticle, id: this.state.id, playlist: this.state.playlist, rating: this.rating, userInfo: this.userInfo, userSignup: this.userSignup, userLogout: this.userLogout }) }.bind(this))
+    var children = React.Children.map(this.props.children, function (child) { return React.cloneElement(child, { scrapedArticles: this.state.scrapedArticles, savedArticles: this.savedArticles, playSong: this.playSong, deletedArticle: this.deletedArticle, id: this.state.id, playlist: this.state.playlist, rating: this.rating, userInfo: this.userInfo, userSignup: this.userSignup, userLogout: this.userLogout, isLoggedIn: this.state.isLoggedIn, email: this.state.email }) }.bind(this))
     
     if (this.state.email !== "") {
       var welcomeStatement = "Welcome, " + this.state.email + "!";
@@ -216,7 +221,6 @@ userInfo: function(result) {
           <div className="navbar-header col-md-9">
             <h1>Good Tunes</h1>
             <h2>recommended tunes from around the internet!</h2>
-            <h2>{welcomeStatement}</h2>
           </div>
           <Link to="/Scrape"><button className="btn btn-nav" onClick={this.scrape}> Show Scrape</button></Link>
           <Link to="/Playlist"><button className="btn btn-nav"> Show Playlist</button></Link>
@@ -251,6 +255,7 @@ userInfo: function(result) {
     )
   }
 });
+
 
 // Export the component back for use in other files
 module.exports = Main;

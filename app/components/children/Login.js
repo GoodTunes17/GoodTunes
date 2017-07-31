@@ -26,10 +26,10 @@ var Login = React.createClass({
     var user = {}
     user ={email: this.state.email, password: this.state.password}
     this.props.userInfo(user);
-    this.setState({
-      email: "", 
-      password: ""
-    });
+    // this.setState({
+    //   email: "", 
+    //   password: ""
+    // });
   },
   render: function() {
   	return (
@@ -48,8 +48,6 @@ var Login = React.createClass({
     		  </div>
     		  <button type="submit" className="btn btn-default login-btn">Login</button>
   	    </form>
-
-  		  <h4>Don't have an account? <a href="/signup" className="signup">Sign up here!</a></h4>
 
   	  </div>
   	);
