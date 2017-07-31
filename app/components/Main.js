@@ -34,9 +34,9 @@ var Main = React.createClass({
 
   componentWillMount: function () {
 
-   console.log("here" +this.state.email)
+    console.log("here" + this.state.email)
     // var self = this;
- 
+
 
     if (this.state.scrapedArticles.length < 1) {
       console.log("no scrapes")
@@ -54,7 +54,7 @@ var Main = React.createClass({
 
   },
 
- 
+
   scrape: function () {
 
     helpers.scrape().then(function (response) {
@@ -101,7 +101,7 @@ var Main = React.createClass({
                 console.log("save2")
                 this.setState({ scrapedArticles: response.data });
             }
-            this.getPlaylist()
+            this.playlist2()
         }.bind(this))
     },
 
@@ -109,44 +109,34 @@ var Main = React.createClass({
   // find those that are "saved" and put them in the 
   // "playlist" variable.. 
 
-  getPlaylist: function () {
-    var prePlaylist = [];
-    for (var i = 0; i < this.state.scrapedArticles.length; i++) {
-      if (this.state.scrapedArticles[i].saved) {
-        console.log(this.state.scrapedArticles[i].saved)
-        prePlaylist.push(this.state.scrapedArticles[i])
-      }
-    }
-    this.setState({ playlist: prePlaylist })
-    console.log("playlist = " + this.state.playlist[0]);
-  },
+  // getPlaylist: function () {
+  //   var prePlaylist = [];
+  //   for (var i = 0; i < this.state.scrapedArticles.length; i++) {
+  //     if (this.state.scrapedArticles[i].saved) {
+  //       console.log(this.state.scrapedArticles[i].saved)
+  //       prePlaylist.push(this.state.scrapedArticles[i])
+  //     }
+  //   }
+  //   this.setState({ playlist: prePlaylist })
+  //   console.log("playlist = " + this.state.playlist[0]);
+  // },
 
-  // this will change the "saved" database property to true
+  // RATINGS
 
-  savedArticles: function (result) {
-    console.log("This will need to be saved: " + result.artist + "whose id is: " + result._id)
-    helpers.postArticle(result._id).then(() => {
-      this.getAllArticles()
-    })
-  },
-
-  // this will change the "saved" database property to false
-
-  deletedArticle: function (result) {
-    console.log("delete!");
-    console.log("This will need to be un-saved: " + result.artist + "whose id is: " + result._id)
-    helpers.deleteArticle(result._id);
-    this.getAllArticles();
-    // shouldn't this refresh the saved articles? 
-  },
   rating: function (result) {
     console.log("ratings - " + result)
+    result.push(this.state.email);
+    console.log( "rating with all 3" + result)
     helpers.rating(result);
   },
 
   avgrate: function () {
     helpers.avgrate(result)
   },
+
+
+  // SPOTIFY SONG PLAY
+
   playSong: function (result) {
     console.log("main " + result.title);
     console.log("main " + result.artist)
@@ -161,11 +151,7 @@ var Main = React.createClass({
     console.log("idhere", this.state.id)
   },
 
-  // When a new user tries to log in 
-  // componentDidUpdate: function () {
-  //   helpers.logIn(this.email, this.password).then(function(data) {
-  //     console.log(data);
-  //   }.bind(this));
+  // USER LOG IN 
 
   // },
  
@@ -197,10 +183,10 @@ userInfo: function(result) {
     return axios.post("/playlist/" + this.state.email)
   },
 
-  userSignup: function(result) {
+  userSignup: function (result) {
     console.log("in main - email - " + result.email)
     console.log("in main - password - " + result.password);
-    helpers.createUser(result.email, result.password).then(function(data) {
+    helpers.createUser(result.email, result.password).then(function (data) {
       console.log(data);
     }.bind(this));
     this.props.history.push('/login');
@@ -212,6 +198,55 @@ userInfo: function(result) {
     helpers.logout().then(function(data) {
       console.log(data);
     }.bind(this));
+  },
+
+
+  ///  NEW  - SAVES PLAYLIST ITEM 
+
+  savedArticles: function (result) {
+    var play = [];
+    var useremail = this.state.email;
+    play.push(useremail)
+    play.push(result._id)
+    // play.push(result)
+    
+    console.log("sending this --  " + play)
+    // console.log("This will need to be saved: " + result.artist + "whose id is: " + result._id)
+    helpers.postArticle(play).then(() => {
+      this.getAllArticles()
+    })
+  },
+
+  // this will change the "saved" database property to false
+
+  deletedArticle: function (result) {
+    console.log("delete!");
+    console.log("This will need to be un-saved: " + result.artist + "whose id is: " + result._id);
+    var remove= [];
+    remove.push(this.state.email) // adds email to remove array
+    remove.push(result._id) // adds song id to remove array
+    helpers.deleteArticle(remove);
+    this.getAllArticles();
+    // shouldn't this refresh the saved articles? 
+
+  },
+
+  // NEW - GRABS PLAYLIST
+
+  playlist2: function () {
+    var newPlaylist=[];
+    console.log("sending here - " + this.state.email)
+    return axios.get("/playlist/" + this.state.email).then(function (data) {
+      console.log(data)
+      newPlaylist = data.data[0].playlist;
+      console.log("sending - " + newPlaylist)
+
+      return axios.get("/playlist2/" + newPlaylist).then(function (response) {
+        console.log("new songs - " + response.data)
+        this.setState({ playlist: response.data })
+      }.bind(this))
+          }.bind(this));
+    this.getPlaylist();
   },
 
   // Here we render the function
@@ -227,7 +262,7 @@ userInfo: function(result) {
     }
 
     return (
-
+ 
       <div className="container">
 
 
@@ -236,15 +271,15 @@ userInfo: function(result) {
 
         <nav className="navbar navbar-default">
           <div className="navbar-header col-md-9">
-            <h1>Good Tunes/h1>
+            <h1>Good Tunes</h1>
             <h2>recommended tunes from around the internet!</h2>
           </div>
-
+        
           <Link to="/login"><a className="signup"> Login</a></Link>
           <Link to="/signup"><a className="signup"> Sign Up</a></Link>
           <Link to="/logout"><a className="signup"> Logout</a></Link>
-          <Link to="/Scrape"><button className="btn btn-nav" onClick={this.scrape}> Show Scrape</button></Link>
-          <Link to="/Playlist"><button className="btn btn-nav"> Show Playlist</button></Link>
+            <Link to="/Scrape"><button className="btn btn-nav" onClick={this.scrape}> Show Scrape</button></Link>
+           <Link to="/Playlist" onClick={this.playlist2}><button className="btn btn-nav"> Show Playlist</button></Link>
 
         </nav>
 
@@ -270,6 +305,7 @@ userInfo: function(result) {
         <footer>
         </footer>
       </div>
+     
 
     )
   }
