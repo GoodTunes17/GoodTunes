@@ -46,7 +46,7 @@ app.use(flash());
 
 // Make public a static directory
 app.use(express.static("public"));
-
+var MONGODB_URI = "mongodb://heroku_kr96vmr5:mj91etrj8bmntsq1ni6cqd915r@ds129043.mlab.com:29043/heroku_kr96vmr5";
 // Database configuration for heroku deploy or local
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/tunes");
 
