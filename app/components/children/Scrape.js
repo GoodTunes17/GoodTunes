@@ -23,6 +23,7 @@ var Scrape = React.createClass({
 
   //this places song in "saved" playlist
   handleClick1: function (result, e) {
+    e.currentTarget.style.backgroundColor = '#8EFF80';
     this.props.savedArticles(result);
   },
 

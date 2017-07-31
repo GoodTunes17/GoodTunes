@@ -16,13 +16,13 @@ var passport = require("passport");
 var keys = require("../keys");
 
 
-module.exports = function (app) {
+module.exports = function(app) {
 
     ///// passport ---------------------------
 
     // Route to be used for viewing the main page after logging in - currently goes to the 
     // index page even if a user isn't logged in due to React Router rendering
-    app.get('/', isLoggedIn, function (req, res) {
+    app.get('/', isLoggedIn, function(req, res) {
         res.render('index.ejs', {
             message: req.flash('userMessage'),
             user: req.user
@@ -30,11 +30,12 @@ module.exports = function (app) {
     });
 
     // Route to be used for viewing a specific user's homepage after logging in
-    app.get('/profile', isLoggedIn, function (req, res) {
+    app.get('/profile', isLoggedIn, function(req, res) {
         res.render('profile.ejs', {
             message: req.flash('userMessage'),
             user: req.user
         });
+        console.log("passport: ", req.session);
         console.log("USER: ", req.user.email);
         var user = req.user.email;
         console.log(user);
@@ -49,7 +50,7 @@ module.exports = function (app) {
         }
     }
 
-    app.get('/signup', function (req, res, next) {
+    app.get('/signup', function(req, res, next) {
         res.render('signup.ejs', { message: req.flash('signupMessage') });
         //  res.send({ message: req.flash('signupMessage') });
 
@@ -63,7 +64,7 @@ module.exports = function (app) {
         successFlash: true
     }));
 
-    app.get('/login', function (req, res) {
+    app.get('/login', function(req, res) {
         res.render('login.ejs', {
             message: req.flash('loginMessage'),
             successMessage: req.flash('successMessage')
@@ -79,7 +80,7 @@ module.exports = function (app) {
     }));
 
     // User logout
-    app.get('/logout', function (req, res) {
+    app.get('/logout', function(req, res) {
         req.logout();
         res.redirect('/login');
         console.log("User logged out");
@@ -89,10 +90,10 @@ module.exports = function (app) {
 
     // this grabs all the scrapes from the database --- 
 
-    app.get("/api", function (req, res) {
+    app.get("/api", function(req, res) {
         console.log("hello");
         // Find all results from the scrapedData collection in the db
-        Track.find({}, function (error, found) {
+        Track.find({}, function(error, found) {
             // Throw any errors to the console
             if (error) {
                 console.log(error);
@@ -193,7 +194,7 @@ module.exports = function (app) {
 
     // saves rating to Track - easy 
 
-    app.post("/rating", function (req, res) {
+    app.post("/rating", function(req, res) {
         console.log("route - " + req.body.id)
         console.log(" name - " + req.body.rating)
         console.log("")
@@ -215,12 +216,12 @@ module.exports = function (app) {
     // saves rating to notes.js
 
     // creates a new note or replaces an existing note
-    app.post("/rating/:id", function (req, res) {
+    app.post("/rating/:id", function(req, res) {
         // creates a new note and passes the req.body to the entry
         var newComment = new Note(req.body);
         console.log("in routes - " + req.body.name);
         // saves the new note the db
-        newComment.save(function (error, doc) {
+        newComment.save(function(error, doc) {
             console.log("doc.id -- " + doc.name)
             // logs any errors
             if (error) {
@@ -230,7 +231,7 @@ module.exports = function (app) {
                 Track.findOneAndUpdate({ "_id": req.params.id }, { "note": doc._id })
                     .populate("name")
                     // executes the above query
-                    .exec(function (err, doc) {
+                    .exec(function(err, doc) {
                         // logs any errors
                         if (err) {
                             console.log(err);
@@ -248,13 +249,13 @@ module.exports = function (app) {
 
     // 3. get a rating if in the note model 
 
-    app.get("/articles/:id", function (req, res) {
+    app.get("/articles/:id", function(req, res) {
         // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
         Article.findOne({ "_id": req.params.id })
             // ..and populate all of the notes associated with it
             .populate("name")
             // now, execute our query
-            .exec(function (error, doc) {
+            .exec(function(error, doc) {
                 // Log any errors
                 if (error) {
                     console.log(error);

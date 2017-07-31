@@ -25,7 +25,8 @@ var Main = React.createClass({
       scrapedArticles: [],
       playlist: [],
       id: "",
-      email: ""
+      email: "",
+      isLoggedIn: false
     };
   },
 
@@ -70,22 +71,39 @@ var Main = React.createClass({
 
   },
 
-  getAllArticles: function () {
-    console.log("getallarticles")
-    helpers.getArticle().then(function (response) {
+   getAllArticles: function() {
+        console.log("getallarticles")
+        helpers.getArticle().then(function(response) {
+//this shuffle function is also called everytime you click save, not good UX,
+//would be better to get articles by most recently entered into database? 
 
-      console.log("getallarticles scrape from db: ", response.data);
+            // function shuffle(array) {
+            //     var m = array.length,
+            //         t, i;
+            //     // While there remain elements to shuffle…
+            //     while (m) {
+            //         // Pick a remaining element…
+            //         i = Math.floor(Math.random() * m--);
+            //         // And swap it with the current element.
+            //         t = array[m];
+            //         array[m] = array[i];
+            //         array[i] = t;
+            //     }
+            //     return array;
+            // }
+            // response.data = shuffle(response.data);
 
-      this.setState({ scrapedArticles: response.data });
 
-      //if nothing is in the database, then scrape -- 
-      if (response.data !== this.state.scrapedArticles) {
-        console.log("save2")
-        this.setState({ scrapedArticles: response.data });
-      }
-      this.playlist2()
-    }.bind(this))
-  },
+            console.log("getallarticles scrape from db: ", response.data);
+            this.setState({ scrapedArticles: response.data });
+            //if nothing is in the database, then scrape -- 
+            if (response.data !== this.state.scrapedArticles) {
+                console.log("save2")
+                this.setState({ scrapedArticles: response.data });
+            }
+            this.playlist2()
+        }.bind(this))
+    },
 
   // this will run through the scrapedArticles, 
   // find those that are "saved" and put them in the 
@@ -135,16 +153,34 @@ var Main = React.createClass({
 
   // USER LOG IN 
 
-  userInfo: function (result) {
-    console.log("in main - email - " + result.email);
-    console.log("in main - password - " + result.password);
-    this.setState({ email: result.email })
-    // localStorage.setItem(email, result.email);
-    console.log("user info" + this.state.email)
-    helpers.login(result.email, result.password).then(function (data) {
-      console.log(data);
-    }.bind(this));
-    console.log("user info" + this.state.email);
+  // },
+ 
+
+userInfo: function(result) {
+  console.log("in main - email - " + result.email);
+  console.log("in main - password - " + result.password);
+  this.setState({email: result.email});
+  this.setState({isLoggedIn: true});
+  console.log("user info" + this.state.email);
+  helpers.login(result.email, result.password).then(function(data) {
+    console.log(data);
+  }.bind(this));
+  this.props.history.push('/Playlist');
+
+// two - just use axios here - 
+
+//  return axios.get("/login", {
+//    email: result.email, 
+//    password: result.password
+//   }).then(function (response) {
+//         var yo = response;
+//         console.log("here - ", yo); // ex.: { user: 'Your User'}
+//       }.bind(this))
+},
+
+  playlist: function() {
+    console.log("sending here - " +this.state.email)
+    return axios.post("/playlist/" + this.state.email)
   },
 
   userSignup: function (result) {
@@ -153,11 +189,13 @@ var Main = React.createClass({
     helpers.createUser(result.email, result.password).then(function (data) {
       console.log(data);
     }.bind(this));
+    this.props.history.push('/login');
   },
 
-  userLogout: function () {
-    this.setState({ email: "" });
-    helpers.logout().then(function (data) {
+  userLogout: function() {
+    this.setState({email: ""});
+    this.setState({isLoggedIn: false});
+    helpers.logout().then(function(data) {
       console.log(data);
     }.bind(this));
   },
@@ -217,14 +255,14 @@ var Main = React.createClass({
     var url = "https://open.spotify.com/embed?uri=spotify:track:" + this.state.id;
 
 
-    var children = React.Children.map(this.props.children, function (child) { return React.cloneElement(child, { scrapedArticles: this.state.scrapedArticles, savedArticles: this.savedArticles, playSong: this.playSong, deletedArticle: this.deletedArticle, id: this.state.id, playlist: this.state.playlist, rating: this.rating, userInfo: this.userInfo, userSignup: this.userSignup, userLogout: this.userLogout }) }.bind(this))
-
+    var children = React.Children.map(this.props.children, function (child) { return React.cloneElement(child, { scrapedArticles: this.state.scrapedArticles, savedArticles: this.savedArticles, playSong: this.playSong, deletedArticle: this.deletedArticle, id: this.state.id, playlist: this.state.playlist, rating: this.rating, userInfo: this.userInfo, userSignup: this.userSignup, userLogout: this.userLogout, isLoggedIn: this.state.isLoggedIn, email: this.state.email }) }.bind(this))
+    
     if (this.state.email !== "") {
       var welcomeStatement = "Welcome, " + this.state.email + "!";
     }
 
     return (
-
+ 
       <div className="container">
 
 
@@ -235,13 +273,14 @@ var Main = React.createClass({
           <div className="navbar-header col-md-9">
             <h1>Good Tunes</h1>
             <h2>recommended tunes from around the internet!</h2>
-            <h2>{welcomeStatement}</h2>
           </div>
-          <Link to="/Scrape"><button className="btn btn-nav" onClick={this.scrape}> Show Scrape</button></Link>
-          <Link to="/Playlist" onClick={this.playlist2}><button className="btn btn-nav"> Show Playlist</button></Link>
-          <Link to="/login"><button className="btn btn-nav"> Login</button></Link>
-          <Link to="/signup"><button className="btn btn-nav"> Sign Up</button></Link>
-          <Link to="/logout"><button className="btn btn-nav"> Logout</button></Link>
+        
+          <Link to="/login"><a className="signup"> Login</a></Link>
+          <Link to="/signup"><a className="signup"> Sign Up</a></Link>
+          <Link to="/logout"><a className="signup"> Logout</a></Link>
+            <Link to="/Scrape"><button className="btn btn-nav" onClick={this.scrape}> Show Scrape</button></Link>
+           <Link to="/Playlist" onClick={this.playlist2}><button className="btn btn-nav"> Show Playlist</button></Link>
+
         </nav>
 
         <div className="col-md-4">
@@ -266,10 +305,12 @@ var Main = React.createClass({
         <footer>
         </footer>
       </div>
+     
 
     )
   }
 });
+
 
 // Export the component back for use in other files
 module.exports = Main;

@@ -17,21 +17,27 @@ var keys = require("../keys");
 
 module.exports = function (app) {
     
-    app.get("/scrape", function (req, res) {
+   app.get("/scrape", function(req, res) {
         // First, we grab the body of the html with request
-        request("http://www.pitchfork.com/reviews/best/tracks/", function (error, response, html) {
+        request("http://www.pitchfork.com/reviews/best/tracks/", function(error, response, html) {
             // Then, we load that into cheerio and save it to $ for a shorthand selector
             var $ = cheerio.load(html);
             // Save an empty result object
             var result = {};
             //entry is an array of result objects? 
             var entry = [];
-            $('ul.artist-list').each(function (i, element) {
+            $('ul.artist-list').each(function(i, element) {
                 console.log("scraping");
                 result.artist = $(element).children().text();
                 var title = $(element).siblings().text();
                 //replace double quotes with nothing!
+                
+                title = title.replace('Best New Track', '');
+                title = title.replace('Read the Review', '');
+                //remove everything inside of and including brackets!
+                title = title.replace(/\[.*?\]/g, "");
                 title = title.replace(/[\u201C\u201D]/g, '');
+
                 result.title = title;
                 result.source = "https://raw.githubusercontent.com/mariegadda/tunesimgs/master/pitchfork_logo.png";
                 result.sourceLink = "http://www.pitchfork.com/reviews/best/tracks/";
@@ -41,7 +47,7 @@ module.exports = function (app) {
             });
             // this saves the array of pushed objects from website
             for (var i = 0; i < entry.length; i++) {
-                entry[i].save(function (err, data) {
+                entry[i].save(function(err, data) {
                     if (err) {
                         console.log(err);
                     } else {
@@ -50,26 +56,26 @@ module.exports = function (app) {
                 });
             }
         });
-        request("http://www.hypem.com/stack/", function (error, response, html) {
+        request("http://www.hypem.com/stack/", function(error, response, html) {
             // Then, we load that into cheerio and save it to $ for a shorthand selector
             var $ = cheerio.load(html);
             // Save an empty result object
             var result = {};
             //entry is an array of result objects? 
             var entry = [];
-            $(".section-player h3").each(function (i, element) {
+            $(".section-player h3").each(function(i, element) {
                 console.log("scraping");
                 result.artist = $(this).children(".artist").text();
                 result.title = $(this).find(".base-title").text();
                 result.source = "https://raw.githubusercontent.com/mariegadda/tunesimgs/master/stack_fb.png";
-                result.sourceLink ="http://www.hypem.com/stack/";
+                result.sourceLink = "http://www.hypem.com/stack/";
                 //use Tracks model to create new entries
                 entry.push(new Track(result));
                 console.log(result);
             });
             // this saves the array of pushed objects from website
             for (var i = 0; i < entry.length; i++) {
-                entry[i].save(function (err, data) {
+                entry[i].save(function(err, data) {
                     if (err) {
                         console.log(err);
                     } else {
@@ -78,31 +84,31 @@ module.exports = function (app) {
                 });
             }
         });
-        request("http://www.npr.org/series/122356178/songs-we-love/", function (error, response, html) {
+        request("http://www.npr.org/series/122356178/songs-we-love/", function(error, response, html) {
             var $ = cheerio.load(html);
             var result = {};
-            // $("h2.title").each(function(i,element){
-            //     result.artist = $(this).children("a");
-            //     result.title = $(this).children("a");
+            $("h2.audio-module-title").each(function(i, element) {
+                var song = $(this).text();
+                // if song includes , means it includes artist and title
+                if (song.includes(',') === true) {
+                    song = song.replace(/'/g, '');
+                    song = song.split(",");
+                    song[1] = song[1].slice(1);
+                    console.log("THIS IS THE NPR SONG " + song[1]);
+                    result.artist = song[0];
+                    result.title = song[1];
 
-            $("h2.audio-module-title").each(function (i, element) {
-                var song = $(this).text().split(",");
-                result.artist = song[0];
-                result.title = song[1];
-                // var title = song[1];
-                // title = title.replace(/[\u2018\u2019]/g, '');
-                // result.title = title;
-
-                result.source = "https://raw.githubusercontent.com/mariegadda/tunesimgs/master/npr_logo_rgb.JPG";
-                result.sourceLink = "http://www.npr.org/series/122356178/songs-we-love/";
-                var entry = new Track(result);
-                entry.save(function (err, doc) {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        // console.log(doc);
-                    }
-                });
+                    result.source = "https://raw.githubusercontent.com/mariegadda/tunesimgs/master/npr_logo_rgb.JPG";
+                    result.sourceLink = "http://www.npr.org/series/122356178/songs-we-love/";
+                    var entry = new Track(result);
+                    entry.save(function(err, doc) {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            // console.log(doc);
+                        }
+                    });
+                }
             });
         });
         // I think we should skip spin for now as the url changes weekly and we have to format the title to remove quotes and the name of the album
@@ -129,39 +135,44 @@ module.exports = function (app) {
         //     });
         // });
 
-        request("https://www.indieshuffle.com/new-songs", function (error, response, html) {
+        request("https://www.indieshuffle.com/new-songs", function(error, response, html) {
             var $ = cheerio.load(html);
             var result = {};
 
-            $("span.title-dash").each(function (i, element) {
+            $("span.title-dash").each(function(i, element) {
                 var song = $(this).parent("h5").text();
-                song = song.split(" - ");
-                result.artist = song[0];
-                result.title = song[1];
-                result.source = "https://raw.githubusercontent.com/mariegadda/tunesimgs/31ab5ea7639bcf8d329c4f392a8d47bcd9ec62d8/indie_shuffle_logo.png";
-                result.sourceLink = "https://www.indieshuffle.com/new-songs";
-                var entry = new Track(result);
-                entry.save(function (err, doc) {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        // console.log(doc);
-                    }
-                });
+                //song titles including feat don't work with our spotify api
+                if (song.includes("feat.") === false) {
+                    song = song.split(" - ");
+                    result.artist = song[0];
+                    result.title = song[1];
+
+                    result.source = "https://raw.githubusercontent.com/mariegadda/tunesimgs/31ab5ea7639bcf8d329c4f392a8d47bcd9ec62d8/indie_shuffle_logo.png";
+                    result.sourceLink = "https://www.indieshuffle.com/new-songs";
+                    var entry = new Track(result);
+                    entry.save(function(err, doc) {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            // console.log(doc);
+                        }
+
+                    });
+                }
             });
         });
 
     });
 
     //spotify query to get the spotify id# that we need to use in the iframe player
-    app.get("/spotify2/:title/:artist", function (req, res) {
+    app.get("/spotify2/:title/:artist", function(req, res) {
         //removing spaces in the title for the query
         var artist = req.params.artist;
         console.log(artist);
         artist = artist.replace(/ /gi, "%20");
         var songName = req.params.title;
         songName = songName.replace(/ /gi, "%20");
-        songname = songName.replace(/[]/gi, '');
+        songName = songName.replace(/,/gi, "%2C");
         console.log("name of song in routes: " + songName);
         var requestUrl = "https://api.spotify.com/v1/search?q=track:" + songName + "%20artist:" + artist + "&type=track&limit=1";
 
@@ -179,7 +190,7 @@ module.exports = function (app) {
                 json: true
             };
 
-            request.post(authOptions, function (error, response, body) {
+            request.post(authOptions, function(error, response, body) {
                 if (!error && response.statusCode === 200) {
 
                     console.log("url --" + requestUrl);
@@ -194,7 +205,7 @@ module.exports = function (app) {
                     };
                     request.get(options, function(error, response, body) {
 
-                        if (body.tracks.items[0] === undefined) {
+                        if (body.tracks === undefined || body.tracks.items[0] === undefined) {
                             console.log("broken");
                             var id = "#";
                             res.send(id);
