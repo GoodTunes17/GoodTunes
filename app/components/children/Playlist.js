@@ -1,7 +1,7 @@
 // Include React
 var React = require("react");
-
 var Rating = require('react-rating');
+var Link = require("react-router").Link;
 
 import styles from "./styles-children.css";
 
@@ -45,37 +45,55 @@ var Playlist = React.createClass({
   //  var articles = this.props.results.map(function (article, index) {
 
   render: function () {
+
+    if (!this.props.isLoggedIn) {
+
+      return (
+        <div className="container">
+          <h2>You must be logged in to view your personal playlist!</h2>
+          <Link to="/login"><button className="btn btn-nav"> Login</button></Link>
+          <Link to="/signup"><button className="btn btn-nav">Sign up Here</button></Link>
+        </div>
+      );
+
+    }
+
+    else if (this.props.isLoggedIn) {
    
-    return (
-      <div >
-        {this.props.playlist.map(function (search, i) {
-          var boundClick3 = this.handleClick3.bind(this, search);
-          var boundClick2 = this.handleClick2.bind(this, search);
-          var boundClick4 = this.handleClick4.bind(this, search)
-          return (
-            <div className="well playlist-well">
-               <p className="critic"> 
-                <a href={search.sourceLink} target="blank">
-                  <img className="logo" src={search.source}/> 
-                </a>
-                </p>
-              <h4 className="artist"> <strong> {search.artist}</strong></h4>
-               <p className="title">  {search.title} </p>
-              <button className="btn delete" key={"b" + i} onClick={boundClick3}> delete </button>
-               <button className="btn play"  key={"a" + i} onClick={boundClick2}> play </button>
-              <div className="rating"> 
-                <Rating key={search.id} start={0} step={1} stop={5} initialRate={search.rating}
-                  empty="glyphicon glyphicon-star-empty"
-                  full="glyphicon glyphicon-star"
-                  onClick={boundClick4} />
+      return (
+        <div >
+          <h2>Welcome, {this.props.email}!</h2>
+          <Link to="/logout"><button className="btn btn-nav"> Logout</button></Link>
+          {this.props.playlist.map(function (search, i) {
+            var boundClick3 = this.handleClick3.bind(this, search);
+            var boundClick2 = this.handleClick2.bind(this, search);
+            var boundClick4 = this.handleClick4.bind(this, search)
+            return (
+              <div className="well playlist-well">
+                 <p className="critic"> 
+                  <a href={search.sourceLink} target="blank">
+                    <img className="logo" src={search.source}/> 
+                  </a>
+                  </p>
+                <h4 className="artist"> <strong> {search.artist}</strong></h4>
+                 <p className="title">  {search.title} </p>
+                <button className="btn delete" key={"b" + i} onClick={boundClick3}> delete </button>
+                 <button className="btn play"  key={"a" + i} onClick={boundClick2}> play </button>
+                <div className="rating"> 
+                  <Rating key={search.id} start={0} step={1} stop={5} initialRate={search.rating}
+                    empty="glyphicon glyphicon-star-empty"
+                    full="glyphicon glyphicon-star"
+                    onClick={boundClick4} />
+                </div>
               </div>
-            </div>
+            )
+          }.bind(this)
           )
-        }.bind(this)
-        )
-        }
-      </div>
+          }
+        </div>
     )
+
+  }
 
   }
 })

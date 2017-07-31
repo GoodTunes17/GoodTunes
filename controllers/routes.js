@@ -38,6 +38,7 @@ module.exports = function(app) {
             message: req.flash('userMessage'),
             user: req.user
         });
+        console.log("passport: ", req.session);
         console.log("USER: ", req.user.email);
         var user = req.user.email;
         console.log(user);

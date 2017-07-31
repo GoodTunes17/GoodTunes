@@ -33,6 +33,7 @@
     "react-fontawesome": "^1.6.1",
     "react-rating": "^0.8.1",
     "react-router": "^2.4.1",
+    "redux": "^3.7.2",
     "request": "^2.81.0",
     "spotify-web-api-node": "^2.4.0",
     "style-loader": "^0.18.2"
