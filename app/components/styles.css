@@ -15,7 +15,7 @@
  }
 
 .btn-nav{
-	margin-top: 20px;
+	margin-top: 30px;
 	margin-right: 15px;
 	padding: 15px;
 	background-color: #2E9CCA;
@@ -61,5 +61,19 @@ iframe{
 	border-color: #F5D21F;
 
 }
+
+a.signup{
+	color: #45DE0E;
+	text-decoration: none;
+	cursor: pointer;
+	font-size: 20px;
+	margin-left: 12px;
+
+}
+
+.signup:hover{
+color: #8EFF80;
+}
+
 
 

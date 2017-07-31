@@ -105,6 +105,7 @@ module.exports = function(app) {
                 //replace double quotes with nothing!
                 title = title.replace('Best New Track', '');
                 title = title.replace('Read the Review', '');
+                //remove everything inside of and including brackets!
                 title = title.replace(/\[.*?\]/g, "");
                 title = title.replace(/[\u201C\u201D]/g, '');
 
@@ -159,7 +160,7 @@ module.exports = function(app) {
             var result = {};
             $("h2.audio-module-title").each(function(i, element) {
                 var song = $(this).text();
-                // song = song.replace(/[\u2018\u2019]/g, '');
+                // if song includes , means it includes artist and title
                 if (song.includes(',') === true) {
                     song = song.replace(/'/g, '');
                     song = song.split(",");
@@ -167,17 +168,18 @@ module.exports = function(app) {
                     console.log("THIS IS THE NPR SONG " + song[1]);
                     result.artist = song[0];
                     result.title = song[1];
+
+                    result.source = "https://raw.githubusercontent.com/mariegadda/tunesimgs/master/npr_logo_rgb.JPG";
+                    result.sourceLink = "http://www.npr.org/series/122356178/songs-we-love/";
+                    var entry = new Track(result);
+                    entry.save(function(err, doc) {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            // console.log(doc);
+                        }
+                    });
                 }
-                result.source = "https://raw.githubusercontent.com/mariegadda/tunesimgs/master/npr_logo_rgb.JPG";
-                result.sourceLink = "http://www.npr.org/series/122356178/songs-we-love/";
-                var entry = new Track(result);
-                entry.save(function(err, doc) {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        // console.log(doc);
-                    }
-                });
             });
         });
         // I think we should skip spin for now as the url changes weekly and we have to format the title to remove quotes and the name of the album
@@ -210,21 +212,24 @@ module.exports = function(app) {
 
             $("span.title-dash").each(function(i, element) {
                 var song = $(this).parent("h5").text();
-               if (song.includes("feat.") === false){
-                song = song.split(" - ");
-                result.artist = song[0];
-                result.title = song[1];
-               }
-                result.source = "https://raw.githubusercontent.com/mariegadda/tunesimgs/31ab5ea7639bcf8d329c4f392a8d47bcd9ec62d8/indie_shuffle_logo.png";
-                result.sourceLink = "https://www.indieshuffle.com/new-songs";
-                var entry = new Track(result);
-                entry.save(function(err, doc) {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        // console.log(doc);
-                    }
-                });
+                //song titles including feat don't work with our spotify api
+                if (song.includes("feat.") === false) {
+                    song = song.split(" - ");
+                    result.artist = song[0];
+                    result.title = song[1];
+
+                    result.source = "https://raw.githubusercontent.com/mariegadda/tunesimgs/31ab5ea7639bcf8d329c4f392a8d47bcd9ec62d8/indie_shuffle_logo.png";
+                    result.sourceLink = "https://www.indieshuffle.com/new-songs";
+                    var entry = new Track(result);
+                    entry.save(function(err, doc) {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            // console.log(doc);
+                        }
+
+                    });
+                }
             });
         });
 
@@ -238,7 +243,6 @@ module.exports = function(app) {
         artist = artist.replace(/ /gi, "%20");
         var songName = req.params.title;
         songName = songName.replace(/ /gi, "%20");
-        songName = songName.replace(/[]/gi, '');
         songName = songName.replace(/,/gi, "%2C");
         console.log("name of song in routes: " + songName);
         var requestUrl = "https://api.spotify.com/v1/search?q=track:" + songName + "%20artist:" + artist + "&type=track&limit=1";

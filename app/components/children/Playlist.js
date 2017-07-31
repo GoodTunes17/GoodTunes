@@ -49,10 +49,10 @@ var Playlist = React.createClass({
     if (!this.props.isLoggedIn) {
 
       return (
-        <div className="container">
+          <div className="container login">
           <h2>You must be logged in to view your personal playlist!</h2>
           <Link to="/login"><button className="btn btn-nav"> Login</button></Link>
-          <Link to="/signup"><button className="btn btn-nav">Sign up Here</button></Link>
+          <Link to="/signup"><button className="btn btn-nav">Sign Up </button></Link>
         </div>
       );
 
@@ -63,7 +63,7 @@ var Playlist = React.createClass({
       return (
         <div >
           <h2>Welcome, {this.props.email}!</h2>
-          <Link to="/logout"><button className="btn btn-nav"> Logout</button></Link>
+      
           {this.props.playlist.map(function (search, i) {
             var boundClick3 = this.handleClick3.bind(this, search);
             var boundClick2 = this.handleClick2.bind(this, search);
