@@ -27,17 +27,6 @@ var Playlist = require("../components/children/Playlist");
 var Extra = require("../components/children/Extra");
 var Logout = require("../components/children/Logout");
 
-function loggedIn() {
-  return true;
-}
-
-function requireAuth(nextState, replace) {
-  if (!loggedIn()) {
-    replace({
-      pathname: '/login'
-    });
-  }
-}
 
 // Export the Routes
 module.exports = (
@@ -49,7 +38,7 @@ module.exports = (
 
       {/* Show the appropriate component based on the user selection */}
       <Route path="Scrape" component={Scrape} />
-      <Route path="Playlist" component={Playlist} onEnter={requireAuth} />
+      <Route path="Playlist" component={Playlist} />
       <Route path="signup" component={Signup} />
       <Route path="login" component={Login} />
       <Route path="logout" component={Logout} />
