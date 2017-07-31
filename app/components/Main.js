@@ -26,7 +26,8 @@ var Main = React.createClass({
       playlist: [],
       id: "",
       email: "",
-      isLoggedIn: false
+      isLoggedIn: false,
+      message: ""
     };
   },
 
@@ -220,7 +221,7 @@ userInfo: function(result) {
     var url = "https://open.spotify.com/embed?uri=spotify:track:" + this.state.id;
 
 
-    var children = React.Children.map(this.props.children, function (child) { return React.cloneElement(child, { scrapedArticles: this.state.scrapedArticles, savedArticles: this.savedArticles, playSong: this.playSong, deletedArticle: this.deletedArticle, id: this.state.id, playlist: this.state.playlist, rating: this.rating, userInfo: this.userInfo, userSignup: this.userSignup, userLogout: this.userLogout, isLoggedIn: this.state.isLoggedIn, email: this.state.email }) }.bind(this))
+    var children = React.Children.map(this.props.children, function (child) { return React.cloneElement(child, { scrapedArticles: this.state.scrapedArticles, savedArticles: this.savedArticles, playSong: this.playSong, deletedArticle: this.deletedArticle, id: this.state.id, playlist: this.state.playlist, rating: this.rating, userInfo: this.userInfo, userSignup: this.userSignup, userLogout: this.userLogout, isLoggedIn: this.state.isLoggedIn, email: this.state.email, message: this.state.message }) }.bind(this))
     
     if (this.state.email !== "") {
       var welcomeStatement = "Welcome, " + this.state.email + "!";
@@ -236,7 +237,7 @@ userInfo: function(result) {
 
         <nav className="navbar navbar-default">
           <div className="navbar-header col-md-9">
-            <h1>Good Tunes/h1>
+            <h1>Good Tunes</h1>
             <h2>recommended tunes from around the internet!</h2>
           </div>
 
