@@ -71,22 +71,39 @@ var Main = React.createClass({
 
   },
 
-  getAllArticles: function () {
-    console.log("getallarticles")
-    helpers.getArticle().then(function (response) {
-   
-      console.log("getallarticles scrape from db: ", response.data);
+   getAllArticles: function() {
+        console.log("getallarticles")
+        helpers.getArticle().then(function(response) {
+//this shuffle function is also called everytime you click save, not good UX,
+//would be better to get articles by most recently entered into database? 
 
-      this.setState({ scrapedArticles: response.data });
+            // function shuffle(array) {
+            //     var m = array.length,
+            //         t, i;
+            //     // While there remain elements to shuffle…
+            //     while (m) {
+            //         // Pick a remaining element…
+            //         i = Math.floor(Math.random() * m--);
+            //         // And swap it with the current element.
+            //         t = array[m];
+            //         array[m] = array[i];
+            //         array[i] = t;
+            //     }
+            //     return array;
+            // }
+            // response.data = shuffle(response.data);
 
-      //if nothing is in the database, then scrape -- 
-      if (response.data !== this.state.scrapedArticles) {
-        console.log("save2")
-        this.setState({ scrapedArticles: response.data });
-      }
-      this.getPlaylist()
-    }.bind(this))
-  },
+
+            console.log("getallarticles scrape from db: ", response.data);
+            this.setState({ scrapedArticles: response.data });
+            //if nothing is in the database, then scrape -- 
+            if (response.data !== this.state.scrapedArticles) {
+                console.log("save2")
+                this.setState({ scrapedArticles: response.data });
+            }
+            this.getPlaylist()
+        }.bind(this))
+    },
 
   // this will run through the scrapedArticles, 
   // find those that are "saved" and put them in the 
@@ -219,14 +236,16 @@ userInfo: function(result) {
 
         <nav className="navbar navbar-default">
           <div className="navbar-header col-md-9">
-            <h1>Good Tunes</h1>
+            <h1>Good Tunes/h1>
             <h2>recommended tunes from around the internet!</h2>
           </div>
+
+          <Link to="/login"><a className="signup"> Login</a></Link>
+          <Link to="/signup"><a className="signup"> Sign Up</a></Link>
+          <Link to="/logout"><a className="signup"> Logout</a></Link>
           <Link to="/Scrape"><button className="btn btn-nav" onClick={this.scrape}> Show Scrape</button></Link>
           <Link to="/Playlist"><button className="btn btn-nav"> Show Playlist</button></Link>
-          <Link to="/login"><button className="btn btn-nav"> Login</button></Link>
-          <Link to="/signup"><button className="btn btn-nav"> Sign Up</button></Link>
-          <Link to="/logout"><button className="btn btn-nav"> Logout</button></Link>
+
         </nav>
 
         <div className="col-md-4">

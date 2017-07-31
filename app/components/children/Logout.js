@@ -6,7 +6,7 @@ var Logout = React.createClass({
   },
   render: function() {
   	return (
-  	  <div className="container">
+  	  <div className="container login">
   	  	<h4>Please come back again soon!</h4>
   	  </div>
   	);
