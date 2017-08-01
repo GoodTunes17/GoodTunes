@@ -29,7 +29,12 @@ var TrackSchema = new Schema({
     default: false
   },
   rating: {
-    type: Array
+    type: Number, 
+    default: 1
+  },
+  votes: {
+    type: Number,
+    default: 1
   },
   //This only saves one note's ObjectId, ref refers to the Note model
   note: {
