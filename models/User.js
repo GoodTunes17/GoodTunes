@@ -14,6 +14,11 @@ var UserSchema = new Schema({
   },
   playlist: {
     type: Array
+  }, 
+  voted: {
+    type: Array, 
+    default: 0,
+    unique: true
   }
 });
 
