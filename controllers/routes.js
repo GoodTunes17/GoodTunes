@@ -20,55 +20,32 @@ module.exports = function (app) {
 
     ///// passport ---------------------------
 
-    // Route to be used for viewing the main page after logging in - currently goes to the 
-    // index page even if a user isn't logged in due to React Router rendering
-    app.get('/', isLoggedIn, function (req, res) {
-        res.render('index.ejs', {
-            message: req.flash('userMessage'),
-            user: req.user
-        });
+    // Main page route
+    app.get('/', function(req, res) {
+        res.sendFile(path.join(__dirname, "../public/", "index.html"));
     });
 
-    // Route to be used for viewing a specific user's homepage after logging in
-    app.get('/profile', isLoggedIn, function (req, res) {
-        res.render('profile.ejs', {
-            message: req.flash('userMessage'),
-            user: req.user
-        });
-        console.log("passport: ", req.session);
-        console.log("USER: ", req.user.email);
-        var user = req.user.email;
-        console.log(user);
+    // Redirect for successful signup or login
+    app.get('/profile', function(req, res) {
+        res.send(req.flash('userMessage'));
     });
 
-    // Function for determining if user is logged in, gets passed into the route above
-    function isLoggedIn(req, res, next) {
-        if (req.isAuthenticated()) {
-            return next();
-        } else {
-            res.redirect('/login');
-        }
-    }
-
-    app.get('/signup', function (req, res, next) {
-        res.render('signup.ejs', { message: req.flash('signupMessage') });
-        //  res.send({ message: req.flash('signupMessage') });
-
+    // Redirect for unsuccessful signup
+    app.get('/signup', function(req, res, next) {
+        res.send(req.flash('signupMessage'));
     });
 
     // Creating a new user
     app.post('/signup', passport.authenticate('local-signup', {
-        successRedirect: '/login',
+        successRedirect: '/profile',
         failureRedirect: '/signup',
         failureFlash: true,
         successFlash: true
     }));
 
-    app.get('/login', function (req, res) {
-        res.render('login.ejs', {
-            message: req.flash('loginMessage'),
-            successMessage: req.flash('successMessage')
-        });
+    // Redirect for unsuccessful login
+    app.get('/login', function(req, res) {
+        res.send(req.flash('loginMessage'));
     });
 
     // User logging in
@@ -79,8 +56,8 @@ module.exports = function (app) {
         successFlash: true
     }));
 
-    // User logout
-    app.get('/logout', function (req, res) {
+    // User logging out
+    app.get('/logout', function(req, res) {
         req.logout();
         res.redirect('/login');
         console.log("User logged out");
