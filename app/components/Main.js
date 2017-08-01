@@ -30,10 +30,6 @@ var Main = React.createClass({
   // componentWillMount is called before the render method is executed. It is important to note that setting the state in this phase will not trigger a re-rendering.
 
   componentWillMount: function () {
-
-
-
-
     if (this.state.scrapedArticles.length < 1) {
       console.log("no scrapes")
       this.scrape()
@@ -67,10 +63,6 @@ var Main = React.createClass({
 
   },
   scrape: function () {
-
-
-
-
     helpers.scrape().then(function (response) {
       console.log("scraped!")
       this.setState({ scrapedArticles: response.data });
@@ -92,21 +84,21 @@ var Main = React.createClass({
       //this shuffle function is also called everytime you click save, not good UX,
       //would be better to get articles by most recently entered into database? 
 
-      // function shuffle(array) {
-      //     var m = array.length,
-      //         t, i;
-      //     // While there remain elements to shuffle…
-      //     while (m) {
-      //         // Pick a remaining element…
-      //         i = Math.floor(Math.random() * m--);
-      //         // And swap it with the current element.
-      //         t = array[m];
-      //         array[m] = array[i];
-      //         array[i] = t;
-      //     }
-      //     return array;
-      // }
-      // response.data = shuffle(response.data);
+      function shuffle(array) {
+          var m = array.length,
+              t, i;
+          // While there remain elements to shuffle…
+          while (m) {
+              // Pick a remaining element…
+              i = Math.floor(Math.random() * m--);
+              // And swap it with the current element.
+              t = array[m];
+              array[m] = array[i];
+              array[i] = t;
+          }
+          return array;
+      }
+      response.data = shuffle(response.data);
 
 
       console.log("getallarticles scrape from db: ", response.data);
@@ -138,22 +130,23 @@ var Main = React.createClass({
 
   // this will change the "saved" database property to true
 
-  savedArticles: function (result) {
-    console.log("This will need to be saved: " + result.artist + "whose id is: " + result._id)
-    helpers.postArticle(result._id).then(() => {
-      this.getAllArticles()
-    })
-  },
+  // savedArticles: function (result) {
+  //   console.log("This will need to be saved: " + result.artist + "whose id is: " + result._id)
+  //   helpers.postArticle(result._id).then(() => {
+  //     this.getAllArticles()
+  //   })
+  // },
 
   // this will change the "saved" database property to false
 
-  deletedArticle: function (result) {
-    console.log("delete!");
-    console.log("This will need to be un-saved: " + result.artist + "whose id is: " + result._id)
-    helpers.deleteArticle(result._id);
-    this.getAllArticles();
-    // shouldn't this refresh the saved articles? 
-  },
+  // deletedArticle: function (result) {
+  //   console.log("delete!");
+  //   console.log("This will need to be un-saved: " + result.artist + "whose id is: " + result._id)
+  //   helpers.deleteArticle(result._id);
+  //   this.getAllArticles();
+  //   // shouldn't this refresh the saved articles? 
+  // },
+
   rating: function (result) {
     var songId = result[0];
     var rating = result[1];
@@ -281,11 +274,10 @@ var Main = React.createClass({
     play.push(useremail)
     play.push(result._id)
     // play.push(result)
-
     console.log("sending this --  " + play)
     // console.log("This will need to be saved: " + result.artist + "whose id is: " + result._id)
     helpers.postArticle(play).then(() => {
-      this.getAllArticles()
+     // this.getAllArticles()
     })
   },
 
@@ -312,7 +304,6 @@ var Main = React.createClass({
       console.log(data)
       newPlaylist = data.data[0].playlist;
       console.log("sending - " + newPlaylist)
-
       return axios.get("/playlist2/" + newPlaylist).then(function (response) {
         console.log("new songs - " + response.data)
         this.setState({ playlist: response.data })
