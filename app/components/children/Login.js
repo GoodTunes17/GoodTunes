@@ -4,7 +4,7 @@ var Login = React.createClass({
   getInitialState: function() {
   	return {
   	  email: "",
-  	  password: ""
+  	  password: "",      
   	};
   },
   updateEmail: function(event) {
@@ -21,21 +21,23 @@ var Login = React.createClass({
   },
   handleSubmit: function(event) {
     event.preventDefault();
-    console.log("in login - Email: ", this.state.email);
-    console.log("in login - Password: ", this.state.password);
     var user = {}
     user ={email: this.state.email, password: this.state.password}
-    this.props.userInfo(user);
-    // this.setState({
-    //   email: "", 
-    //   password: ""
-    // });
+    this.props.userLogin(user);
+    this.setState({
+      email: "",
+      emailError: "",
+      password: "",      
+      passwordError: ""
+    });
   },
   render: function() {
   	return (
   	  <div className="container login">
 
   	    <h2>Enter your information to login:</h2>
+
+        <h4>{this.props.message}</h4>
 
   	    <form onSubmit={this.handleSubmit}>
     		  <div className="form-group">

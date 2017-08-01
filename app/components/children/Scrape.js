@@ -71,7 +71,7 @@ var Scrape = React.createClass({
               <button className="btn save"  key={i} onClick={boundClick1}> save </button>
               <button className="btn play"  key={"a" + i} onClick={boundClick2}> play </button>
               <div className="rating">
-                <Rating key={search.id} start={0} step={1} stop={5} initialRate={search.note}
+                <Rating key={search.id} start={0} step={1} stop={5} initialRate={search.rating}
                   empty="glyphicon glyphicon-star-empty"
                   full="glyphicon glyphicon-star"
                   onClick={boundClick3} />
