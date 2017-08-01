@@ -26,6 +26,7 @@ passport.use('local-signup', new LocalStrategy(
           return done(err);
         }
         else if (user) {
+          console.log("The email address is already in use.");
           return done(null, false, req.flash('signupMessage', 'The email address is already in use.'));
         }
         else {
@@ -36,7 +37,7 @@ passport.use('local-signup', new LocalStrategy(
             if (err) {
               throw err;
             }
-            return done(null, newUser, req.flash('successMessage', 'You have successfully signed up! Please enter your information again in order to log in.'));
+            return done(null, newUser, req.flash('userMessage', 'Success!'));
           });
         }
       });
@@ -62,7 +63,7 @@ passport.use('local-login', new LocalStrategy(
       else if (!user.validPassword(password)) {
         return done(null, false, req.flash('loginMessage', 'Incorrect password. Please try again.'));
       }
-      return done(null, user, req.flash('userMessage', 'Welcome, ' + user.email + "!"));
+      return done(null, user, req.flash('userMessage', 'Success!'));
     });
   }
 ));
