@@ -1,15 +1,21 @@
 {
-  "name": "react-example",
+  "name": "goodtunes",
   "version": "1.0.0",
   "description": "",
-  "main": "public/index.html",
+  "main": "app.js",
+    "engines": {
+    "node": "7.5.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack & node server",
-    "start": "node server",
     "build": "webpack"
   },
-  "author": "Ahmed Haque",
+  "repository":{
+    "type": "git",
+    "url": "https://github.com/GoodTunes17/GoodTunes"
+  },
+  "author": "Patrick Preziotti, Mel DeJesus, Marie Gadda",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.12.0",
