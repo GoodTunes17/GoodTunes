@@ -31,8 +31,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.text());
 app.use(bodyParser.json({ type: "application/vnd.api+json" }));
 
-app.set('view engine', 'ejs');
-
 app.use(session({
   secret: 'secrettunes',  
   resave: false,
