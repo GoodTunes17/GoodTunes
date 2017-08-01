@@ -337,15 +337,13 @@ var Main = React.createClass({
 
       <div className="container">
 
-
-
         {/* NAV BAR */}
 
         <nav className="navbar navbar-default">
           <div className="navbar-header col-md-9">
             <h1>Good Tunes</h1>
             <h2>recommended tunes from around the internet!</h2>
-            <h2>Welcome, {this.props.email}!</h2>
+            <h2>{welcomeStatement}</h2>
           </div>
 
           <Link to="/login"><a className="signup"> Login</a></Link>
