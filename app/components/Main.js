@@ -140,7 +140,7 @@ var Main = React.createClass({
   rating: function (result) {
     var songId = result[0];
     var rating = result[1];
-    console.log("vote check looks like - " + this.state.voteCheck)
+    console.log("for " + this.state.email + " vote check looks like - " + this.state.voteCheck)
     console.log(" vote check -- is " + songId + "the same as " + this.state.voteCheck[0])
     // for (var i = 0; i < this.state.voteCheck.length; i++) {
       //if songid is not in votecheck
@@ -162,6 +162,7 @@ var Main = React.createClass({
                 console.log("hit votecheck!!! win")
                 this.voteCheck();
                 
+                
               }.bind(this))
             }.bind(this))
 
@@ -174,6 +175,7 @@ var Main = React.createClass({
       } // if 1
 else {
   console.log("ALREADY DONE! NOT REGISTERED")
+  this.getAllArticles();
 }
 
     // } // for
