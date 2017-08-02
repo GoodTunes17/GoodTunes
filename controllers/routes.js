@@ -69,20 +69,21 @@ module.exports = function (app) {
     app.get("/api", function (req, res) {
         console.log("hello");
         // Find all results from the scrapedData collection in the db
-        Track.find({}, function (error, found) {
+        // Track.find({$query: {}, $orderby:{"rating":-1} }, function (error, found) {
+            Track.find({}).sort({"rating":-1}).exec(function (error, found) {
             // Throw any errors to the console
             if (error) {
                 console.log(error);
             } else {
+                console.log("sorted query " ,found)
                 res.json(found);
             }
-        });
+        });//there was a parenthesis here
     });
 
+      
     // PLAYLIST ----------------------- save / unsave
-
     // this deletes a song from user.playlist
-
     app.post("/delete", function (req, res) {
         console.log("this is the user email: " + req.body.email);
         console.log("this is the id to save: " + req.body.song);
