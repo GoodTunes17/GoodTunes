@@ -59,8 +59,7 @@ module.exports = function (app) {
     // User logging out
     app.get('/logout', function(req, res) {
         req.logout();
-        res.redirect('/login');
-        console.log("User logged out");
+        res.send("Please come back again soon!");
     });
 
     //TRACK MANAGEMENT ------------------------

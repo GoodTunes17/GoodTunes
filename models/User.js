@@ -16,9 +16,7 @@ var UserSchema = new Schema({
     type: Array
   }, 
   voted: {
-    type: Array, 
-    default: 0,
-    unique: true
+    type: Array
   }
 });
 

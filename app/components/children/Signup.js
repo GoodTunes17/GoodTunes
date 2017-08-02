@@ -1,4 +1,5 @@
 var React = require('react');
+import styles from "./styles-children.css";
 
 var Signup = React.createClass({
   getInitialState: function() {
@@ -69,7 +70,7 @@ var Signup = React.createClass({
 	  	<h2>Sign up to save your favorite songs!</h2>
       <h3>Enter your information:</h3>
 
-      <h4>{this.props.message}</h4>
+      <h4 className="message">{this.props.message}</h4>
 
 	    <form onSubmit={this.handleSubmit}>
 		  <div className="form-group">

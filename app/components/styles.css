@@ -72,7 +72,11 @@ a.signup{
 }
 
 .signup:hover{
-color: #8EFF80;
+	color: #8EFF80;
+}
+
+.message {
+	color: red;
 }
 
 
