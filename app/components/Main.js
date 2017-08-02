@@ -224,10 +224,10 @@ var Main = React.createClass({
     }.bind(this));
   },
 
-  // playlist: function () {
-  //   console.log("sending here - " + this.state.email)
-  //   return axios.post("/playlist/" + this.state.email)
-  // },
+  playlist: function () {
+    console.log("sending here - " + this.state.email)
+    return axios.post("/playlist/" + this.state.email)
+  },
 
   userSignup: function (result) {
     helpers.createUser(result.email, result.password).then(function(response) {
@@ -320,7 +320,7 @@ var Main = React.createClass({
     var url = "https://open.spotify.com/embed?uri=spotify:track:" + this.state.id;
 
 
-    var children = React.Children.map(this.props.children, function (child) { return React.cloneElement(child, { scrapedArticles: this.state.scrapedArticles, savedArticles: this.savedArticles, playSong: this.playSong, deletedArticle: this.deletedArticle, id: this.state.id, playlist2: this.state.playlist, rating: this.rating, userLogin: this.userLogin, userSignup: this.userSignup, userLogout: this.userLogout, isLoggedIn: this.state.isLoggedIn, email: this.state.email, message: this.state.message }) }.bind(this))
+    var children = React.Children.map(this.props.children, function (child) { return React.cloneElement(child, { scrapedArticles: this.state.scrapedArticles, savedArticles: this.savedArticles, playSong: this.playSong, deletedArticle: this.deletedArticle, id: this.state.id, playlist: this.state.playlist, rating: this.rating, userLogin: this.userLogin, userSignup: this.userSignup, userLogout: this.userLogout, isLoggedIn: this.state.isLoggedIn, email: this.state.email, message: this.state.message }) }.bind(this))
 
     if (this.state.isLoggedIn === true) {
       var welcomeStatement = "Welcome, " + this.state.email + "!";
