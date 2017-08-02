@@ -13,7 +13,9 @@ var User = require("../models/User.js")
 mongoose.Promise = Promise;
 // Requiring passport for user authentication
 var passport = require("passport");
-var keys = require("../keys");
+//var keys = require("../keys");
+var dotenv = require('dotenv');
+dotenv.load();
 
 module.exports = function (app) {
     
@@ -182,7 +184,7 @@ module.exports = function (app) {
             var authOptions = {
                 url: 'https://accounts.spotify.com/api/token',
                 headers: {
-                    'Authorization': 'Basic ' + (Buffer.from(keys.client_id + ':' + keys.client_secret).toString('base64'))
+                    'Authorization': 'Basic ' + (Buffer.from(process.env.client_id + ':' + process.env.client_secret).toString('base64'))
                 },
                 form: {
                     grant_type: 'client_credentials'

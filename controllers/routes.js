@@ -13,7 +13,7 @@ var User = require("../models/User.js")
 mongoose.Promise = Promise;
 // Requiring passport for user authentication
 var passport = require("passport");
-var keys = require("../keys");
+//var keys = require("../keys");
 
 
 module.exports = function (app) {
@@ -59,8 +59,7 @@ module.exports = function (app) {
     // User logging out
     app.get('/logout', function(req, res) {
         req.logout();
-        res.redirect('/login');
-        console.log("User logged out");
+        res.send("Please come back again soon!");
     });
 
     //TRACK MANAGEMENT ------------------------
@@ -147,7 +146,8 @@ module.exports = function (app) {
     app.get("/playlist2/:playlist", function (req, res) {
         // var playlist=[];
         playlist = req.params.playlist;
-        console.log("here - " + playlist)
+        if (playlist){
+        console.log("here - " + playlist);
         // playlist= "597e2f68c83f5d5ba6723427"
         // for (var i=0; i<playlist.length; i++){
         Track.find({ "_id": { $in: playlist.split(/,/) } })
@@ -158,13 +158,15 @@ module.exports = function (app) {
                 }
                 // Otherwise, send the doc to the browser as a json object
                 else {
-                    console.log("play list - " + doc)
+                    console.log("play list - " + doc);
                     res.json(doc);
                 }
 
-            })
-
-    })
+            });
+        }else{
+            console.log("empty playlist");
+        }
+    });
 
 
 

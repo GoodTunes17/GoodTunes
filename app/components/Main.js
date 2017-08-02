@@ -30,10 +30,6 @@ var Main = React.createClass({
   // componentWillMount is called before the render method is executed. It is important to note that setting the state in this phase will not trigger a re-rendering.
 
   componentWillMount: function () {
-
-
-
-
     if (this.state.scrapedArticles.length < 1) {
       console.log("no scrapes")
       this.scrape()
@@ -51,10 +47,9 @@ var Main = React.createClass({
   },
 
   voteCheck: function () {
-
+    if (this.state.isLoggedIn === true) {
     console.log("here" + this.state.email)
     // var self = this;
-
     return axios.get("/voteCheck/" + this.state.email)
       .then(function (response) {
         var id = response.data;
@@ -62,15 +57,14 @@ var Main = React.createClass({
         this.setState({ voteCheck: id[0].voted })
         this.getAllArticles();
       }.bind(this))
-
     this.getAllArticles();
 
-  },
+  }else{console.log("not logged in")}
+},
+
+
+
   scrape: function () {
-
-
-
-
     helpers.scrape().then(function (response) {
       console.log("scraped!")
       this.setState({ scrapedArticles: response.data });
@@ -136,6 +130,7 @@ var Main = React.createClass({
   //   this.setState({ playlist: prePlaylist })
   //   console.log("playlist = " + this.state.playlist[0]);
   // },
+
 
   // this will change the "saved" database property to true
 
@@ -213,15 +208,6 @@ var Main = React.createClass({
     console.log("idhere", this.state.id)
   },
 
-  // When a new user tries to log in 
-  // componentDidUpdate: function () {
-  //   helpers.logIn(this.email, this.password).then(function(data) {
-  //     console.log(data);
-  //   }.bind(this));
-
-  // },
-
-
   userLogin: function (result) {
     helpers.login(result.email, result.password).then(function (response) {
       // If the login post is not successful, render the login component with the error message
@@ -238,13 +224,13 @@ var Main = React.createClass({
     }.bind(this));
   },
 
-  playlist: function () {
-    console.log("sending here - " + this.state.email)
-    return axios.post("/playlist/" + this.state.email)
-  },
+  // playlist: function () {
+  //   console.log("sending here - " + this.state.email)
+  //   return axios.post("/playlist/" + this.state.email)
+  // },
 
   userSignup: function (result) {
-    helpers.createUser(result.email, result.password).then(function (response) {
+    helpers.createUser(result.email, result.password).then(function(response) {
       // If the signup post is not successful, render the signup component with the error message
       if (response.data[0] !== "Success!") {
         this.setState({ message: response.data });
@@ -263,8 +249,8 @@ var Main = React.createClass({
   userLogout: function () {
     this.setState({ email: "" });
     this.setState({ isLoggedIn: false });
-    helpers.logout().then(function (data) {
-      console.log(data);
+    helpers.logout().then(function (response) {
+      console.log(response);
     }.bind(this));
   },
 
@@ -272,17 +258,28 @@ var Main = React.createClass({
   ///  NEW  - SAVES PLAYLIST ITEM 
 
   savedArticles: function (result) {
-    var play = [];
-    var useremail = this.state.email;
-    play.push(useremail)
-    play.push(result._id)
-    // play.push(result)
 
-    console.log("sending this --  " + play)
+
     // console.log("This will need to be saved: " + result.artist + "whose id is: " + result._id)
-    helpers.postArticle(play).then(() => {
-      this.getAllArticles()
-    })
+    // If no user is logged in then redirect to the login page
+    if (this.state.isLoggedIn === false) {
+      this.setState({message: "Please login in order to save songs to your playlist."});
+      this.props.history.push('/login');
+    }
+    // If a user is logged in then proceed with saving the song
+    else {
+      var play = [];
+      var useremail = this.state.email;
+      play.push(useremail);
+      play.push(result._id);
+      // play.push(result)
+
+      console.log("sending this --  " + play);
+      helpers.postArticle(play).then(() => {
+        this.getAllArticles();
+      });
+    }
+
   },
 
 
@@ -309,7 +306,6 @@ var Main = React.createClass({
       console.log(data)
       newPlaylist = data.data[0].playlist;
       console.log("sending - " + newPlaylist)
-
       return axios.get("/playlist2/" + newPlaylist).then(function (response) {
         console.log("new songs - " + response.data)
         this.setState({ playlist: response.data })
@@ -324,17 +320,15 @@ var Main = React.createClass({
     var url = "https://open.spotify.com/embed?uri=spotify:track:" + this.state.id;
 
 
-    var children = React.Children.map(this.props.children, function (child) { return React.cloneElement(child, { scrapedArticles: this.state.scrapedArticles, savedArticles: this.savedArticles, playSong: this.playSong, deletedArticle: this.deletedArticle, id: this.state.id, playlist: this.state.playlist, rating: this.rating, userLogin: this.userLogin, userSignup: this.userSignup, userLogout: this.userLogout, isLoggedIn: this.state.isLoggedIn, email: this.state.email, message: this.state.message }) }.bind(this))
+    var children = React.Children.map(this.props.children, function (child) { return React.cloneElement(child, { scrapedArticles: this.state.scrapedArticles, savedArticles: this.savedArticles, playSong: this.playSong, deletedArticle: this.deletedArticle, id: this.state.id, playlist2: this.state.playlist, rating: this.rating, userLogin: this.userLogin, userSignup: this.userSignup, userLogout: this.userLogout, isLoggedIn: this.state.isLoggedIn, email: this.state.email, message: this.state.message }) }.bind(this))
 
-    if (this.state.email !== "") {
+    if (this.state.isLoggedIn === true) {
       var welcomeStatement = "Welcome, " + this.state.email + "!";
     }
 
     return (
 
       <div className="container">
-
-
 
         {/* NAV BAR */}
 
