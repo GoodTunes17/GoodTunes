@@ -84,6 +84,7 @@ var Playlist = React.createClass({
                     empty="glyphicon glyphicon-star-empty"
                     full="glyphicon glyphicon-star"
                     onClick={boundClick4} />
+                         <p> votes:{search.votes} </p> 
                 </div>
               </div>
             )

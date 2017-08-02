@@ -75,6 +75,7 @@ var Scrape = React.createClass({
                   empty="glyphicon glyphicon-star-empty"
                   full="glyphicon glyphicon-star"
                   onClick={boundClick3} />
+                  <p> votes:{search.votes} </p> 
               </div>
             </div>
           );
