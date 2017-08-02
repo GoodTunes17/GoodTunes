@@ -47,10 +47,9 @@ var Main = React.createClass({
   },
 
   voteCheck: function () {
-
+    if (this.state.isLoggedIn === true) {
     console.log("here" + this.state.email)
     // var self = this;
-
     return axios.get("/voteCheck/" + this.state.email)
       .then(function (response) {
         var id = response.data;
@@ -58,10 +57,13 @@ var Main = React.createClass({
         this.setState({ voteCheck: id[0].voted })
         this.getAllArticles();
       }.bind(this))
-
     this.getAllArticles();
 
-  },
+  }else{console.log("not logged in")}
+},
+
+
+
   scrape: function () {
     helpers.scrape().then(function (response) {
       console.log("scraped!")
