@@ -112,23 +112,26 @@ var Main = React.createClass({
       }
       this.playlist2()
     }.bind(this))
+        this.playlist2()
   },
 
   // this will run through the scrapedArticles, 
   // find those that are "saved" and put them in the 
   // "playlist" variable.. 
 
-  getPlaylist: function () {
-    var prePlaylist = [];
-    for (var i = 0; i < this.state.scrapedArticles.length; i++) {
-      if (this.state.scrapedArticles[i].saved) {
-        console.log(this.state.scrapedArticles[i].saved)
-        prePlaylist.push(this.state.scrapedArticles[i])
-      }
-    }
-    this.setState({ playlist: prePlaylist })
-    console.log("playlist = " + this.state.playlist[0]);
-  },
+  // getPlaylist: function () {
+  //   var prePlaylist = [];
+  //   for (var i = 0; i < this.state.scrapedArticles.length; i++) {
+  //     if (this.state.scrapedArticles[i].saved) {
+  //       console.log(this.state.scrapedArticles[i].saved)
+  //       prePlaylist.push(this.state.scrapedArticles[i])
+  //     }
+  //   }
+  //   this.setState({ playlist: prePlaylist })
+  //   console.log("playlist = " + this.state.playlist[0]);
+  // },
+
+
 
   rating: function (result) {
     var songId = result[0];
@@ -138,7 +141,7 @@ var Main = React.createClass({
     // for (var i = 0; i < this.state.voteCheck.length; i++) {
     //if songid is not in votecheck
     if (!this.state.voteCheck.includes(songId)) {
-      console.log('NEW RATING')
+      console.log('NEW RATING by ' +this.state.email)
       //track.find songid, rating:1, votes: 1
       return axios.get("/rating/" + songId)
         //get that response
@@ -267,6 +270,7 @@ var Main = React.createClass({
 
   },
 
+
   // this will change the "saved" database property to false
 
   deletedArticle: function (result) {
@@ -295,7 +299,7 @@ var Main = React.createClass({
         this.setState({ playlist: response.data })
       }.bind(this))
     }.bind(this));
-    this.getPlaylist();
+    // this.getPlaylist();
   },
 
   // Here we render the function
@@ -327,7 +331,8 @@ var Main = React.createClass({
           <Link to="/signup"><a className="signup"> Sign Up</a></Link>
           <Link to="/logout"><a className="signup"> Logout</a></Link>
           <Link to="/Scrape"><button className="btn btn-nav" onClick={this.scrape}> Show Scrape</button></Link>
-          <Link to="/Playlist" onClick={this.playlist2}><button className="btn btn-nav"> Show Playlist</button></Link>
+          <Link to="/Playlist" ><button className="btn btn-nav" onClick={this.playlist2}> Show Playlist</button></Link>
+      
 
         </nav>
 
