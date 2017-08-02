@@ -40,8 +40,8 @@ var Scrape = React.createClass({
     console.log(rate._id); // this is the id
     console.log(search);  // this is the rating.. 
     rating.push(rate._id);
-    rating.push(search)
-    this.props.rating(rating)
+    rating.push(search);
+    this.props.rating(rating);
   },
 
 
@@ -49,7 +49,7 @@ var Scrape = React.createClass({
   render: function () {
 
     var url = "https://open.spotify.com/embed?uri=spotify:track:" + this.props.id;
-    console.log(this.props.id)
+    console.log(this.props.id);
     var rate = [];
     return (
 
