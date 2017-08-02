@@ -115,36 +115,6 @@ var Main = React.createClass({
         this.playlist2()
   },
 
-  // this will run through the scrapedArticles, 
-  // find those that are "saved" and put them in the 
-  // "playlist" variable.. 
-
-  // getPlaylist: function () {
-  //   var prePlaylist = [];
-  //   for (var i = 0; i < this.state.scrapedArticles.length; i++) {
-  //     if (this.state.scrapedArticles[i].saved) {
-  //       console.log(this.state.scrapedArticles[i].saved)
-  //       prePlaylist.push(this.state.scrapedArticles[i])
-  //     }
-  //   }
-  //   this.setState({ playlist: prePlaylist })
-  //   console.log("playlist = " + this.state.playlist[0]);
-  // },
-
-
-  // this will change the "saved" database property to true
-
- 
-
-  // this will change the "saved" database property to false
-
-  // deletedArticle: function (result) {
-  //   console.log("delete!");
-  //   console.log("This will need to be un-saved: " + result.artist + "whose id is: " + result._id)
-  //   helpers.deleteArticle(result._id);
-  //   this.getAllArticles();
-  //   // shouldn't this refresh the saved articles? 
-  // },
   rating: function (result) {
     var songId = result[0];
     var rating = result[1];
@@ -217,8 +187,11 @@ var Main = React.createClass({
       }
       // If the login is successful, render the playlist component with the welcome message
       else {
-        this.setState({ email: result.email });
-        this.setState({ isLoggedIn: true });
+        this.setState({ 
+          email: result.email,
+          isLoggedIn: true
+        });
+        this.playlist2();
         this.props.history.push('/Playlist');
       }
     }.bind(this));
@@ -247,8 +220,11 @@ var Main = React.createClass({
   },
 
   userLogout: function () {
-    this.setState({ email: "" });
-    this.setState({ isLoggedIn: false });
+    this.setState({ 
+      email: "",
+      isLoggedIn: false,
+      playlist: []
+    });
     helpers.logout().then(function (response) {
       console.log(response);
     }.bind(this));
