@@ -136,24 +136,6 @@ var Main = React.createClass({
     console.log("playlist = " + this.state.playlist[0]);
   },
 
-  // this will change the "saved" database property to true
-
-  savedArticles: function (result) {
-    console.log("This will need to be saved: " + result.artist + "whose id is: " + result._id)
-    helpers.postArticle(result._id).then(() => {
-      this.getAllArticles()
-    })
-  },
-
-  // this will change the "saved" database property to false
-
-  deletedArticle: function (result) {
-    console.log("delete!");
-    console.log("This will need to be un-saved: " + result.artist + "whose id is: " + result._id)
-    helpers.deleteArticle(result._id);
-    this.getAllArticles();
-    // shouldn't this refresh the saved articles? 
-  },
   rating: function (result) {
     var songId = result[0];
     var rating = result[1];
@@ -217,15 +199,6 @@ var Main = React.createClass({
     console.log("idhere", this.state.id)
   },
 
-  // When a new user tries to log in 
-  // componentDidUpdate: function () {
-  //   helpers.logIn(this.email, this.password).then(function(data) {
-  //     console.log(data);
-  //   }.bind(this));
-
-  // },
-
-
   userLogin: function (result) {
     helpers.login(result.email, result.password).then(function (response) {
       // If the login post is not successful, render the login component with the error message
@@ -248,7 +221,7 @@ var Main = React.createClass({
   },
 
   userSignup: function (result) {
-    helpers.createUser(result.email, result.password).then(function (response) {
+    helpers.createUser(result.email, result.password).then(function(response) {
       // If the signup post is not successful, render the signup component with the error message
       if (response.data[0] !== "Success!") {
         this.setState({ message: response.data });
@@ -267,8 +240,8 @@ var Main = React.createClass({
   userLogout: function () {
     this.setState({ email: "" });
     this.setState({ isLoggedIn: false });
-    helpers.logout().then(function (data) {
-      console.log(data);
+    helpers.logout().then(function (response) {
+      console.log(response);
     }.bind(this));
   },
 
@@ -276,17 +249,26 @@ var Main = React.createClass({
   ///  NEW  - SAVES PLAYLIST ITEM 
 
   savedArticles: function (result) {
-    var play = [];
-    var useremail = this.state.email;
-    play.push(useremail)
-    play.push(result._id)
-    // play.push(result)
 
-    console.log("sending this --  " + play)
     // console.log("This will need to be saved: " + result.artist + "whose id is: " + result._id)
-    helpers.postArticle(play).then(() => {
-      this.getAllArticles()
-    })
+    // If no user is logged in then redirect to the login page
+    if (this.state.isLoggedIn === false) {
+      this.setState({message: "Please login in order to save songs to your playlist."});
+      this.props.history.push('/login');
+    }
+    // If a user is logged in then proceed with saving the song
+    else {
+      var play = [];
+      var useremail = this.state.email;
+      play.push(useremail);
+      play.push(result._id);
+      // play.push(result)
+
+      console.log("sending this --  " + play);
+      helpers.postArticle(play).then(() => {
+        this.getAllArticles();
+      });
+    }
   },
 
   // this will change the "saved" database property to false
@@ -329,7 +311,7 @@ var Main = React.createClass({
 
     var children = React.Children.map(this.props.children, function (child) { return React.cloneElement(child, { scrapedArticles: this.state.scrapedArticles, savedArticles: this.savedArticles, playSong: this.playSong, deletedArticle: this.deletedArticle, id: this.state.id, playlist: this.state.playlist, rating: this.rating, userLogin: this.userLogin, userSignup: this.userSignup, userLogout: this.userLogout, isLoggedIn: this.state.isLoggedIn, email: this.state.email, message: this.state.message }) }.bind(this))
 
-    if (this.state.email !== "") {
+    if (this.state.isLoggedIn === true) {
       var welcomeStatement = "Welcome, " + this.state.email + "!";
     }
 
