@@ -60,6 +60,7 @@ var Main = React.createClass({
     this.getAllArticles();
 
   }else{console.log("not logged in")}
+  this.getAllArticles();
 },
 
 
@@ -139,9 +140,11 @@ var Main = React.createClass({
             return axios.post("/upVote/" + songId + "/" + this.state.email).then(function (response) {
               console.log("hit votecheck!!! win")
               this.voteCheck();
+              
 
 
             }.bind(this))
+            this.voteCheck();
           }.bind(this))
 
         }.bind(this))
