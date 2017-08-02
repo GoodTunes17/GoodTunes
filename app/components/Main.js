@@ -130,27 +130,6 @@ var Main = React.createClass({
     console.log("playlist = " + this.state.playlist[0]);
   },
 
-
-  // this will change the "saved" database property to true
-
-  // savedArticles: function (result) {
-  //   console.log("This will need to be saved: " + result.artist + "whose id is: " + result._id)
-  //   helpers.postArticle(result._id).then(() => {
-  //     this.getAllArticles()
-  //   })
-  // },
-
-  // this will change the "saved" database property to false
-
-  // deletedArticle: function (result) {
-  //   console.log("delete!");
-  //   console.log("This will need to be un-saved: " + result.artist + "whose id is: " + result._id)
-  //   helpers.deleteArticle(result._id);
-  //   this.getAllArticles();
-  //   // shouldn't this refresh the saved articles? 
-  // },
-
-
   rating: function (result) {
     var songId = result[0];
     var rating = result[1];
@@ -230,10 +209,10 @@ var Main = React.createClass({
     }.bind(this));
   },
 
-  // playlist: function () {
-  //   console.log("sending here - " + this.state.email)
-  //   return axios.post("/playlist/" + this.state.email)
-  // },
+  playlist: function () {
+    console.log("sending here - " + this.state.email)
+    return axios.post("/playlist/" + this.state.email)
+  },
 
   userSignup: function (result) {
     helpers.createUser(result.email, result.password).then(function(response) {
@@ -325,7 +304,7 @@ var Main = React.createClass({
     var url = "https://open.spotify.com/embed?uri=spotify:track:" + this.state.id;
 
 
-    var children = React.Children.map(this.props.children, function (child) { return React.cloneElement(child, { scrapedArticles: this.state.scrapedArticles, savedArticles: this.savedArticles, playSong: this.playSong, deletedArticle: this.deletedArticle, id: this.state.id, playlist2: this.state.playlist, rating: this.rating, userLogin: this.userLogin, userSignup: this.userSignup, userLogout: this.userLogout, isLoggedIn: this.state.isLoggedIn, email: this.state.email, message: this.state.message }) }.bind(this))
+    var children = React.Children.map(this.props.children, function (child) { return React.cloneElement(child, { scrapedArticles: this.state.scrapedArticles, savedArticles: this.savedArticles, playSong: this.playSong, deletedArticle: this.deletedArticle, id: this.state.id, playlist: this.state.playlist, rating: this.rating, userLogin: this.userLogin, userSignup: this.userSignup, userLogout: this.userLogout, isLoggedIn: this.state.isLoggedIn, email: this.state.email, message: this.state.message }) }.bind(this))
 
     if (this.state.isLoggedIn === true) {
       var welcomeStatement = "Welcome, " + this.state.email + "!";
