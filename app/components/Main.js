@@ -30,10 +30,6 @@ var Main = React.createClass({
   // componentWillMount is called before the render method is executed. It is important to note that setting the state in this phase will not trigger a re-rendering.
 
   componentWillMount: function () {
-
-
-
-
     if (this.state.scrapedArticles.length < 1) {
       console.log("no scrapes")
       this.scrape()
@@ -51,10 +47,9 @@ var Main = React.createClass({
   },
 
   voteCheck: function () {
-
+    if (this.state.isLoggedIn === true) {
     console.log("here" + this.state.email)
     // var self = this;
-
     return axios.get("/voteCheck/" + this.state.email)
       .then(function (response) {
         var id = response.data;
@@ -62,15 +57,14 @@ var Main = React.createClass({
         this.setState({ voteCheck: id[0].voted })
         this.getAllArticles();
       }.bind(this))
-
     this.getAllArticles();
 
-  },
+  }else{console.log("not logged in")}
+},
+
+
+
   scrape: function () {
-
-
-
-
     helpers.scrape().then(function (response) {
       console.log("scraped!")
       this.setState({ scrapedArticles: response.data });
@@ -135,6 +129,27 @@ var Main = React.createClass({
     this.setState({ playlist: prePlaylist })
     console.log("playlist = " + this.state.playlist[0]);
   },
+
+
+  // this will change the "saved" database property to true
+
+  // savedArticles: function (result) {
+  //   console.log("This will need to be saved: " + result.artist + "whose id is: " + result._id)
+  //   helpers.postArticle(result._id).then(() => {
+  //     this.getAllArticles()
+  //   })
+  // },
+
+  // this will change the "saved" database property to false
+
+  // deletedArticle: function (result) {
+  //   console.log("delete!");
+  //   console.log("This will need to be un-saved: " + result.artist + "whose id is: " + result._id)
+  //   helpers.deleteArticle(result._id);
+  //   this.getAllArticles();
+  //   // shouldn't this refresh the saved articles? 
+  // },
+
 
   rating: function (result) {
     var songId = result[0];
@@ -250,6 +265,7 @@ var Main = React.createClass({
 
   savedArticles: function (result) {
 
+
     // console.log("This will need to be saved: " + result.artist + "whose id is: " + result._id)
     // If no user is logged in then redirect to the login page
     if (this.state.isLoggedIn === false) {
@@ -269,6 +285,7 @@ var Main = React.createClass({
         this.getAllArticles();
       });
     }
+
   },
 
   // this will change the "saved" database property to false
@@ -294,7 +311,6 @@ var Main = React.createClass({
       console.log(data)
       newPlaylist = data.data[0].playlist;
       console.log("sending - " + newPlaylist)
-
       return axios.get("/playlist2/" + newPlaylist).then(function (response) {
         console.log("new songs - " + response.data)
         this.setState({ playlist: response.data })
