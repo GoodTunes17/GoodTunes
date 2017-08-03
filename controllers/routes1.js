@@ -58,7 +58,7 @@ module.exports = function (app) {
                 });
             }
         });
-        request("http://www.hypem.com/stack/", function(error, response, html) {
+        request("https://www.hypem.com/stack/", function(error, response, html) {
             // Then, we load that into cheerio and save it to $ for a shorthand selector
             var $ = cheerio.load(html);
             // Save an empty result object
