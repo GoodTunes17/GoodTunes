@@ -11,6 +11,8 @@
     "dev": "webpack & node server",
     "build": "webpack"
   },
+  "heroku-postbuild": "webpack -p --config ./webpack.prod.config.js --progress",
+
   "repository": {
     "type": "git",
     "url": "https://github.com/GoodTunes17/GoodTunes"

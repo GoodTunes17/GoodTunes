@@ -8,7 +8,7 @@ var path = require("path");
 // var db = require("../models");
 var Note = require("../models/Note.js");
 var Track = require("../models/Track.js");
-var User = require("../models/User.js")
+var User = require("../models/User.js");
 // Set mongoose to leverage built in JavaScript ES6 Promises
 mongoose.Promise = Promise;
 // Requiring passport for user authentication
@@ -75,7 +75,7 @@ module.exports = function (app) {
             if (error) {
                 console.log(error);
             } else {
-                console.log("sorted query " ,found)
+                console.log("sorted query " ,found);
                 res.json(found);
             }
         });//there was a parenthesis here
@@ -133,7 +133,7 @@ module.exports = function (app) {
                 }
                 // Otherwise, send the doc to the browser as a json object
                 else {
-                    console.log(doc.body)
+                    console.log(doc.body);
                     res.json(doc);
                 }
 
@@ -213,9 +213,9 @@ module.exports = function (app) {
     // saves rating to Track - easy 
 
     app.post("/rating", function (req, res) {
-        console.log("route - " + req.body.id)
-        console.log(" name - " + req.body.rating)
-        console.log(" email - " + req.body.email)
+        console.log("route - " + req.body.id);
+        console.log(" name - " + req.body.rating);
+        console.log(" email - " + req.body.email);
         Track.findOneAndUpdate(
             { "_id": req.body.id },
             {
@@ -238,8 +238,8 @@ module.exports = function (app) {
 
     });
     app.post("/upVote/:songId/:email", function (req, res) {
-        console.log("song - " + req.params.songId)
-        console.log("email - " + req.params.email)
+        console.log("song - " + req.params.songId);
+        console.log("email - " + req.params.email);
         User.findOneAndUpdate(
             { "email": req.params.email },
             { $push: 
@@ -256,12 +256,12 @@ module.exports = function (app) {
                     res.send(doc);
                 }
             });
-    })
+    });
 
         app.post("/rateUpdate/:newAvg/:votes/:songId", function (req, res) {
             console.log("new Avg - " + req.params.newAvg);
             console.log("votes " + req.params.votes);
-            console.log("songId - " + req.params.songId)
+            console.log("songId - " + req.params.songId);
             Track.update(
                 { "_id": req.params.songId },
                 {
@@ -289,7 +289,7 @@ module.exports = function (app) {
             console.log("in routes - " + req.body.name);
             // saves the new note the db
             newComment.save(function (error, doc) {
-                console.log("doc.id -- " + doc.name)
+                console.log("doc.id -- " + doc.name);
                 // logs any errors
                 if (error) {
                     console.log(error);
