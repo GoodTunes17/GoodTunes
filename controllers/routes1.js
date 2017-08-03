@@ -113,29 +113,6 @@ module.exports = function (app) {
                 }
             });
         });
-        // I think we should skip spin for now as the url changes weekly and we have to format the title to remove quotes and the name of the album
-
-        // request("http://www.spin.com/2016/08/favorite-songs-of-the-week-joyce-manor-isaiah-rashad/", function(error, response, html) {
-        //     var $ = cheerio.load(html);
-        //     var result = {};
-
-        //     $("strong").each(function(i, element) {
-        //         var song = $(this).text().split(",");
-        //         result.artist = song[0];
-        //         result.title = song[1];
-
-        //         result.source = "SPIN";
-        //         var entry = new Track(result);
-        //         entry.save(function(err, doc) {
-        //           if (err) {
-        //               console.log(err);
-        //           }
-        //             else {
-        //               console.log(doc);
-        //             }
-        //         });
-        //     });
-        // });
 
         request("https://www.indieshuffle.com/new-songs", function(error, response, html) {
             var $ = cheerio.load(html);
