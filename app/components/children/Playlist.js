@@ -21,14 +21,14 @@ var Playlist = React.createClass({
   // this is to play a song
 
   handleClick2: function (result, e) {
-    console.log("play clicked for: " + result.title)
+    console.log("play clicked for: " + result.title);
     this.props.playSong(result);
   },
 
   // this will delete song from saved playlist
 
   handleClick3: function (result, e) {
-    console.log("delete!")
+    console.log("delete!");
     this.props.deletedArticle(result);
   },
 
@@ -38,8 +38,8 @@ var Playlist = React.createClass({
     console.log(rate._id); // this is the id
     console.log(search);  // this is the rating.. 
     rating.push(rate._id);
-    rating.push(search)
-    this.props.rating(rating)
+    rating.push(search);
+    this.props.rating(rating);
   },
 
   //  var articles = this.props.results.map(function (article, index) {
@@ -67,7 +67,7 @@ var Playlist = React.createClass({
           {this.props.playlist.map(function (search, i) {
             var boundClick3 = this.handleClick3.bind(this, search);
             var boundClick2 = this.handleClick2.bind(this, search);
-            var boundClick4 = this.handleClick4.bind(this, search)
+            var boundClick4 = this.handleClick4.bind(this, search);
             return (
               <div className="well playlist-well">
                  <p className="critic"> 

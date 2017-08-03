@@ -43,14 +43,14 @@ var Signup = React.createClass({
       emailError: errors.emailError,
       passwordError: errors.passwordError
     });
-    return isError
+    return isError;
   },
   handleSubmit: function(event) {
     event.preventDefault();
     var err = this.validate();
     if (!err) {
-      var user = {}
-      user ={email: this.state.email, password: this.state.password}
+      var user = {};
+      user ={email: this.state.email, password: this.state.password};
       this.props.userSignup(user);
       this.setState({
         email: "",
@@ -64,31 +64,31 @@ var Signup = React.createClass({
     }
   },
   render: function() {
-  return (
-    <div class="container">
+    return (
+      <div class="container">
 
-	  	<h2>Sign up to save your favorite songs!</h2>
-      <h3>Enter your information:</h3>
+  	  	<h2>Sign up to save your favorite songs!</h2>
+        <h3>Enter your information:</h3>
 
-      <h4 className="message">{this.props.message}</h4>
+        <h4 className="message">{this.props.message}</h4>
 
-	    <form onSubmit={this.handleSubmit}>
-		  <div className="form-group">
-		    <label for="email" className="signup">Email address</label>
-		    <input type="email" className="form-control" id="email" name="email" placeholder="Email" onChange={this.updateEmail} required></input>
-		    <p>{this.state.emailError}</p>
-      </div>
-		  <div class="form-group">
-		    <label for="password" className="signup">Password</label>
-		    <input type="password" className="form-control" value={this.state.password} id="password" name="password" placeholder="Password" onChange={this.updatePassword} required></input>
-		    <p>{this.state.passwordError}</p>
-      </div>
-      <br/>
-		  <button type="submit" className="btn btn-default login-btn">Sign Up</button>
-		</form>
-	  </div>
- 
-	);
+  	    <form onSubmit={this.handleSubmit}>
+  		  <div className="form-group">
+  		    <label for="email" className="signup">Email address</label>
+  		    <input type="email" className="form-control" id="email" name="email" placeholder="Email" onChange={this.updateEmail} required></input>
+  		    <p>{this.state.emailError}</p>
+        </div>
+  		  <div class="form-group">
+  		    <label for="password" className="signup">Password</label>
+  		    <input type="password" className="form-control" value={this.state.password} id="password" name="password" placeholder="Password" onChange={this.updatePassword} required></input>
+  		    <p>{this.state.passwordError}</p>
+        </div>
+        <br/>
+  		  <button type="submit" className="btn btn-default login-btn">Sign Up</button>
+  		</form>
+  	  </div>
+   
+  	);
   }
 });
 

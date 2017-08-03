@@ -24,7 +24,6 @@ var Signup = require("../components/children/Signup");
 var Login = require("../components/children/Login");
 var Scrape = require("../components/children/Scrape");
 var Playlist = require("../components/children/Playlist");
-var Extra = require("../components/children/Extra");
 var Logout = require("../components/children/Logout");
 
 

@@ -15,8 +15,6 @@ var helpers = {
    
     },
 
-
-
     getArticle: function() {
         console.log("helpers.getarticle");
         return axios.get("/api");
@@ -24,17 +22,16 @@ var helpers = {
         //     console.log("helpers response - " + response.data)
         //     })
     },
-// submit rating to notes
-   rating: function (result) {
-    console.log("id - " + result[0])
-      console.log("rating -- " +result[1])
-      console.log("email -- " + result[2])
-    return axios.post("/rating/"+result[0], {
-        name: result[1],
-        email: result[2]
-    })
-          
-  },
+    // submit rating to notes
+    rating: function (result) {
+        console.log("id - " + result[0]);
+        console.log("rating -- " +result[1]);
+        console.log("email -- " + result[2]);
+        return axios.post("/rating/"+result[0], {
+            name: result[1],
+            email: result[2]
+        });
+    },
 
 // submit rating to tracks --- 
 //     rating: function (result) {
@@ -54,7 +51,7 @@ var helpers = {
 
     postArticle: function(result) {
         console.log("the user email is  " + result[0]);
-        console.log("the song id is " + result[1])
+        console.log("the song id is " + result[1]);
         return axios.post('/saved', { id: result });
     },
 

@@ -31,8 +31,8 @@ var Main = React.createClass({
 
   componentWillMount: function () {
     if (this.state.scrapedArticles.length < 1) {
-      console.log("no scrapes")
-      this.scrape()
+      console.log("no scrapes");
+      this.scrape();
       this.getAllArticles();
     }
     this.getAllArticles();
@@ -42,21 +42,21 @@ var Main = React.createClass({
   //   this.getAllArticles();
   // },
   shouldComponentUpdate: function () {
-    return true
+    return true;
 
   },
 
   voteCheck: function () {
     if (this.state.isLoggedIn === true) {
-    console.log("here" + this.state.email)
+    console.log("here" + this.state.email);
     // var self = this;
     return axios.get("/voteCheck/" + this.state.email)
       .then(function (response) {
         var id = response.data;
         console.log("here!!! big - ", id[0].voted); // ex.: { user: 'Your User'}
-        this.setState({ voteCheck: id[0].voted })
+        this.setState({ voteCheck: id[0].voted });
         this.getAllArticles();
-      }.bind(this))
+      }.bind(this));
     this.getAllArticles();
 
   }else{console.log("not logged in")}
@@ -67,22 +67,22 @@ var Main = React.createClass({
 
   scrape: function () {
     helpers.scrape().then(function (response) {
-      console.log("scraped!")
+      console.log("scraped!");
       this.setState({ scrapedArticles: response.data });
-      console.log("save1")
+      console.log("save1");
       // nothing will happen in this zone... 
       //    
-      this.voteCheck()
-    }.bind(this))
+      this.voteCheck();
+    }.bind(this));
 
-    console.log("did scrape scrape?")
+    console.log("did scrape scrape?");
 
-    this.voteCheck()
+    this.voteCheck();
 
   },
 
   getAllArticles: function () {
-    console.log("getallarticles")
+    console.log("getallarticles");
     helpers.getArticle().then(function (response) {
       //this shuffle function is also called everytime you click save, not good UX,
       //would be better to get articles by most recently entered into database? 
@@ -108,23 +108,23 @@ var Main = React.createClass({
       this.setState({ scrapedArticles: response.data });
       //if nothing is in the database, then scrape -- 
       if (response.data !== this.state.scrapedArticles) {
-        console.log("save2")
+        console.log("save2");
         this.setState({ scrapedArticles: response.data });
       }
-      this.playlist2()
+      this.playlist2();
     }.bind(this))
-        this.playlist2()
+        this.playlist2() // Does this need to be here?
   },
 
   rating: function (result) {
     var songId = result[0];
     var rating = result[1];
-    console.log("for " + this.state.email + " vote check looks like - " + this.state.voteCheck)
-    console.log(" vote check -- is " + songId + "the same as " + this.state.voteCheck[0])
+    console.log("for " + this.state.email + " vote check looks like - " + this.state.voteCheck);
+    console.log(" vote check -- is " + songId + "the same as " + this.state.voteCheck[0]);
     // for (var i = 0; i < this.state.voteCheck.length; i++) {
     //if songid is not in votecheck
     if (!this.state.voteCheck.includes(songId)) {
-      console.log('NEW RATING by ' +this.state.email)
+      console.log('NEW RATING by ' +this.state.email);
       //track.find songid, rating:1, votes: 1
       return axios.get("/rating/" + songId)
         //get that response
@@ -133,20 +133,16 @@ var Main = React.createClass({
           console.log("rating and votes - ", id);
           var avgRate = id[0].rating;
           var votes = id[0].votes;
-          var newAvg = (avgRate + ((rating - avgRate) / (votes)))
+          var newAvg = (avgRate + ((rating - avgRate) / (votes)));
           votes++;
           return axios.post("/rateUpdate/" + newAvg + "/" + votes + "/" + songId).then(function (response) {
             //dropping .then(function...)
             return axios.post("/upVote/" + songId + "/" + this.state.email).then(function (response) {
-              console.log("hit votecheck!!! win")
+              console.log("hit votecheck!!! win");
               this.voteCheck();
-              
-
-
             }.bind(this))
             this.voteCheck();
           }.bind(this))
-
         }.bind(this))
 
 
@@ -155,7 +151,7 @@ var Main = React.createClass({
 
     } // if 1
     else {
-      console.log("ALREADY DONE! NOT REGISTERED")
+      console.log("ALREADY DONE! NOT REGISTERED");
       this.getAllArticles();
     }
 
@@ -165,20 +161,20 @@ var Main = React.createClass({
   },
 
   avgrate: function () {
-    helpers.avgrate(result)
+    helpers.avgrate(result);
   },
   playSong: function (result) {
     console.log("main " + result.title);
-    console.log("main " + result.artist)
+    console.log("main " + result.artist);
     // var self = this;
     return axios.get("/spotify2/" + result.title + "/" + result.artist)
       .then(function (response) {
         var id = response.data;
         console.log("here - ", id); // ex.: { user: 'Your User'}
-        this.setState({ id: id })
+        this.setState({ id: id });
 
       }.bind(this))
-    console.log("idhere", this.state.id)
+    console.log("idhere", this.state.id);
   },
 
   userLogin: function (result) {
@@ -201,8 +197,8 @@ var Main = React.createClass({
   },
 
   playlist: function () {
-    console.log("sending here - " + this.state.email)
-    return axios.post("/playlist/" + this.state.email)
+    console.log("sending here - " + this.state.email);
+    return axios.post("/playlist/" + this.state.email);
   },
 
   userSignup: function (result) {
@@ -268,8 +264,8 @@ var Main = React.createClass({
     console.log("delete!");
     console.log("This will need to be un-saved: " + result.artist + "whose id is: " + result._id);
     var remove = [];
-    remove.push(this.state.email) // adds email to remove array
-    remove.push(result._id) // adds song id to remove array
+    remove.push(this.state.email); // adds email to remove array
+    remove.push(result._id); // adds song id to remove array
     helpers.deleteArticle(remove);
     this.getAllArticles();
     // shouldn't this refresh the saved articles? 
@@ -280,15 +276,15 @@ var Main = React.createClass({
 
   playlist2: function () {
     var newPlaylist = [];
-    console.log("sending here - " + this.state.email)
+    console.log("sending here - " + this.state.email);
     return axios.get("/playlist/" + this.state.email).then(function (data) {
-      console.log(data)
+      console.log(data);
       newPlaylist = data.data[0].playlist;
-      console.log("sending - " + newPlaylist)
+      console.log("sending - " + newPlaylist);
       return axios.get("/playlist2/" + newPlaylist).then(function (response) {
-        console.log("new songs - " + response.data)
-        this.setState({ playlist: response.data })
-      }.bind(this))
+        console.log("new songs - " + response.data);
+        this.setState({ playlist: response.data });
+      }.bind(this));
     }.bind(this));
     // this.getPlaylist();
   },
@@ -350,7 +346,7 @@ var Main = React.createClass({
         </footer>
       </div>
 
-    )
+    );
   }
 });
 
