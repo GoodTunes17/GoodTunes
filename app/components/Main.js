@@ -43,6 +43,7 @@ var Main = React.createClass({
   // },
   shouldComponentUpdate: function () {
     return true;
+    this.getAllArticles()
 
   },
 
