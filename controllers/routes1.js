@@ -67,8 +67,8 @@ module.exports = function (app) {
             var entry = [];
             $(".section-player h3").each(function(i, element) {
                 console.log("scraping");
-                result.artist = $(this).children(".artist").text();
-                result.title = $(this).find(".base-title").text();
+                result.artist = $(element).children(".artist").text();
+                result.title = $(element).find(".base-title").text();
                 result.source = "https://raw.githubusercontent.com/mariegadda/tunesimgs/master/stack_fb.png";
                 result.sourceLink = "http://www.hypem.com/stack/";
                 //use Tracks model to create new entries
