@@ -1,10 +1,28 @@
-# GoodTunes
+# Good Tunes
 
-Are you a music lover who can't keep up with all of the hot new songs? GoodTunes allows you to pull the latest tracks from the best indie music blogs across the web. Users can rate songs and save their favorites to their personal playlist.
+Good Tunes is a music discovery app, collecting recomended tracks from respected music critics and sites. We collect tracks from:
 
+* Pitchfork
+* Hype Machine
+* NPR Songs We Love
+* Indie Shuffle
 
+Good Tunes was made by Marie Gadda, Mel DeJesus, and Patrick Preziotti for UNC's Coding Bootcamp final project. 
 
-## Contributors
-+ [Mel DeJesus](https://github.com/edgewood1 "GitHub - Mel")
-+ [Marie Gadda](https://github.com/mariegadda "GitHub - Marie") 
-+ [Patrick Preziotti](https://github.com/ppreziotti "GitHub - Patrick") 
+## View Deploy:
+
+[Deployed on Heroku](https://warm-depths-30010.herokuapp.com/)
+
+## Tech Used
+
+* Node.js
+* Express
+* React
+* React-Router
+* Request and Cheerio 
+* Spotify API
+* Spotify HTML Widget
+* Mongo DB
+* Mongoose
+* Passport
+

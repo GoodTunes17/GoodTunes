@@ -58,7 +58,7 @@ module.exports = function (app) {
                 });
             }
         });
-        request("http://www.hypem.com/stack/", function(error, response, html) {
+        request("https://www.hypem.com/stack/", function(error, response, html) {
             // Then, we load that into cheerio and save it to $ for a shorthand selector
             var $ = cheerio.load(html);
             // Save an empty result object
@@ -67,8 +67,8 @@ module.exports = function (app) {
             var entry = [];
             $(".section-player h3").each(function(i, element) {
                 console.log("scraping");
-                result.artist = $(this).children(".artist").text();
-                result.title = $(this).find(".base-title").text();
+                result.artist = $(element).children(".artist").text();
+                result.title = $(element).find(".base-title").text();
                 result.source = "https://raw.githubusercontent.com/mariegadda/tunesimgs/master/stack_fb.png";
                 result.sourceLink = "http://www.hypem.com/stack/";
                 //use Tracks model to create new entries
@@ -113,29 +113,6 @@ module.exports = function (app) {
                 }
             });
         });
-        // I think we should skip spin for now as the url changes weekly and we have to format the title to remove quotes and the name of the album
-
-        // request("http://www.spin.com/2016/08/favorite-songs-of-the-week-joyce-manor-isaiah-rashad/", function(error, response, html) {
-        //     var $ = cheerio.load(html);
-        //     var result = {};
-
-        //     $("strong").each(function(i, element) {
-        //         var song = $(this).text().split(",");
-        //         result.artist = song[0];
-        //         result.title = song[1];
-
-        //         result.source = "SPIN";
-        //         var entry = new Track(result);
-        //         entry.save(function(err, doc) {
-        //           if (err) {
-        //               console.log(err);
-        //           }
-        //             else {
-        //               console.log(doc);
-        //             }
-        //         });
-        //     });
-        // });
 
         request("https://www.indieshuffle.com/new-songs", function(error, response, html) {
             var $ = cheerio.load(html);

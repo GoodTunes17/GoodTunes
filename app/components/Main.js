@@ -43,6 +43,7 @@ var Main = React.createClass({
   // },
   shouldComponentUpdate: function () {
     return true;
+    this.getAllArticles()
 
   },
 
@@ -84,26 +85,6 @@ var Main = React.createClass({
   getAllArticles: function () {
     console.log("getallarticles");
     helpers.getArticle().then(function (response) {
-      //this shuffle function is also called everytime you click save, not good UX,
-      //would be better to get articles by most recently entered into database? 
-
-      // function shuffle(array) {
-      //     var m = array.length,
-      //         t, i;
-      //     // While there remain elements to shuffle…
-      //     while (m) {
-      //         // Pick a remaining element…
-      //         i = Math.floor(Math.random() * m--);
-      //         // And swap it with the current element.
-      //         t = array[m];
-      //         array[m] = array[i];
-      //         array[i] = t;
-      //     }
-      //     return array;
-      // }
-      // response.data = shuffle(response.data);
-
-
       console.log("getallarticles scrape from db: ", response.data);
       this.setState({ scrapedArticles: response.data });
       //if nothing is in the database, then scrape -- 
@@ -113,7 +94,7 @@ var Main = React.createClass({
       }
       this.playlist2();
     }.bind(this))
-        this.playlist2() // Does this need to be here?
+       // this.playlist2() // Does this need to be here?
   },
 
   rating: function (result) {
@@ -145,18 +126,11 @@ var Main = React.createClass({
           }.bind(this))
         }.bind(this))
 
-
-      //do math for average
-      //update songid rating and add one to vote
-
     } // if 1
     else {
       console.log("ALREADY DONE! NOT REGISTERED");
       this.getAllArticles();
     }
-
-    // } // for
-
 
   },
 
@@ -234,8 +208,6 @@ var Main = React.createClass({
 
   savedArticles: function (result) {
 
-
-    // console.log("This will need to be saved: " + result.artist + "whose id is: " + result._id)
     // If no user is logged in then redirect to the login page
     if (this.state.isLoggedIn === false) {
       this.setState({message: "Please login in order to save songs to your playlist."});
