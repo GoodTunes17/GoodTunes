@@ -27,44 +27,34 @@ var Main = React.createClass({
     };
   },
 
-  // componentWillMount is called before the render method is executed. It is important to note that setting the state in this phase will not trigger a re-rendering.
+  // componentWillMount is called before the render method is executed.  
 
   componentWillMount: function () {
+
+    // if there are no scrapes in the database, then scrape and read scrapes from database
+    // otherwise, read scapes from database (this.getAllArticles() - 
+
     if (this.state.scrapedArticles.length < 1) {
       console.log("no scrapes");
       this.scrape();
       this.getAllArticles();
     }
-    this.getAllArticles();
+    else {
+      this.getAllArticles();
+    }
   },
 
-  // componentDidMount: function() {
-  //   this.getAllArticles();
-  // },
+  // this may/not be functional - it merely re-reads the database if any changes occur
+
   shouldComponentUpdate: function () {
     return true;
     this.getAllArticles()
-
   },
 
-  voteCheck: function () {
-    if (this.state.isLoggedIn === true) {
-    console.log("here" + this.state.email);
-    // var self = this;
-    return axios.get("/voteCheck/" + this.state.email)
-      .then(function (response) {
-        var id = response.data;
-        console.log("here!!! big - ", id[0].voted); // ex.: { user: 'Your User'}
-        this.setState({ voteCheck: id[0].voted });
-        this.getAllArticles();
-      }.bind(this));
-    this.getAllArticles();
+  /// GENERAL FUNCTIONS ---> 
+  /// SCRAPE / READ SONGS, VOTECHECK / RATE, PLAY SONGS. 
 
-  }else{console.log("not logged in")}
-  this.getAllArticles();
-},
-
-
+  // SCRAPE will scrape from websites and save the results to the database 
 
   scrape: function () {
     helpers.scrape().then(function (response) {
@@ -75,12 +65,12 @@ var Main = React.createClass({
       //    
       this.voteCheck();
     }.bind(this));
-
     console.log("did scrape scrape?");
-
     this.voteCheck();
-
   },
+
+  //GETALLARTICLES - will read articles from database
+  //without going thru the effort of rescraping for new tracks. 
 
   getAllArticles: function () {
     console.log("getallarticles");
@@ -94,8 +84,37 @@ var Main = React.createClass({
       }
       this.playlist2();
     }.bind(this))
-       // this.playlist2() // Does this need to be here?
+    // this.playlist2() // Does this need to be here?
   },
+
+  //VOTECHECK will check to see which songs a user has voted for - 
+  // if a user has voted for a song, they shouldn't be able to revote for it.
+  // this gets all the songs that the user has voted for and stores them in "voteCheck" state
+  // then, it updates from the database (getAllArticles())
+
+  voteCheck: function () {
+    if (this.state.isLoggedIn === true) {
+      console.log("here" + this.state.email);
+      // var self = this;
+      return axios.get("/voteCheck/" + this.state.email)
+        .then(function (response) {
+          var id = response.data;
+          console.log("here!!! big - ", id[0].voted); // ex.: { user: 'Your User'}
+          this.setState({ voteCheck: id[0].voted });
+          this.getAllArticles();
+        }.bind(this));
+      this.getAllArticles();
+    }
+    else {
+      console.log("not logged in")
+    }
+    this.getAllArticles();
+  },
+
+  // RATING - if the user rates a track, we're sent here
+  // this will first check the voteCheck array to see  if they've rated the track before, 
+  // if they haven't , then it gets the average rating from the database
+  // it performs the calculus, and then posts the new rating to the database
 
   rating: function (result) {
     var songId = result[0];
@@ -105,7 +124,7 @@ var Main = React.createClass({
     // for (var i = 0; i < this.state.voteCheck.length; i++) {
     //if songid is not in votecheck
     if (!this.state.voteCheck.includes(songId)) {
-      console.log('NEW RATING by ' +this.state.email);
+      console.log('NEW RATING by ' + this.state.email);
       //track.find songid, rating:1, votes: 1
       return axios.get("/rating/" + songId)
         //get that response
@@ -114,6 +133,7 @@ var Main = React.createClass({
           console.log("rating and votes - ", id);
           var avgRate = id[0].rating;
           var votes = id[0].votes;
+          // this is the calculus for the new average
           var newAvg = (avgRate + ((rating - avgRate) / (votes)));
           votes++;
           return axios.post("/rateUpdate/" + newAvg + "/" + votes + "/" + songId).then(function (response) {
@@ -125,18 +145,15 @@ var Main = React.createClass({
             this.voteCheck();
           }.bind(this))
         }.bind(this))
-
     } // if 1
     else {
       console.log("ALREADY DONE! NOT REGISTERED");
       this.getAllArticles();
     }
-
   },
 
-  avgrate: function () {
-    helpers.avgrate(result);
-  },
+  // PLAYSONG - if user clicks play, this will get the play info - 
+
   playSong: function (result) {
     console.log("main " + result.title);
     console.log("main " + result.artist);
@@ -151,6 +168,8 @@ var Main = React.createClass({
     console.log("idhere", this.state.id);
   },
 
+  /// USER LOGIN FUNCTIONS BELOW ----> 
+
   userLogin: function (result) {
     helpers.login(result.email, result.password).then(function (response) {
       // If the login post is not successful, render the login component with the error message
@@ -160,7 +179,7 @@ var Main = React.createClass({
       }
       // If the login is successful, render the playlist component with the welcome message
       else {
-        this.setState({ 
+        this.setState({
           email: result.email,
           isLoggedIn: true
         });
@@ -170,13 +189,10 @@ var Main = React.createClass({
     }.bind(this));
   },
 
-  playlist: function () {
-    console.log("sending here - " + this.state.email);
-    return axios.post("/playlist/" + this.state.email);
-  },
+
 
   userSignup: function (result) {
-    helpers.createUser(result.email, result.password).then(function(response) {
+    helpers.createUser(result.email, result.password).then(function (response) {
       // If the signup post is not successful, render the signup component with the error message
       if (response.data[0] !== "Success!") {
         this.setState({ message: response.data });
@@ -193,7 +209,7 @@ var Main = React.createClass({
   },
 
   userLogout: function () {
-    this.setState({ 
+    this.setState({
       email: "",
       isLoggedIn: false,
       playlist: []
@@ -203,14 +219,15 @@ var Main = React.createClass({
     }.bind(this));
   },
 
+  /// PLAYLIST FUNCTIONS BELOW ----> 
 
-  ///  NEW  - SAVES PLAYLIST ITEM 
+  // this saves to playlist
 
   savedArticles: function (result) {
 
     // If no user is logged in then redirect to the login page
     if (this.state.isLoggedIn === false) {
-      this.setState({message: "Please login in order to save songs to your playlist."});
+      this.setState({ message: "Please login in order to save songs to your playlist." });
       this.props.history.push('/login');
     }
     // If a user is logged in then proceed with saving the song
@@ -226,11 +243,10 @@ var Main = React.createClass({
         this.getAllArticles();
       });
     }
-
   },
 
 
-  // this will change the "saved" database property to false
+  // this will delete a song from playlist. 
 
   deletedArticle: function (result) {
     console.log("delete!");
@@ -241,10 +257,9 @@ var Main = React.createClass({
     helpers.deleteArticle(remove);
     this.getAllArticles();
     // shouldn't this refresh the saved articles? 
-
   },
 
-  // NEW - GRABS PLAYLIST
+  // This grabs songs for user playlist
 
   playlist2: function () {
     var newPlaylist = [];
@@ -291,7 +306,7 @@ var Main = React.createClass({
           <Link to="/logout"><a className="signup"> Logout</a></Link>
           <Link to="/Scrape"><button className="btn btn-nav" onClick={this.scrape}> Show Scrape</button></Link>
           <Link to="/Playlist" ><button className="btn btn-nav" onClick={this.playlist2}> Show Playlist</button></Link>
-      
+
 
         </nav>
 
