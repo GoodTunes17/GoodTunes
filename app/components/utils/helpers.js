@@ -15,6 +15,9 @@ var helpers = {
    
     },
 
+    // this reads songs from db
+    // but doesn't scrape - 
+    
     getArticle: function() {
         console.log("helpers.getarticle");
         return axios.get("/api");
@@ -22,6 +25,8 @@ var helpers = {
         //     console.log("helpers response - " + response.data)
         //     })
     },
+
+
     // submit rating to notes
     rating: function (result) {
         console.log("id - " + result[0]);
@@ -33,21 +38,9 @@ var helpers = {
         });
     },
 
-// submit rating to tracks --- 
-//     rating: function (result) {
-//     console.log("id - " + result[0])
-//       console.log("rating -- " +result[1])
-//     return axios.post("/rating/", {
-//         id: result[0],
-//         rating: result[1]
-//     })
-          
-//   },
-    // this is getting the initial scrapes from the database
-
  
 
-    // this will change the "saved" database property to true
+    // save to playlist
 
     postArticle: function(result) {
         console.log("the user email is  " + result[0]);
@@ -55,7 +48,7 @@ var helpers = {
         return axios.post('/saved', { id: result });
     },
 
-    // this will change the "saved" database property to false
+    // delete from playlist
 
     deleteArticle: function(result) {
         console.log("helper reached with " + result);
