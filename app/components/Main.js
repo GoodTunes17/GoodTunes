@@ -304,8 +304,9 @@ var Main = React.createClass({
           <Link to="/login"><a className="signup"> Login</a></Link>
           <Link to="/signup"><a className="signup"> Sign Up</a></Link>
           <Link to="/logout"><a className="signup"> Logout</a></Link>
-          <Link to="/Scrape"><button className="btn btn-nav" onClick={this.scrape}> Show Scrape</button></Link>
+          <Link to="/Scrape"><button className="btn btn-nav" onClick={this.scrape}> Get New Tunes</button></Link>
           <Link to="/Playlist" ><button className="btn btn-nav" onClick={this.playlist2}> Show Playlist</button></Link>
+          <Link to="/Scrape" ><button className="btn btn-nav" onClick={this.getAllArticles}> Show Current Tunes</button></Link>
 
 
         </nav>
