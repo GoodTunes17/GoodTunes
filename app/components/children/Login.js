@@ -27,9 +27,7 @@ var Login = React.createClass({
     this.props.userLogin(user);
     this.setState({
       email: "",
-      emailError: "",
       password: "",      
-      passwordError: ""
     });
   },
   render: function() {
