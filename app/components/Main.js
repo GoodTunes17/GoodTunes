@@ -85,7 +85,7 @@ var Main = React.createClass({
   getAllArticles: function () {
     console.log("getallarticles");
     helpers.getArticle().then(function (response) {
-      console.log("getallarticles scrape from db: ", response.data);
+     // console.log("getallarticles scrape from db: ", response.data);
       this.setState({ scrapedArticles: response.data });
       //if nothing is in the database, then scrape -- 
       if (response.data !== this.state.scrapedArticles) {

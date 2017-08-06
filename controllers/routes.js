@@ -45,6 +45,7 @@ module.exports = function (app) {
 
     // Redirect for unsuccessful login
     app.get('/login', function(req, res) {
+
         res.send(req.flash('loginMessage'));
     });
 
@@ -75,7 +76,7 @@ module.exports = function (app) {
             if (error) {
                 console.log(error);
             } else {
-                console.log("sorted query " ,found);
+              //  console.log("sorted query " ,found);
                 res.json(found);
             }
         });//there was a parenthesis here
@@ -94,7 +95,7 @@ module.exports = function (app) {
                     console.log(err);
                 } else {
                     // or sends the document to the browser
-                    console.log(doc);
+                  //  console.log(doc);
                     res.send(doc);
                 }
             });
@@ -113,7 +114,7 @@ module.exports = function (app) {
                     console.log(err);
                 } else {
                     // or sends the document to the browser
-                    console.log(doc);
+                   // console.log(doc);
                     res.json(doc);
                 }
             });
@@ -133,7 +134,7 @@ module.exports = function (app) {
                 }
                 // Otherwise, send the doc to the browser as a json object
                 else {
-                    console.log(doc.body);
+                   // console.log(doc.body);
                     res.json(doc);
                 }
 
@@ -158,7 +159,7 @@ module.exports = function (app) {
                 }
                 // Otherwise, send the doc to the browser as a json object
                 else {
-                    console.log("play list - " + doc);
+                   // console.log("play list - " + doc);
                     res.json(doc);
                 }
 

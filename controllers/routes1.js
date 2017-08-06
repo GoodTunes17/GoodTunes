@@ -29,7 +29,7 @@ module.exports = function (app) {
             //entry is an array of result objects? 
             var entry = [];
             $('ul.artist-list').each(function(i, element) {
-                console.log("scraping");
+                //console.log("scraping");
                 result.artist = $(element).children().text();
                 var title = $(element).siblings().text();
                 //replace double quotes with nothing!
@@ -45,7 +45,7 @@ module.exports = function (app) {
                 result.sourceLink = "http://www.pitchfork.com/reviews/best/tracks/";
                 //use Tracks model to create new entries
                 entry.push(new Track(result));
-                console.log(result);
+                //console.log(result);
             });
             // this saves the array of pushed objects from website
             for (var i = 0; i < entry.length; i++) {
@@ -73,7 +73,7 @@ module.exports = function (app) {
                 result.sourceLink = "http://www.hypem.com/stack/";
                 //use Tracks model to create new entries
                 entry.push(new Track(result));
-                console.log(result);
+               // console.log(result);
             });
             // this saves the array of pushed objects from website
             for (var i = 0; i < entry.length; i++) {
@@ -96,7 +96,7 @@ module.exports = function (app) {
                     song = song.replace(/'/g, '');
                     song = song.split(",");
                     song[1] = song[1].slice(1);
-                    console.log("THIS IS THE NPR SONG " + song[1]);
+                   // console.log("THIS IS THE NPR SONG " + song[1]);
                     result.artist = song[0];
                     result.title = song[1];
 
