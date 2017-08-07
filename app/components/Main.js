@@ -82,7 +82,9 @@ var Main = React.createClass({
         console.log("save2");
         this.setState({ scrapedArticles: response.data });
       }
-      this.playlist2();
+      if (this.state.email.length>0) {
+        this.playlist2();
+      }
     }.bind(this))
     // this.playlist2() // Does this need to be here?
   },
@@ -262,25 +264,36 @@ var Main = React.createClass({
   // This grabs songs for user playlist
 
   playlist2: function () {
+    if (this.state.email.length>0) {
     var newPlaylist = [];
+    //this uses the email address to get the user's playlist ids- 
     console.log("sending here - " + this.state.email);
     return axios.get("/playlist/" + this.state.email).then(function (data) {
       console.log(data);
+      //this is the playlist
       newPlaylist = data.data[0].playlist;
       console.log("sending - " + newPlaylist);
+ 
+      //if there's playlist present, then it uses these id's to get song info - 
+      console.log("and here --- " + newPlaylist);
+      if (newPlaylist.length>0) {
       return axios.get("/playlist2/" + newPlaylist).then(function (response) {
         console.log("new songs - " + response.data);
         this.setState({ playlist: response.data });
       }.bind(this));
-    }.bind(this));
+      }
+         }.bind(this));
+    }
+  // here 
     // this.getPlaylist();
   },
 
   // Here we render the function
 
   render: function () {
+    if (this.state.id.length>0) {
     var url = "https://open.spotify.com/embed?uri=spotify:track:" + this.state.id;
-
+    }
 
     var children = React.Children.map(this.props.children, function (child) { return React.cloneElement(child, { scrapedArticles: this.state.scrapedArticles, savedArticles: this.savedArticles, playSong: this.playSong, deletedArticle: this.deletedArticle, id: this.state.id, playlist: this.state.playlist, rating: this.rating, userLogin: this.userLogin, userSignup: this.userSignup, userLogout: this.userLogout, isLoggedIn: this.state.isLoggedIn, email: this.state.email, message: this.state.message }) }.bind(this))
 
@@ -304,8 +317,9 @@ var Main = React.createClass({
           <Link to="/login"><a className="signup"> Login</a></Link>
           <Link to="/signup"><a className="signup"> Sign Up</a></Link>
           <Link to="/logout"><a className="signup"> Logout</a></Link>
-          <Link to="/Scrape"><button className="btn btn-nav" onClick={this.scrape}> Show Scrape</button></Link>
+          <Link to="/Scrape"><button className="btn btn-nav" onClick={this.scrape}> Get New Tunes</button></Link>
           <Link to="/Playlist" ><button className="btn btn-nav" onClick={this.playlist2}> Show Playlist</button></Link>
+          <Link to="/Scrape" ><button className="btn btn-nav" onClick={this.getAllArticles}> Show Current Tunes</button></Link>
 
 
         </nav>
