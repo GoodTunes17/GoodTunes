@@ -36,12 +36,9 @@ module.exports = function (app) {
     });
 
     // Creating a new user
-    app.post('/signup', passport.authenticate('local-signup', {
-        successRedirect: '/profile',
-        failureRedirect: '/signup',
-        failureFlash: true,
-        successFlash: true
-    }));
+    app.post('/signup', passport.authenticate('local-signup'), function(req, res) {
+        res.send(req.flash('userMessage'));
+    });
 
     // Redirect for unsuccessful login
     app.get('/login', function(req, res) {
@@ -50,12 +47,9 @@ module.exports = function (app) {
     });
 
     // User logging in
-    app.post('/login', passport.authenticate('local-login', {
-        successRedirect: '/profile',
-        failureRedirect: '/login',
-        failureFlash: true,
-        successFlash: true
-    }));
+    app.post('/login', passport.authenticate('local-login'), function(req, res) {
+        res.send(req.flash('userMessage'));
+    });
 
     // User logging out
     app.get('/logout', function(req, res) {
