@@ -119,6 +119,7 @@ var Main = React.createClass({
   // it performs the calculus, and then posts the new rating to the database
 
   rating: function (result) {
+    if (this.state.email.length>0){
     var songId = result[0];
     var rating = result[1];
     console.log("for " + this.state.email + " vote check looks like - " + this.state.voteCheck);
@@ -151,6 +152,7 @@ var Main = React.createClass({
     else {
       console.log("ALREADY DONE! NOT REGISTERED");
       this.getAllArticles();
+    }
     }
   },
 
