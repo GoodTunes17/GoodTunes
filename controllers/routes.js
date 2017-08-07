@@ -138,8 +138,9 @@ module.exports = function (app) {
                     res.json(doc);
                 }
 
-            })
-    })
+            });
+            res.send(res);
+    });
 
 
     // this uses the playlists ids to grab the tracks  

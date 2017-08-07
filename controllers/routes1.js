@@ -140,7 +140,7 @@ module.exports = function (app) {
                 }
             });
         });
-
+res.send("scrape complete");
     });
 
     //spotify query to get the spotify id# that we need to use in the iframe player

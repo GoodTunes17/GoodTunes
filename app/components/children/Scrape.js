@@ -49,8 +49,9 @@ var Scrape = React.createClass({
   render: function () {
 
     var url = "https://open.spotify.com/embed?uri=spotify:track:" + this.props.id;
-    console.log(this.props.id);
     var rate = [];
+    console.log(this.props.scrapedArticles);
+  
     return (
 
       <div className="col-md-11" >
