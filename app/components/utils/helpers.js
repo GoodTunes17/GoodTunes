@@ -63,7 +63,7 @@ var helpers = {
         return axios.post('/signup', {
             email: email,
             password: password
-        })
+        })        
         .catch(function(error) {
             console.log(error);
         });
