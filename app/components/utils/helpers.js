@@ -64,9 +64,6 @@ var helpers = {
             email: email,
             password: password
         })        
-        .then(function(response) {
-            console.log(response);
-        })
         .catch(function(error) {
             console.log(error);
         });
@@ -77,9 +74,6 @@ var helpers = {
         return axios.post('/login', {
             email: email, 
             password: password
-        })
-        .then(function(response) {
-            console.log(response);
         })
         .catch(function(error) {
             console.log(error);
