@@ -63,6 +63,12 @@ var helpers = {
         return axios.post('/signup', {
             email: email,
             password: password
+        })        
+        .then(function(response) {
+            console.log(response);
+        })
+        .catch(function(error) {
+            console.log(error);
         });
     },
 
@@ -71,12 +77,23 @@ var helpers = {
         return axios.post('/login', {
             email: email, 
             password: password
+        })
+        .then(function(response) {
+            console.log(response);
+        })
+        .catch(function(error) {
+            console.log(error);
         });
     },
 
     // User logout
     logout: function() {
-        return axios.get('/logout');
+        return axios.get('/logout').then(function(response) {
+            console.log(response);
+        })
+        .catch(function(error) {
+            console.log(error);
+        });
     }
 
 
