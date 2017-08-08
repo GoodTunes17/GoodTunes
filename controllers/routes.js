@@ -31,12 +31,15 @@ module.exports = function (app) {
     });
 
     // Redirect for unsuccessful signup
-    app.get('/signup', function(req, res, next) {
+    app.get('/signup', function(req, res) {
         res.send(req.flash('signupMessage'));
     });
 
     // Creating a new user
-    app.post('/signup', passport.authenticate('local-signup'), function(req, res) {
+    app.post('/signup', passport.authenticate('local-signup'), function(req, res, err) {
+        if (err) {
+            console.log(err);
+        }
         res.send(req.flash('userMessage'));
     });
 
@@ -47,7 +50,10 @@ module.exports = function (app) {
     });
 
     // User logging in
-    app.post('/login', passport.authenticate('local-login'), function(req, res) {
+    app.post('/login', passport.authenticate('local-login'), function(req, res, err) {
+        if (err) {
+            console.log(err);
+        }
         res.send(req.flash('userMessage'));
     });
 
