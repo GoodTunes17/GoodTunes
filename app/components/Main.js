@@ -12,6 +12,7 @@ var helpers = require("./utils/helpers");
 
 // Creating the Main component
 var Main = React.createClass({
+ 
 
   //  All the scrapes are getting dumped into scrapedArticles array: 
 
@@ -75,7 +76,7 @@ var Main = React.createClass({
   getAllArticles: function () {
     console.log("getallarticles");
     helpers.getArticle().then(function (response) {
-      console.log("getallarticles scrape from db: ", response.data);
+     // console.log("getallarticles scrape from db: ", response.data);
       this.setState({ scrapedArticles: response.data });
       //if nothing is in the database, then scrape -- 
       if (response.data !== this.state.scrapedArticles) {
@@ -179,7 +180,7 @@ var Main = React.createClass({
       // If the login post is not successful, render the login component with the error message
       if (response.data[0] !== "Success!") {
         this.setState({ message: response.data });
-        this.props.history.push('/login');
+        this.context.router.push('/login');
       }
       // If the login is successful, render the playlist component with the welcome message
       else {
@@ -188,7 +189,7 @@ var Main = React.createClass({
           isLoggedIn: true
         });
         this.playlist2();
-        this.props.history.push('/Playlist');
+        this.context.router.push('/Playlist');
       }
     }.bind(this));
   },
@@ -197,17 +198,18 @@ var Main = React.createClass({
 
   userSignup: function (result) {
     helpers.createUser(result.email, result.password).then(function (response) {
+      console.log("this is in main", response);
       // If the signup post is not successful, render the signup component with the error message
       if (response.data[0] !== "Success!") {
         this.setState({ message: response.data });
-        this.props.history.push('/signup');
+        this.context.router.push('/signup');
       }
       // If the signup is successful, log in the new user and render the playlist component 
       // with the welcome message
       else {
         this.setState({ email: result.email });
         this.setState({ isLoggedIn: true });
-        this.props.history.push('/Playlist');
+        this.context.router.push('/Playlist');
       }
     }.bind(this));
   },
@@ -328,7 +330,7 @@ var Main = React.createClass({
 
         <div className="col-md-4">
           <iframe src={url}
-            width="300" height="380" frameborder="0" allowtransparency="true"></iframe>
+            width="300" height="380" frameBorder="0" allowTransparency="true"></iframe>
         </div>
 
         {/* SCRAPED SONGS -  */}
@@ -353,6 +355,9 @@ var Main = React.createClass({
   }
 });
 
+   Main.contextTypes = {
+  router: React.PropTypes.object.isRequired
+};
 
 // Export the component back for use in other files
 module.exports = Main;
