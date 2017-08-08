@@ -58,6 +58,7 @@ var Signup = React.createClass({
         password: "",      
         passwordError: ""
       });
+      console.log("user signed up -- ", this.state.email)
     }
     else {
       console.log("Error: ", this.state.emailError, this.state.passwordError);

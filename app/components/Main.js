@@ -190,8 +190,10 @@ var Main = React.createClass({
         });
         this.playlist2();
         this.context.router.push('/Playlist');
+        
       }
     }.bind(this));
+    console.log ("logged in " + this.state.isLoggedIn)
   },
 
 
@@ -220,8 +222,9 @@ var Main = React.createClass({
       isLoggedIn: false,
       playlist: []
     });
+    console.log("logged in --- " + this.state.isLoggedIn)
     helpers.logout().then(function (response) {
-      console.log(response);
+      console.log("logged in response " + response);
     }.bind(this));
   },
 

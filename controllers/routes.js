@@ -139,7 +139,7 @@ module.exports = function (app) {
                 }
 
             });
-            res.send(res);
+            // res.send(res);
     });
 
 
