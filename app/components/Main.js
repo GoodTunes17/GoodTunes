@@ -178,6 +178,7 @@ var Main = React.createClass({
   userLogin: function (result) {
     helpers.login(result.email, result.password).then(function (response) {
       // If the login post is not successful, render the login component with the error message
+      console.log("in main", response);
       if (response.data[0] !== "Success!") {
         this.setState({ message: response.data });
         this.context.router.push('/login');

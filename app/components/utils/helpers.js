@@ -60,12 +60,16 @@ var helpers = {
 
     // Creating a new user from the signup page
     createUser: function(email, password) {
+        console.log("in createUser", email + password);
         return axios.post('/signup', {
             email: email,
             password: password
         })        
         .catch(function(error) {
-            console.log(error);
+            console.log("this is the error in helpers", error);
+             if (error) {
+                return(error);
+            }
         });
     },
 
@@ -77,6 +81,9 @@ var helpers = {
         })
         .catch(function(error) {
             console.log(error);
+            if (error) {
+                return(error);
+            }
         });
     },
 
