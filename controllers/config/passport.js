@@ -2,6 +2,7 @@ var passport = require('passport');
 var User = require('../../models/User');
 var LocalStrategy = require('passport-local').Strategy;
 
+
 passport.serializeUser(function(user, done) {
   done(null, user.id);
 });
@@ -27,7 +28,7 @@ passport.use('local-signup', new LocalStrategy(
         }
         else if (user) {
           console.log("The email address is already in use.");
-          return done(null, false, req.flash('signupMessage', 'The email address is already in use.'));
+          return done(null, false)
         }
         else {
           var newUser = new User();
@@ -54,16 +55,20 @@ passport.use('local-login', new LocalStrategy(
   },
   function(req, email, password, done) {
     User.findOne({'email': email}, function(err, user) {
+
       if (err) {
         return done(err);
       }
       else if (!user) {
-        return done(null, false, req.flash('loginMessage', 'User not found. Please enter a valid email address.'));
+        console.log("user not found");
+        return done(null, false);
       }
       else if (!user.validPassword(password)) {
-        return done(null, false, req.flash('loginMessage', 'Incorrect password. Please try again.'));
+        console.log("incorrect passoword");
+        return done(null, false);
       }
-      return done(null, user, req.flash('userMessage', 'Success!'));
+
+      return done(null, user, req.flash('loginMessage', 'Success!'));
     });
   }
 ));

@@ -1,5 +1,6 @@
 // Require mongoose
 var mongoose = require("mongoose");
+var uniqueValidator = require('mongoose-unique-validator');
 // Create Schema class
 var Schema = mongoose.Schema;
 
@@ -40,9 +41,14 @@ var TrackSchema = new Schema({
   note: {
     type: Schema.Types.ObjectId,
     ref: "Note"
-  }
-});
+  },
+ 
 
+},
+ {capped: {size: 50000, max: 200, autoIndexId: true }}
+);
+
+TrackSchema.plugin(uniqueValidator);
 // Create the Track model with the TrackSchema
 var Track = mongoose.model("Track", TrackSchema);
 

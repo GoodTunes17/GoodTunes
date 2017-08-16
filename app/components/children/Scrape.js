@@ -50,13 +50,14 @@ var Scrape = React.createClass({
 
     var url = "https://open.spotify.com/embed?uri=spotify:track:" + this.props.id;
     var rate = [];
-    console.log(this.props.scrapedArticles);
   
-    return (
+  var songs = this.props.scrapedArticles;
 
+    return (
       <div className="col-md-11" >
 
-        {this.props.scrapedArticles.map(function (search, i) {
+        
+        {songs.map(function (search, i) {
           var boundClick1 = this.handleClick1.bind(this, search);
           var boundClick2 = this.handleClick2.bind(this, search);
           var boundClick3 = this.handleClick3.bind(this, search);

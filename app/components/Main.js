@@ -36,7 +36,6 @@ var Main = React.createClass({
     // otherwise, read scapes from database (this.getAllArticles() - 
 
     if (this.state.scrapedArticles.length < 1) {
-      console.log("no scrapes");
       this.scrape();
       this.getAllArticles();
     }
@@ -59,14 +58,11 @@ var Main = React.createClass({
 
   scrape: function () {
     helpers.scrape().then(function (response) {
-      console.log("scraped!");
       this.setState({ scrapedArticles: response.data });
-      console.log("save1");
       // nothing will happen in this zone... 
       //    
       this.voteCheck();
     }.bind(this));
-    console.log("did scrape scrape?");
     this.voteCheck();
   },
 
@@ -74,13 +70,11 @@ var Main = React.createClass({
   //without going thru the effort of rescraping for new tracks. 
 
   getAllArticles: function () {
-    console.log("getallarticles");
     helpers.getArticle().then(function (response) {
      // console.log("getallarticles scrape from db: ", response.data);
       this.setState({ scrapedArticles: response.data });
       //if nothing is in the database, then scrape -- 
       if (response.data !== this.state.scrapedArticles) {
-        console.log("save2");
         this.setState({ scrapedArticles: response.data });
       }
       if (this.state.email.length>0) {
@@ -160,9 +154,6 @@ var Main = React.createClass({
   // PLAYSONG - if user clicks play, this will get the play info - 
 
   playSong: function (result) {
-    console.log("main " + result.title);
-    console.log("main " + result.artist);
-    // var self = this;
     return axios.get("/spotify2/" + result.title + "/" + result.artist)
       .then(function (response) {
         var id = response.data;
@@ -178,6 +169,7 @@ var Main = React.createClass({
   userLogin: function (result) {
     helpers.login(result.email, result.password).then(function (response) {
       // If the login post is not successful, render the login component with the error message
+      console.log("in main", response);
       if (response.data[0] !== "Success!") {
         this.setState({ message: response.data });
         this.context.router.push('/login');

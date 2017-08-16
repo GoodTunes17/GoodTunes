@@ -42,6 +42,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
+// Make public a static directory
 
 app.use(express.static("public"));
 

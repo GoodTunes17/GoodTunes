@@ -13,6 +13,7 @@ var User = require("../models/User.js");
 mongoose.Promise = Promise;
 // Requiring passport for user authentication
 var passport = require("passport");
+var flash = require("connect-flash");
 //var keys = require("../keys");
 
 
@@ -46,15 +47,17 @@ module.exports = function (app) {
     // Redirect for unsuccessful login
     app.get('/login', function(req, res) {
 
-        res.send(req.flash('loginMessage'));
+           res.send(req.flash('loginMessage'));
     });
 
     // User logging in
     app.post('/login', passport.authenticate('local-login'), function(req, res, err) {
+
         if (err) {
             console.log(err);
         }
-        res.send(req.flash('userMessage'));
+       
+        res.send(req.flash('loginMessage'));
     });
 
     // User logging out
@@ -139,7 +142,7 @@ module.exports = function (app) {
                 }
 
             });
-            // res.send(res);
+
     });
 
 
