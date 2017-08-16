@@ -11,7 +11,9 @@ Good Tunes was made by Marie Gadda, Mel DeJesus, and Patrick Preziotti for UNC's
 
 ## View Deploy:
 
-[Deployed on Heroku](https://warm-depths-30010.herokuapp.com/)
+*Coming Soon*
+
+![Good Tunes Screenshot](https://github.com/mariegadda/tunesimgs/blob/master/goodtunes_screenshot.png?raw=true)
 
 ## Tech Used
 

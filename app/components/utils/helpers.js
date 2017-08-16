@@ -19,7 +19,6 @@ var helpers = {
     // but doesn't scrape - 
     
     getArticle: function() {
-        console.log("helpers.getarticle");
         return axios.get("/api");
         // .then(function(response) {
         //     console.log("helpers response - " + response.data)

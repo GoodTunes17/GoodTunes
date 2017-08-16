@@ -50,7 +50,7 @@ var Scrape = React.createClass({
 
     var url = "https://open.spotify.com/embed?uri=spotify:track:" + this.props.id;
     var rate = [];
-  console.log("this is in render", this.props.scrapedArticles)
+  
   var songs = this.props.scrapedArticles;
 
     return (
